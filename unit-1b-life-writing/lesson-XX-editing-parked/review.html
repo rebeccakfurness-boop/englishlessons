@@ -136,7 +136,7 @@ footer{text-align:center; color:var(--ink-soft); font-size:12px; margin-top:44px
   <div class="hero-inner">
     <div class="eyebrow">Selong Bay School · Lesson 11 review</div>
     <h1>Editing Lab</h1>
-    <p>Work through this after our lesson, in order. Watch, recap, practise, then test yourself — and finish with your four-pass checklist before you hand in Worksheet 11.</p>
+    <p>Work through this after our lesson, in order. Watch, recap, practise, then test yourself, and finish with your four-pass checklist before you hand in Worksheet 11.</p>
   </div>
 </div>
 
@@ -161,14 +161,14 @@ footer{text-align:center; color:var(--ink-soft); font-size:12px; margin-top:44px
     <p class="block-intro">Try to say what each lens does <em>before</em> you open it. Tap to check yourself.</p>
     <div class="lensgrid" id="lensGrid"></div>
     <div class="card" style="background:var(--gold-light); border:none; margin-top:14px;">
-      <p style="margin:0; font-size:14px; color:var(--gold-dark); line-height:1.6;"><b>Remember the order.</b> Cut, Sharpen and Vary are <i>editing</i> — making the writing work better. Check is <i>proofreading</i> — making sure nothing is wrong. Editing always comes first.</p>
+      <p style="margin:0; font-size:14px; color:var(--gold-dark); line-height:1.6;"><b>Remember the order.</b> Cut, Sharpen and Vary are <i>editing</i>, making the writing work better. Check is <i>proofreading</i>, making sure nothing is wrong. Editing always comes first.</p>
     </div>
   </section>
 
   <!-- 3 · SPOT THE FIX -->
   <section class="block">
     <div class="block-head"><div class="block-num">3</div><h2>Spot the fix</h2></div>
-    <p class="block-intro">Six weak sentences. For each one, work out which lens you'd use and how you'd rewrite it — <em>then</em> tap to compare with one possible answer. Yours doesn't have to match mine to be right.</p>
+    <p class="block-intro">Six weak sentences. For each one, work out which lens you'd use and how you'd rewrite it, and <em>then</em> tap to compare with one possible answer. Yours doesn't have to match mine to be right.</p>
     <div id="fixList"></div>
   </section>
 
@@ -188,7 +188,7 @@ footer{text-align:center; color:var(--ink-soft); font-size:12px; margin-top:44px
   <!-- 5 · CHECKLIST -->
   <section class="block">
     <div class="block-head"><div class="block-num">5</div><h2>Your four-pass checklist</h2></div>
-    <p class="block-intro">Now go to your own draft. Tick each one off as you do it — and do them in this order, not all at once. This page remembers your ticks on this device.</p>
+    <p class="block-intro">Now go to your own draft. Tick each one off as you do it, and do them in this order, not all at once. This page remembers your ticks on this device.</p>
     <div id="checkList"></div>
     <button class="btn btn-ghost btn-sm" id="resetChecks" style="margin-top:6px;">Clear all ticks</button>
   </section>
@@ -197,7 +197,7 @@ footer{text-align:center; color:var(--ink-soft); font-size:12px; margin-top:44px
   <section class="block">
     <div class="finish">
       <h3>Last step: Worksheet 11</h3>
-      <p>Once you've run all four passes, complete Worksheet 11 on Google Classroom. The final question asks you to name the single change that improved your draft most, and explain why — that's the part that actually shows what you've learned, so give it a proper answer rather than one line.</p>
+      <p>Once you've run all four passes, complete Worksheet 11 on Google Classroom. The final question asks you to name the single change that improved your draft most, and explain why. That's the part that actually shows what you've learned, so give it a proper answer rather than one line.</p>
       <a class="btn btn-gold" href="https://classroom.google.com" target="_blank" rel="noopener">Go to Google Classroom ↗</a>
     </div>
   </section>
@@ -207,7 +207,7 @@ footer{text-align:center; color:var(--ink-soft); font-size:12px; margin-top:44px
 
 <script>
 /* ============================================================
-   VIDEO — paste the lesson video link here and republish.
+   VIDEO: paste the lesson video link here and republish.
    Works with a YouTube, Vimeo or Drive link, or any URL.
    ============================================================ */
 const VIDEO_URL = null;   // e.g. "https://www.youtube.com/watch?v=XXXXXXXXXXX"
@@ -257,13 +257,13 @@ if(VIDEO_URL){
 /* ---------------- lenses ---------------- */
 const lenses = [
   {n:'CUT', q:'What isn’t earning its place?', c:'#A6330F',
-   body:'Delete filler words — very, really, quite, actually — plus any repeated idea, and any sentence that explains something the reader already understood. Cutting is the fastest way to improve a draft and the hardest thing to make yourself do.'},
+   body:'Delete filler words (very, really, quite, actually), plus any repeated idea, and any sentence that explains something the reader already understood. Cutting is the fastest way to improve a draft and the hardest thing to make yourself do.'},
   {n:'SHARPEN', q:'What’s vague that could be exact?', c:'#005F65',
    body:'Swap general words for precise ones. “A lot of people” becomes “three hundred people”. “It smelled nice” becomes “it smelled of chlorine and floor polish”. This is also where you turn telling into showing.'},
   {n:'VARY', q:'Does it all sound the same?', c:'#A65F06',
    body:'Read it aloud. If every sentence is the same length, the writing goes flat. A short sentence straight after a long one is the simplest way there is to make a moment land. Check you haven’t started four sentences in a row with “I”.'},
   {n:'CHECK', q:'Is anything actually wrong?', c:'#1E4664',
-   body:'The proofread, and only now. Spelling, punctuation, tense consistency, homophones. Try reading your last sentence first and working backwards — it stops your eye correcting mistakes without noticing them.'}
+   body:'The proofread, and only now. Spelling, punctuation, tense consistency, homophones. Try reading your last sentence first and working backwards, because it stops your eye correcting mistakes without noticing them.'}
 ];
 const lensGrid = document.getElementById('lensGrid');
 lenses.forEach(l=>{
@@ -284,19 +284,19 @@ lenses.forEach(l=>{
 const fixes = [
   {weak:'It was a very hot day and the sun was very bright.', lens:'CUT', c:'#A6330F',
    strong:'It was a hot day and the sun was bright.',
-   why:'Two “verys” in one short sentence, and neither adds anything. Cut them both first — then, if you want, sharpen “hot” into something exact like “thirty-four degrees by nine in the morning”.'},
+   why:'Two “verys” in one short sentence, and neither adds anything. Cut them both first, then, if you want, sharpen “hot” into something exact like “thirty-four degrees by nine in the morning”.'},
   {weak:'There were quite a lot of people waiting outside the shop.', lens:'SHARPEN', c:'#005F65',
    strong:'Eleven people were waiting outside the shop, and two of them had brought chairs.',
-   why:'You almost always know the real number, or something close to it. A precise figure is more convincing than a vague quantity — and one odd specific detail (the chairs) proves you were actually there.'},
+   why:'You almost always know the real number, or something close to it. A precise figure is more convincing than a vague quantity, and one odd specific detail (the chairs) proves you were actually there.'},
   {weak:'I walked to the beach. I saw my friend there. I sat down next to her. I felt happy.', lens:'VARY', c:'#A65F06',
    strong:'I walked down to the beach and found Nadia already sitting on the wall, and when I dropped down next to her she moved along without looking up. I felt happy.',
-   why:'Four short sentences, all the same shape, all starting with “I”. Joining the first three into one longer sentence lets the short final one — “I felt happy.” — actually land.'},
+   why:'Four short sentences, all the same shape, all starting with “I”. Joining the first three into one longer sentence lets the short final one, “I felt happy.”, actually land.'},
   {weak:'My brother and me went to the market and we buyed some fruit.', lens:'CHECK', c:'#1E4664',
    strong:'My brother and I went to the market and we bought some fruit.',
-   why:'Two accuracy errors: “me” should be “I” (take the other person away — you’d never say “me went”), and “buyed” should be “bought”. Neither changes what the sentence means, which is why this is a proofreading job, not an editing one.'},
+   why:'Two accuracy errors: “me” should be “I” (take the other person away, because you’d never say “me went”), and “buyed” should be “bought”. Neither changes what the sentence means, which is why this is a proofreading job, not an editing one.'},
   {weak:'I was extremely scared when the lights went off.', lens:'SHARPEN', c:'#005F65',
    strong:'When the lights went off I stopped moving completely, and I remember hearing myself breathe.',
-   why:'“Extremely scared” tells us the feeling and stops. Showing what fear actually made you <em>do</em> is stronger — and notice the rewrite never uses the word “scared” at all.'},
+   why:'“Extremely scared” tells us the feeling and stops. Showing what fear actually made you <em>do</em> is stronger, and notice the rewrite never uses the word “scared” at all.'},
   {weak:'Overall, it was a truly unforgettable experience that I will always remember.', lens:'CUT', c:'#A6330F',
    strong:'I went back the next week, and the week after that.',
    why:'“Unforgettable” and “will always remember” say the same thing twice, and both sound like phrases you’re supposed to use rather than anything you mean. Cut the whole line and end on something true and specific instead.'}
@@ -323,7 +323,7 @@ const quiz = [
    a:0, fb:'Editing asks whether the writing <em>works</em>. Proofreading asks whether anything is <em>wrong</em>. Two different questions.'},
   {q:'You notice your draft says "there" where you meant "their". Which lens?',
    opts:['Cut','Sharpen','Check'],
-   a:2, fb:'A homophone error is an accuracy problem, so it belongs in the final Check pass — not in your first read-through.'},
+   a:2, fb:'A homophone error is an accuracy problem, so it belongs in the final Check pass, not in your first read-through.'},
   {q:'Why should Check always come last?',
    opts:['Because spelling is the least important part of writing','Because there is no point correcting a sentence you might delete','Because it takes the longest'],
    a:1, fb:'If you proofread first, you waste effort perfecting sentences that the editing passes will cut or rewrite anyway.'},
@@ -335,13 +335,13 @@ const quiz = [
    a:1, fb:'It names a real person, gives one precise image, and leaves a question hanging that makes you want the next sentence.'},
   {q:'You read your draft aloud and every sentence sounds the same length. Which lens?',
    opts:['Cut','Vary','Check'],
-   a:1, fb:'Vary. Reading aloud is the only reliable way to catch this — you can’t hear rhythm when you read silently.'},
+   a:1, fb:'Vary. Reading aloud is the only reliable way to catch this, because you can’t hear rhythm when you read silently.'},
   {q:'True or false: a good edit usually makes a piece longer.',
    opts:['True','False'],
    a:1, fb:'False. Editing is about making every word earn its place. The model edit in our lesson came out shorter than the draft.'},
   {q:'Your piece ends "and that is a lesson I will never forget." What would you do?',
-   opts:['Keep it — endings should state the lesson learned','Cut it and end on something honest and specific instead','Move it to the start'],
-   a:1, fb:'A tidy moral sounds like something a writer thinks they’re supposed to say. An honest, unresolved ending — or one concrete action — is far stronger.'}
+   opts:['Keep it, because endings should state the lesson learned','Cut it and end on something honest and specific instead','Move it to the start'],
+   a:1, fb:'A tidy moral sounds like something a writer thinks they’re supposed to say. An honest, unresolved ending, or one concrete action, is far stronger.'}
 ];
 
 let score = 0, answered = 0;
@@ -384,9 +384,9 @@ function updateScore(){
   trackFill.style.width = Math.round((answered / quiz.length) * 100) + '%';
   if(answered === quiz.length){
     let h, p;
-    if(score === 8){ h = 'Full marks — all eight.'; p = 'You’ve got this properly. Go straight to your own draft and run the four passes for real.'; }
+    if(score === 8){ h = 'Full marks, all eight.'; p = 'You’ve got this properly. Go straight to your own draft and run the four passes for real.'; }
     else if(score >= 6){ h = score + ' out of 8. Strong.'; p = 'Scroll back up and reread the feedback on anything you missed, then move on to your checklist.'; }
-    else if(score >= 4){ h = score + ' out of 8.'; p = 'Worth a second look at section 2 before you edit your own work — especially the difference between editing and proofreading.'; }
+    else if(score >= 4){ h = score + ' out of 8.'; p = 'Worth a second look at section 2 before you edit your own work, especially the difference between editing and proofreading.'; }
     else { h = score + ' out of 8.'; p = 'Go back to section 2 and reread all four lenses, then try these questions again on a fresh page load. Bring any you still disagree with to our next lesson.'; }
     resultEl.innerHTML = '<h3>' + h + '</h3><p>' + p + '</p>';
     resultEl.classList.add('show');
@@ -397,10 +397,10 @@ function updateScore(){
 const checks = [
   {tag:'CUT', c:'#A6330F', t:'I have deleted every <b>very</b>, <b>really</b>, <b>quite</b> and <b>a lot</b> that wasn’t doing real work.'},
   {tag:'CUT', c:'#A6330F', t:'I have found any sentence that repeats an idea I already made, and cut one of them.'},
-  {tag:'SHARPEN', c:'#005F65', t:'I have replaced my vaguest words with exact ones — real numbers, real names, real smells and sounds.'},
+  {tag:'SHARPEN', c:'#005F65', t:'I have replaced my vaguest words with exact ones: real numbers, real names, real smells and sounds.'},
   {tag:'SHARPEN', c:'#005F65', t:'Where I <i>told</i> the reader a feeling, I have tried to <i>show</i> it instead.'},
   {tag:'VARY', c:'#A65F06', t:'I have read the whole thing aloud, listening for sentences that all sound the same length.'},
-  {tag:'VARY', c:'#A65F06', t:'My most important moment now has a short, blunt sentence — and I don’t have four sentences in a row starting with “I”.'},
+  {tag:'VARY', c:'#A65F06', t:'My most important moment now has a short, blunt sentence, and I don’t have four sentences in a row starting with “I”.'},
   {tag:'CHECK', c:'#1E4664', t:'I have checked spelling, punctuation, and that I stayed in one tense the whole way through.'},
   {tag:'CHECK', c:'#1E4664', t:'I have read it backwards, last sentence first, as a final proofread.'}
 ];
@@ -413,7 +413,7 @@ function loadChecks(){
 }
 function saveChecks(arr){
   try{ localStorage.setItem(STORE, JSON.stringify(arr)); }
-  catch(e){ /* storage unavailable — ticks just won't persist */ }
+  catch(e){ /* storage unavailable, ticks just won't persist */ }
 }
 let ticked = loadChecks();
 

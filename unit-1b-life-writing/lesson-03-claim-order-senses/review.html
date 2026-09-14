@@ -1,0 +1,455 @@
+<title>The Bias Lab</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&family=Nunito+Sans:wght@400;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap');
+
+:root{
+  --bg:#FDF7EE; --ink:#46280A; --ink-soft:#7A6450;
+  --teal:#007C83; --teal-dark:#005F65; --teal-light:#D7EDEC;
+  --coral:#D1481F; --coral-dark:#A6330F; --coral-light:#FBE3D8;
+  --gold:#FEA74A; --gold-dark:#A65F06; --gold-light:#FFF0DC;
+  --plum:#2C5F8A; --plum-dark:#1E4664; --plum-light:#E0EBF4;
+  --card:#FFFFFF; --line:#EADFCD;
+  --shadow: 0 8px 24px rgba(70,40,10,0.09);
+  --surface-dark:#2A1B0C;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#16110B; --ink:#F6EEE2; --ink-soft:#BBA890;
+    --teal:#2FA7AE; --teal-dark:#8FE3E6; --teal-light:#0E2E30;
+    --coral:#E2572B; --coral-dark:#FF9E77; --coral-light:#3A1F12;
+    --gold:#FEA74A; --gold-dark:#FFD09B; --gold-light:#3B2711;
+    --plum:#4E86B8; --plum-dark:#9CC6E6; --plum-light:#182B3A;
+    --card:#211A12; --line:#382B1D;
+    --shadow: 0 8px 24px rgba(0,0,0,0.45);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#16110B; --ink:#F6EEE2; --ink-soft:#BBA890;
+  --teal:#2FA7AE; --teal-dark:#8FE3E6; --teal-light:#0E2E30;
+  --coral:#E2572B; --coral-dark:#FF9E77; --coral-light:#3A1F12;
+  --gold:#FEA74A; --gold-dark:#FFD09B; --gold-light:#3B2711;
+  --plum:#4E86B8; --plum-dark:#9CC6E6; --plum-light:#182B3A;
+  --card:#211A12; --line:#382B1D;
+  --shadow: 0 8px 24px rgba(0,0,0,0.45);
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{background:var(--bg); color:var(--ink); font-family:'Nunito Sans','Segoe UI',system-ui,sans-serif; line-height:1.6; overflow-x:hidden;}
+h1,h2,h3{font-family:'Nunito','Nunito Sans',system-ui,sans-serif;}
+.mono{font-family:'IBM Plex Mono',monospace;}
+
+.app{max-width:800px; margin:0 auto; padding-inline:20px; padding-block:0 64px;}
+
+.hero{background:linear-gradient(135deg,#2A1B0C,#4A3016); color:#fff; padding-inline:20px; padding-block:30px 26px;}
+.hero-inner{max-width:800px; margin:0 auto;}
+.eyebrow{display:inline-flex; align-items:center; gap:8px; font-size:11.5px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--gold); margin-bottom:10px;}
+.hero h1{font-size:clamp(28px,5.5vw,40px); margin:0 0 10px; letter-spacing:-0.01em; text-wrap:balance; line-height:1.1;}
+.hero p{color:rgba(255,255,255,0.85); font-size:15px; margin:0; max-width:56ch;}
+
+.block{margin-block:34px;}
+.block-head{display:flex; align-items:center; gap:11px; margin-bottom:6px; flex-wrap:wrap;}
+.block-num{width:30px; height:30px; border-radius:50%; background:var(--teal); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:14px; flex-shrink:0; font-family:'Nunito',sans-serif;}
+.block-head h2{margin:0; font-size:22px;}
+.block-intro{font-size:14.5px; color:var(--ink-soft); margin:0 0 16px; max-width:62ch;}
+
+.card{background:var(--card); border:1px solid var(--line); border-radius:16px; padding:18px 20px; box-shadow:var(--shadow);}
+
+/* video */
+.videowrap{background:var(--card); border:1px solid var(--line); border-radius:16px; overflow:hidden; box-shadow:var(--shadow);}
+.vframe{position:relative; width:100%; max-width:100%; aspect-ratio:16/9; background:var(--surface-dark);}
+.vframe iframe{position:absolute; inset:0; width:100%; height:100%; border:0;}
+.vpending{display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; height:100%; color:rgba(255,255,255,0.72); text-align:center; padding:24px;}
+.vpending .vicon{font-size:34px;}
+.vpending p{margin:0; font-size:14px; max-width:40ch;}
+.vfoot{display:flex; align-items:center; justify-content:space-between; gap:12px; padding:13px 18px; flex-wrap:wrap;}
+.vfoot span{font-size:13px; color:var(--ink-soft);}
+
+/* three choice cards */
+.choicegrid{display:grid; grid-template-columns:repeat(3,1fr); gap:12px;}
+@media(max-width:700px){.choicegrid{grid-template-columns:1fr;}}
+.choice{border-radius:14px; padding:15px 17px; color:#fff; cursor:pointer; border:none; text-align:left; font-family:inherit;}
+.choice .cnum{font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.1em; color:rgba(255,255,255,0.6);}
+.choice .cname{font-family:'Nunito',sans-serif; font-weight:800; font-size:17px; margin-top:3px;}
+.choice .cq{font-size:12.5px; color:rgba(255,255,255,0.85); margin-top:2px;}
+.choice .cbody{font-size:13px; line-height:1.5; color:rgba(255,255,255,0.95); margin-top:10px; display:none;}
+.choice.open .cbody{display:block;}
+.choice .chint{font-size:11px; color:rgba(255,255,255,0.65); margin-top:8px;}
+.choice.open .chint{display:none;}
+
+/* practice groups */
+.grouphead{display:flex; align-items:center; gap:9px; margin:22px 0 10px;}
+.gtag{font-family:'Nunito',sans-serif; font-weight:800; font-size:10.5px; letter-spacing:0.07em; text-transform:uppercase; padding:4px 11px; border-radius:999px; color:#fff;}
+.grouphead span.gt{font-size:13.5px; color:var(--ink-soft);}
+
+.fix{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:15px 17px; margin-bottom:11px; box-shadow:var(--shadow); cursor:pointer;}
+.fix-row{display:flex; justify-content:space-between; align-items:flex-start; gap:12px; flex-wrap:wrap;}
+.fix-weak{font-family:'IBM Plex Mono',monospace; font-size:13.5px; line-height:1.6; color:var(--ink); flex:1; min-width:200px;}
+.fix-reveal{margin-top:12px; display:none;}
+.fix.open .fix-reveal{display:block;}
+.fix-strong{font-size:13.5px; line-height:1.6; background:var(--teal-light); color:var(--teal-dark); padding:11px 13px; border-radius:10px;}
+
+/* quiz */
+.qcard{background:var(--card); border:1px solid var(--line); border-radius:16px; padding:18px 20px; margin-bottom:13px; box-shadow:var(--shadow);}
+.qnum{font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-soft); letter-spacing:0.05em;}
+.qtext{font-weight:700; font-size:15px; margin:5px 0 12px; line-height:1.5;}
+.qopts{display:flex; flex-direction:column; gap:8px;}
+.qopt{text-align:left; font-family:inherit; font-size:13.5px; line-height:1.5; border:1.5px solid var(--line); background:var(--card); border-radius:10px; padding:10px 14px; cursor:pointer; color:var(--ink);}
+.qopt:hover{border-color:var(--teal);}
+.qopt.right{border-color:var(--teal); background:var(--teal-light); color:var(--teal-dark); font-weight:700;}
+.qopt.wrong{border-color:var(--coral); background:var(--coral-light); color:var(--coral-dark);}
+.qfb{font-size:13px; margin-top:11px; padding:10px 12px; border-radius:10px; display:none; line-height:1.55; background:var(--gold-light); color:var(--gold-dark);}
+.qcard.done .qfb{display:block;}
+
+.scorebar{position:sticky; top:0; z-index:40; background:var(--card); border:1px solid var(--line); border-radius:14px; padding:12px 16px; display:flex; align-items:center; gap:14px; box-shadow:var(--shadow); margin-bottom:16px; flex-wrap:wrap;}
+.scorebar .slabel{font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:var(--ink-soft);}
+.track{flex:1; min-width:120px; height:9px; background:var(--line); border-radius:999px; overflow:hidden;}
+.track-fill{height:100%; width:0%; background:var(--teal); border-radius:999px; transition:width .35s ease;}
+.scoretext{font-family:'IBM Plex Mono',monospace; font-size:13.5px; font-weight:600; font-variant-numeric:tabular-nums;}
+
+.result{border-radius:16px; padding:20px 22px; margin-top:6px; display:none; background:var(--surface-dark); color:#fff;}
+.result.show{display:block;}
+.result h3{margin:0 0 8px; font-size:19px; color:var(--gold);}
+.result p{margin:0; font-size:14.5px; line-height:1.6; color:rgba(255,255,255,0.9);}
+
+/* checklist */
+.check-item{display:flex; align-items:flex-start; gap:12px; background:var(--card); border:1px solid var(--line); border-radius:12px; padding:13px 16px; margin-bottom:9px; box-shadow:var(--shadow); cursor:pointer;}
+.check-item input{margin:0; width:19px; height:19px; flex-shrink:0; accent-color:var(--teal); margin-top:2px; cursor:pointer;}
+.check-item label{font-size:14px; line-height:1.5; cursor:pointer; flex:1;}
+.check-item .ctag{font-family:'Nunito',sans-serif; font-weight:800; font-size:10.5px; letter-spacing:0.06em; text-transform:uppercase; padding:2px 8px; border-radius:999px; color:#fff; margin-right:7px; display:inline-block; vertical-align:2px;}
+.check-item.ticked label{color:var(--ink-soft); text-decoration:line-through;}
+
+.finish{background:var(--card); border:1px solid var(--line); border-left:5px solid var(--gold); border-radius:0 16px 16px 0; padding:20px 22px; box-shadow:var(--shadow);}
+.finish h3{margin:0 0 8px; font-size:18px;}
+.finish p{margin:0 0 14px; font-size:14.5px; color:var(--ink-soft); line-height:1.6;}
+
+.btn{font-family:'Nunito Sans',sans-serif; font-weight:700; font-size:13.5px; border:none; border-radius:10px; padding:10px 18px; cursor:pointer; text-decoration:none; display:inline-flex; align-items:center; gap:7px; transition:transform .15s ease;}
+.btn:hover{transform:translateY(-1px);}
+.btn-teal{background:var(--teal); color:#fff;}
+.btn-gold{background:var(--gold); color:#46280A;}
+.btn-ghost{background:transparent; color:var(--ink-soft); border:1px solid var(--line);}
+.btn-sm{padding:7px 13px; font-size:12.5px;}
+[tabindex]:focus-visible, button:focus-visible, a:focus-visible, input:focus-visible{outline:2px solid var(--teal); outline-offset:2px; border-radius:8px;}
+
+footer{text-align:center; color:var(--ink-soft); font-size:12px; margin-top:44px;}
+
+@media (prefers-reduced-motion: reduce){ *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;} }
+</style>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">Selong Bay School · Lesson 3 review</div>
+    <h1>The Bias Lab</h1>
+    <p>Work through this after our lesson, in order. Watch, recap the three choices, practise spotting them, then test yourself. Finish with the checklist before you hand in Worksheet 3.</p>
+  </div>
+</div>
+
+<div class="app">
+
+  <!-- 1 -->
+  <section class="block">
+    <div class="block-head"><div class="block-num">1</div><h2>Watch first</h2></div>
+    <p class="block-intro">A short video on how a completely true account can still be unfair. Watch it before you do anything else on this page.</p>
+    <div class="videowrap">
+      <div class="vframe" id="vframe"></div>
+      <div class="vfoot">
+        <span id="vnote">Roughly 4 minutes.</span>
+        <a class="btn btn-teal btn-sm" id="vlink" href="#" target="_blank" rel="noopener" hidden>Open the video ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section class="block">
+    <div class="block-head"><div class="block-num">2</div><h2>Recap the three choices</h2></div>
+    <p class="block-intro">Try to say what each one means before you open it. Tap to check yourself.</p>
+    <div class="choicegrid" id="choiceGrid"></div>
+    <div class="card" style="background:var(--gold-light); border:none; margin-top:14px;">
+      <p style="margin:0; font-size:14px; color:var(--gold-dark); line-height:1.6;"><b>The one sentence to remember.</b> You do not have to lie to mislead someone. Choosing which true things to include, and which words to wrap them in, is enough.</p>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section class="block">
+    <div class="block-head"><div class="block-num">3</div><h2>Spot what the writer is doing</h2></div>
+    <p class="block-intro">Nine examples, three for each choice. Work out your answer first, then tap to check. Say it out loud if you can, it makes a real difference to whether it sticks.</p>
+    <div id="practiceWrap"></div>
+  </section>
+
+  <!-- 4 -->
+  <section class="block">
+    <div class="block-head"><div class="block-num">4</div><h2>Test yourself</h2></div>
+    <p class="block-intro">Eight questions. One attempt each, so read carefully before you answer.</p>
+    <div class="scorebar">
+      <span class="slabel">Score</span>
+      <div class="track"><div class="track-fill" id="trackFill"></div></div>
+      <span class="scoretext" id="scoreText">0 / 8</span>
+    </div>
+    <div id="quizList"></div>
+    <div class="result" id="result"></div>
+  </section>
+
+  <!-- 5 -->
+  <section class="block">
+    <div class="block-head"><div class="block-num">5</div><h2>Your three-choice checklist</h2></div>
+    <p class="block-intro">Now go back to the true story you wrote. Work through these in order and tick each one off. This page remembers your ticks on this device.</p>
+    <div id="checkList"></div>
+    <button class="btn btn-ghost btn-sm" id="resetChecks" style="margin-top:6px;">Clear all ticks</button>
+  </section>
+
+  <!-- 6 -->
+  <section class="block">
+    <div class="finish">
+      <h3>Last step: Worksheet 3</h3>
+      <p>Once you have been through the checklist, complete Worksheet 3 on Google Classroom. Question 2 asks you to find the bias in a short account and say what has been left out, which is exactly what we did with the two beach clean-up accounts in our lesson.</p>
+      <a class="btn btn-gold" href="https://classroom.google.com" target="_blank" rel="noopener">Go to Google Classroom ↗</a>
+    </div>
+  </section>
+
+  <footer>Lesson 3 · Unit 1B: Autobiography and Travel Writing · 8Ri.03, 8Ri.05, 8Ws, 8Wv</footer>
+</div>
+
+<script>
+/* ============================================================
+   VIDEO: paste the lesson video link here and republish.
+   Works with a YouTube, Vimeo or Drive link, or any URL.
+   ============================================================ */
+const VIDEO_URL = null;   // e.g. "https://www.youtube.com/watch?v=XXXXXXXXXXX"
+
+function embedFor(url){
+  try{
+    const u = new URL(url);
+    const h = u.hostname.replace(/^www\./,'');
+    if(h === 'youtu.be')        return 'https://www.youtube.com/embed/' + u.pathname.slice(1);
+    if(h.endsWith('youtube.com')){
+      const v = u.searchParams.get('v');
+      if(v) return 'https://www.youtube.com/embed/' + v;
+      if(u.pathname.startsWith('/embed/')) return url;
+    }
+    if(h.endsWith('vimeo.com'))  return 'https://player.vimeo.com/video/' + u.pathname.split('/').filter(Boolean)[0];
+    if(h.endsWith('drive.google.com')){
+      const m = u.pathname.match(/\/d\/([^/]+)/);
+      if(m) return 'https://drive.google.com/file/d/' + m[1] + '/preview';
+    }
+  }catch(e){ /* not a parseable URL */ }
+  return null;
+}
+
+const vframe = document.getElementById('vframe');
+const vlink  = document.getElementById('vlink');
+const vnote  = document.getElementById('vnote');
+
+if(VIDEO_URL){
+  const src = embedFor(VIDEO_URL);
+  if(src){
+    const f = document.createElement('iframe');
+    f.src = src;
+    f.title = 'Lesson 3 video: fact, opinion and bias';
+    f.allow = 'accelerometer; clipboard-write; encrypted-media; picture-in-picture';
+    f.allowFullscreen = true;
+    vframe.appendChild(f);
+  } else {
+    vframe.innerHTML = '<div class="vpending"><div class="vicon">🎬</div><p>Tap the button below to open the video.</p></div>';
+  }
+  vlink.href = VIDEO_URL;
+  vlink.hidden = false;
+} else {
+  vframe.innerHTML = '<div class="vpending"><div class="vicon">🎬</div><p>The video for this lesson will appear here. If it has not been added yet, carry on to section 2 and come back to it.</p></div>';
+  vnote.textContent = 'Video to be added.';
+}
+
+/* ---------------- three choices ---------------- */
+const choices = [
+  {n:'CHOICE 1', name:'Claim', q:'Fact, or opinion?', c:'#005F65',
+   body:'A fact is something someone could check and prove right or wrong. An opinion is a judgement that belongs to the writer. Both belong in life writing. The trouble starts when an opinion is dressed up as a fact, usually with a word like obviously or clearly.'},
+  {n:'CHOICE 2', name:'Order', q:'Report shape, or story shape?', c:'#1E4664',
+   body:'A report front-loads: headline, most important thing, facts, description, what to do. A story holds back: hook, building detail, a turn, the ending, then what you understand now. A report gives you the ending first because it wants you to know. A story saves it because it wants you to feel.'},
+  {n:'CHOICE 3', name:'Senses', q:'Which of the five are you using?', c:'#A6330F',
+   body:'Almost everyone writes only what they saw. Sound, smell, touch and taste are where writing stops being a list of events and starts putting the reader in the room. Smell is the most closely wired to memory, so it usually does the most work.'}
+];
+const choiceGrid = document.getElementById('choiceGrid');
+choices.forEach(c=>{
+  const b = document.createElement('button');
+  b.className = 'choice';
+  b.style.background = c.c;
+  b.setAttribute('aria-expanded','false');
+  b.innerHTML = '<div class="cnum">' + c.n + '</div><div class="cname">' + c.name + '</div><div class="cq">' + c.q + '</div>'
+              + '<div class="cbody">' + c.body + '</div><div class="chint">Tap to check ↻</div>';
+  b.onclick = ()=>{
+    b.classList.toggle('open');
+    b.setAttribute('aria-expanded', b.classList.contains('open') ? 'true' : 'false');
+  };
+  choiceGrid.appendChild(b);
+});
+
+/* ---------------- practice ---------------- */
+const groups = [
+  {tag:'CLAIM', c:'#005F65', task:'Is this a fact or an opinion, and what gives it away?', items:[
+    {q:'"The ferry was delayed by two hours and forty minutes."',
+     a:'<b>Fact.</b> A precise length of time. Anyone at the port could confirm or correct it.'},
+    {q:'"Everyone knows the new timetable is a disaster."',
+     a:'<b>Opinion, disguised as a fact.</b> "Everyone knows" is doing the disguising, and "disaster" is a judgement. Nobody has checked what everyone knows.'},
+    {q:'"Only nine of the twenty-four people who signed up actually came."',
+     a:'<b>Fact, but a pointed one.</b> Both numbers are checkable. Choosing to give the two numbers together is a decision that makes a point, which is bias by selection rather than by lying.'}
+  ]},
+  {tag:'ORDER', c:'#1E4664', task:'Report shape or story shape, and how can you tell?', items:[
+    {q:'"Three hundred trees were planted along the coast road on Sunday by volunteers from four villages."',
+     a:'<b>Report.</b> The whole story in the first sentence. If you stopped reading right there you would still know what happened.'},
+    {q:'"My father brought a spade home on the Friday and would not tell anyone why."',
+     a:'<b>Story.</b> One vivid moment with the explanation deliberately withheld, so you have to keep reading.'},
+    {q:'"Donations can be left at the village office until the end of the month."',
+     a:'<b>Report.</b> This is the final move of the report shape: telling the reader what they should do about it.'}
+  ]},
+  {tag:'SENSES', c:'#A6330F', task:'Which sense is doing the work here?', items:[
+    {q:'"The bread was still warm enough to burn my fingers through the paper."',
+     a:'<b>Touch.</b> Not what it looked like, what it did to you. That version is almost always stronger.'},
+    {q:'"You could smell the rain about a minute before it arrived."',
+     a:'<b>Smell,</b> and a very good one. It gives you the place, the weather and a sense of time all in one short sentence.'},
+    {q:'"It was a lovely afternoon and the view was beautiful."',
+     a:'<b>This is the trap.</b> It sounds like sight but shows you nothing at all. Ask yourself what you can actually picture. The answer is nothing. "Lovely" and "beautiful" are doing no work.'}
+  ]}
+];
+const practiceWrap = document.getElementById('practiceWrap');
+groups.forEach(g=>{
+  const head = document.createElement('div');
+  head.className = 'grouphead';
+  head.innerHTML = '<span class="gtag" style="background:' + g.c + ';">' + g.tag + '</span><span class="gt">' + g.task + '</span>';
+  practiceWrap.appendChild(head);
+  g.items.forEach(it=>{
+    const el = document.createElement('div');
+    el.className = 'fix';
+    el.tabIndex = 0;
+    el.setAttribute('role','button');
+    el.innerHTML = '<div class="fix-row"><div class="fix-weak">' + it.q + '</div>'
+      + '<button class="btn btn-ghost btn-sm" tabindex="-1">Check</button></div>'
+      + '<div class="fix-reveal"><div class="fix-strong">' + it.a + '</div></div>';
+    el.onclick = ()=> el.classList.toggle('open');
+    el.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); el.click(); } });
+    practiceWrap.appendChild(el);
+  });
+});
+
+/* ---------------- quiz ---------------- */
+const quiz = [
+  {q:'Which one of these is a fact?',
+   opts:['The queue was ridiculously long','Forty-one people were waiting when we arrived','Nobody should have to wait that long'],
+   a:1, fb:'A number anyone could check. "Ridiculously long" and "nobody should have to" are both judgements.'},
+  {q:'A writer tells you only true things, but leaves out the parts that would change your mind. What is that called?',
+   opts:['Lying','Bias by selection','A factual error'],
+   a:1, fb:'Bias by selection. Every single sentence can be true and the overall impression can still be unfair.'},
+  {q:'Which of these is the clearest warning sign that an opinion is being disguised?',
+   opts:['"Clearly"','"On Tuesday"','"Sixteen"'],
+   a:0, fb:'"Clearly", like "obviously" and "of course", asks you to agree without giving you a reason.'},
+  {q:'In Account B of the beach clean-up, the writer quoted Pak Yusuf exactly as Account A did, then added five words. What did that achieve?',
+   opts:['It corrected a factual mistake','It undermined the quotation without contradicting it','It made the account longer'],
+   a:1, fb:'"But he says that every year" destroys the compliment while disputing nothing at all. That is loaded wording working at full strength.'},
+  {q:'You want your reader to know what happened even if they stop after one line. Which shape?',
+   opts:['Report','Story','Either works equally well'],
+   a:0, fb:'The report shape front-loads exactly for this reason.'},
+  {q:'Why does the story shape save the ending?',
+   opts:['To hit a word count','Because it wants you to feel it, not just know it','Because life writing is not allowed to have headlines'],
+   a:1, fb:'A report gives you the ending first because it wants you to know. A story saves it because it wants you to feel.'},
+  {q:'Your whole paragraph describes what you could see. What is the quickest way to improve it?',
+   opts:['Add more adjectives to the things you saw','Add one sound and one smell','Make every sentence longer'],
+   a:1, fb:'Bringing in a different sense does far more than piling extra adjectives onto the same one.'},
+  {q:'Which of these details is doing the most work?',
+   opts:['"The market was very busy and really colourful"','"There were forty-one stalls and the one at the end sold nothing but salt"','"It was an amazing market that I will never forget"'],
+   a:1, fb:'An exact number plus one strange, specific detail. The other two use vague words and tell you nothing you could picture.'}
+];
+
+let score = 0, answered = 0;
+const quizList = document.getElementById('quizList');
+const trackFill = document.getElementById('trackFill');
+const scoreText = document.getElementById('scoreText');
+const resultEl  = document.getElementById('result');
+
+quiz.forEach((item,i)=>{
+  const el = document.createElement('div');
+  el.className = 'qcard';
+  const opts = item.opts.map((o,j)=>'<button class="qopt" data-j="' + j + '">' + o + '</button>').join('');
+  el.innerHTML = '<div class="qnum">QUESTION ' + (i+1) + ' OF ' + quiz.length + '</div>'
+    + '<div class="qtext">' + item.q + '</div>'
+    + '<div class="qopts">' + opts + '</div>'
+    + '<div class="qfb"></div>';
+  const fb = el.querySelector('.qfb');
+  el.querySelectorAll('.qopt').forEach(btn=>{
+    btn.onclick = ()=>{
+      if(el.classList.contains('done')) return;
+      el.classList.add('done');
+      const chosen = Number(btn.dataset.j);
+      const ok = chosen === item.a;
+      if(ok) score++;
+      answered++;
+      el.querySelectorAll('.qopt').forEach((b,j)=>{
+        if(j === item.a) b.classList.add('right');
+        else if(j === chosen) b.classList.add('wrong');
+        b.disabled = true;
+      });
+      fb.innerHTML = (ok ? '✓ Correct. ' : '✗ Not this time. ') + item.fb;
+      updateScore();
+    };
+  });
+  quizList.appendChild(el);
+});
+
+function updateScore(){
+  scoreText.textContent = score + ' / ' + quiz.length;
+  trackFill.style.width = Math.round((answered / quiz.length) * 100) + '%';
+  if(answered === quiz.length){
+    let h, p;
+    if(score === 8){ h = 'Full marks, all eight.'; p = 'You have got this properly. Go straight to the checklist and work on your own story.'; }
+    else if(score >= 6){ h = score + ' out of 8. Strong.'; p = 'Scroll back and reread the feedback on anything you missed, then move on to the checklist.'; }
+    else if(score >= 4){ h = score + ' out of 8.'; p = 'Worth going back over section 2 before you work on your own writing, especially the difference between a fact and an opinion.'; }
+    else { h = score + ' out of 8.'; p = 'Go back to section 2 and reread all three choices, then reload the page and try these again. Bring any you still disagree with to our next lesson.'; }
+    resultEl.innerHTML = '<h3>' + h + '</h3><p>' + p + '</p>';
+    resultEl.classList.add('show');
+  }
+}
+
+/* ---------------- checklist ---------------- */
+const checks = [
+  {tag:'CLAIM', c:'#005F65', t:'I have marked every sentence in my story <b>F</b> for fact or <b>O</b> for opinion.'},
+  {tag:'CLAIM', c:'#005F65', t:'I have searched for <i>obviously</i>, <i>clearly</i>, <i>of course</i> and <i>everyone knows</i>, and removed any I found.'},
+  {tag:'CLAIM', c:'#005F65', t:'I have asked myself what true thing I left out, and whether leaving it out was fair.'},
+  {tag:'ORDER', c:'#1E4664', t:'I know whether I used the report shape or the story shape, and I chose it on purpose.'},
+  {tag:'ORDER', c:'#1E4664', t:'I have tried reading my piece starting from my most surprising sentence, to see whether it works better that way.'},
+  {tag:'SENSES', c:'#A6330F', t:'I have counted how many of my details are things I could see.'},
+  {tag:'SENSES', c:'#A6330F', t:'I have added one <b>sound</b> somewhere it belongs.'},
+  {tag:'SENSES', c:'#A6330F', t:'I have added one <b>smell</b> somewhere it belongs.'}
+];
+const checkList = document.getElementById('checkList');
+const STORE = 'sbs-l3-checks';
+
+function loadChecks(){
+  try{ return JSON.parse(localStorage.getItem(STORE) || '[]'); }
+  catch(e){ return []; }
+}
+function saveChecks(arr){
+  try{ localStorage.setItem(STORE, JSON.stringify(arr)); }
+  catch(e){ /* storage unavailable, ticks just will not persist */ }
+}
+let ticked = loadChecks();
+
+checks.forEach((c,i)=>{
+  const row = document.createElement('div');
+  row.className = 'check-item';
+  const id = 'chk' + i;
+  const on = ticked.includes(i);
+  if(on) row.classList.add('ticked');
+  row.innerHTML = '<input type="checkbox" id="' + id + '"' + (on ? ' checked' : '') + '>'
+    + '<label for="' + id + '"><span class="ctag" style="background:' + c.c + ';">' + c.tag + '</span>' + c.t + '</label>';
+  const box = row.querySelector('input');
+  box.addEventListener('change', ()=>{
+    row.classList.toggle('ticked', box.checked);
+    ticked = box.checked ? Array.from(new Set(ticked.concat(i))) : ticked.filter(x=>x!==i);
+    saveChecks(ticked);
+  });
+  checkList.appendChild(row);
+});
+
+document.getElementById('resetChecks').onclick = ()=>{
+  ticked = [];
+  saveChecks(ticked);
+  checkList.querySelectorAll('input').forEach(b=>{ b.checked = false; });
+  checkList.querySelectorAll('.check-item').forEach(r=>r.classList.remove('ticked'));
+};
+</script>

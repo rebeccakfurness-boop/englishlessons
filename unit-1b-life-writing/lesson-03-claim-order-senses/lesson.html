@@ -1,0 +1,745 @@
+<title>Claim, Order, Senses</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&family=Nunito+Sans:wght@400;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap');
+
+:root{
+  --bg:#FDF7EE; --ink:#46280A; --ink-soft:#7A6450;
+  --teal:#007C83; --teal-dark:#005F65; --teal-light:#D7EDEC;
+  --coral:#D1481F; --coral-dark:#A6330F; --coral-light:#FBE3D8;
+  --gold:#FEA74A; --gold-dark:#A65F06; --gold-light:#FFF0DC;
+  --plum:#2C5F8A; --plum-dark:#1E4664; --plum-light:#E0EBF4;
+  --card:#FFFFFF; --line:#EADFCD;
+  --shadow: 0 8px 24px rgba(70,40,10,0.09);
+  --scrim: rgba(253,247,238,0.93);
+  --surface-dark:#2A1B0C;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#16110B; --ink:#F6EEE2; --ink-soft:#BBA890;
+    --teal:#2FA7AE; --teal-dark:#8FE3E6; --teal-light:#0E2E30;
+    --coral:#E2572B; --coral-dark:#FF9E77; --coral-light:#3A1F12;
+    --gold:#FEA74A; --gold-dark:#FFD09B; --gold-light:#3B2711;
+    --plum:#4E86B8; --plum-dark:#9CC6E6; --plum-light:#182B3A;
+    --card:#211A12; --line:#382B1D;
+    --shadow: 0 8px 24px rgba(0,0,0,0.45);
+    --scrim: rgba(22,17,11,0.9);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#16110B; --ink:#F6EEE2; --ink-soft:#BBA890;
+  --teal:#2FA7AE; --teal-dark:#8FE3E6; --teal-light:#0E2E30;
+  --coral:#E2572B; --coral-dark:#FF9E77; --coral-light:#3A1F12;
+  --gold:#FEA74A; --gold-dark:#FFD09B; --gold-light:#3B2711;
+  --plum:#4E86B8; --plum-dark:#9CC6E6; --plum-light:#182B3A;
+  --card:#211A12; --line:#382B1D;
+  --shadow: 0 8px 24px rgba(0,0,0,0.45);
+  --scrim: rgba(22,17,11,0.9);
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{background:var(--bg); color:var(--ink); font-family:'Nunito Sans','Segoe UI',system-ui,sans-serif; min-height:100vh; overflow-x:hidden;}
+h1,h2,h3{font-family:'Nunito','Nunito Sans',system-ui,sans-serif;}
+.mono{font-family:'IBM Plex Mono',monospace;}
+
+.app{max-width:920px;margin:0 auto;padding:0 20px 40px;}
+.topbar{position:sticky; top:0; z-index:50; background:var(--scrim); backdrop-filter:blur(8px); border-bottom:1px solid var(--line); padding:14px 20px 10px;}
+.topbar-inner{max-width:920px;margin:0 auto;}
+.brandrow{display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;}
+.brand{display:flex; align-items:center; gap:8px;}
+.brand-mark{width:26px;height:26px;border-radius:8px; background:linear-gradient(135deg,var(--teal),var(--gold)); flex-shrink:0;}
+.brand-text{font-size:12px; letter-spacing:0.06em; text-transform:uppercase; color:var(--ink-soft); font-weight:600;}
+.reslinks{display:flex; gap:6px; justify-content:center; flex-wrap:wrap; margin-top:10px;}
+.reslinks a{padding:6px 12px; border-radius:999px; background:var(--card); border:1px solid var(--line); color:var(--ink-soft); font-size:11.5px; font-weight:700; text-decoration:none; white-space:nowrap;}
+.reslinks a:hover{border-color:var(--teal); color:var(--teal-dark);}
+@media(max-width:640px){.reslinks{display:none;}}
+.dots{display:flex; gap:6px; justify-content:center; flex-wrap:wrap;}
+.dot{width:20px; height:5px; border-radius:3px; background:var(--line); border:none; cursor:pointer; padding:0; transition:all .25s ease;}
+.dot.active{background:var(--teal); width:32px;}
+.dot.done{background:var(--gold);}
+
+.stage{padding-top:28px; min-height:62vh;}
+.step{display:none; animation:fadein .35s ease;}
+.step.active{display:block;}
+@keyframes fadein{from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:translateY(0);}}
+
+.kicker{display:inline-flex; align-items:center; gap:8px; font-size:12px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--teal-dark); background:var(--teal-light); padding:5px 12px; border-radius:20px; margin-bottom:14px;}
+h1.title{font-size:clamp(28px,5vw,42px); line-height:1.08; margin:0 0 12px; letter-spacing:-0.01em; text-wrap:balance;}
+p.lede{font-size:17px; color:var(--ink-soft); max-width:62ch; line-height:1.55; margin:0 0 24px;}
+
+.grid{display:grid; gap:14px;}
+.grid-2{grid-template-columns:1fr 1fr;}
+.grid-3{grid-template-columns:repeat(3,1fr);}
+@media(max-width:640px){.grid-2,.grid-3{grid-template-columns:1fr;}}
+
+.card{background:var(--card); border:1px solid var(--line); border-radius:16px; padding:18px 20px; box-shadow:var(--shadow);}
+
+/* three choices spine */
+.choices{display:grid; grid-template-columns:repeat(3,1fr); gap:12px;}
+@media(max-width:640px){.choices{grid-template-columns:1fr;}}
+.choice{border-radius:16px; padding:17px 19px; color:#fff;}
+.choice .cnum{font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.1em; color:rgba(255,255,255,0.6); margin-bottom:5px;}
+.choice .cname{font-family:'Nunito',sans-serif; font-weight:800; font-size:19px; margin-bottom:5px;}
+.choice p{margin:0; font-size:13px; line-height:1.5; color:rgba(255,255,255,0.93);}
+
+.flip{perspective:1200px; height:186px; cursor:pointer;}
+.flip-inner{position:relative; width:100%; height:100%; transition:transform .5s cubic-bezier(.2,.8,.2,1); transform-style:preserve-3d;}
+.flip.flipped .flip-inner{transform:rotateY(180deg);}
+.flip-face{position:absolute; inset:0; backface-visibility:hidden; border-radius:16px; padding:16px 18px; display:flex; flex-direction:column; justify-content:center; border:1px solid var(--line); box-shadow:var(--shadow);}
+.flip-front{background:var(--card);}
+.flip-back{transform:rotateY(180deg); color:#fff;}
+.flip-front .flip-term{font-family:'Nunito','Nunito Sans',sans-serif; font-weight:700; font-size:17px; margin-bottom:4px; line-height:1.35;}
+.flip-front .flip-sub{font-size:12.5px; color:var(--ink-soft); line-height:1.45;}
+.flip-front .flip-hint{font-size:12px; color:var(--ink-soft); margin-top:8px;}
+.flip-back p{margin:0; font-size:13px; line-height:1.5;}
+
+.btn{font-family:'Nunito Sans',sans-serif; font-weight:600; font-size:14px; border:none; border-radius:10px; padding:10px 18px; cursor:pointer; transition:transform .15s ease, box-shadow .15s ease;}
+.btn:hover{transform:translateY(-1px);}
+.btn-primary{background:var(--teal); color:#fff;}
+.btn-ghost{background:transparent; color:var(--ink-soft); border:1px solid var(--line);}
+.btn-ghost:hover{border-color:var(--teal);}
+.btn:disabled{opacity:0.35; cursor:not-allowed; transform:none; box-shadow:none;}
+.btn-sm{padding:7px 12px; font-size:12.5px; border-radius:8px;}
+[tabindex]:focus-visible, button:focus-visible, a:focus-visible{outline:2px solid var(--teal); outline-offset:2px; border-radius:8px;}
+
+/* definition pair */
+.vs{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+@media(max-width:640px){.vs{grid-template-columns:1fr;}}
+.vs-box{border-radius:16px; padding:18px 20px; box-shadow:var(--shadow);}
+.vs-box .vlbl{font-family:'Nunito',sans-serif; font-weight:800; font-size:11.5px; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:8px;}
+.vs-box h3{margin:0 0 8px; font-size:17px;}
+.vs-box p{margin:0 0 9px; font-size:13.5px; line-height:1.55;}
+.vs-box .eg{font-family:'IBM Plex Mono',monospace; font-size:12.5px; line-height:1.55; padding:9px 11px; border-radius:9px; background:rgba(255,255,255,0.55); display:block;}
+.vs-box.a{background:var(--teal-light); border:1px solid var(--teal); color:var(--teal-dark);}
+.vs-box.a .vlbl{color:var(--teal-dark);}
+.vs-box.b{background:var(--gold-light); border:1px solid var(--gold); color:var(--gold-dark);}
+.vs-box.b .vlbl{color:var(--gold-dark);}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]) .vs-box .eg{background:rgba(0,0,0,0.3);}
+}
+:root[data-theme="dark"] .vs-box .eg{background:rgba(0,0,0,0.3);}
+
+/* sort rows */
+.sort-item{display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex-wrap:wrap; background:var(--card); border:1px solid var(--line); border-radius:14px; padding:14px 16px; margin-bottom:10px; box-shadow:var(--shadow);}
+.sort-name{font-weight:600; font-size:14px; max-width:420px; font-family:'IBM Plex Mono',monospace; line-height:1.5;}
+.sort-options{display:flex; gap:6px; flex-wrap:wrap;}
+.opt-btn{font-size:12px; font-weight:700; border-radius:8px; border:1.5px solid var(--line); background:var(--card); padding:6px 11px; cursor:pointer; color:var(--ink-soft);}
+.opt-btn.correct{background:var(--teal); border-color:var(--teal); color:#fff;}
+.opt-btn.wrong{background:var(--coral-light); border-color:var(--coral); color:var(--coral-dark);}
+.sort-reason{font-size:12.5px; color:var(--ink-soft); margin-top:8px; display:none; width:100%; line-height:1.55;}
+.sort-item.answered .sort-reason{display:block;}
+
+/* two-account viewer */
+.toggle-row{display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap;}
+.tgl{font-family:'Nunito Sans',sans-serif; font-weight:700; font-size:13px; border:1.5px solid var(--line); background:var(--card); color:var(--ink-soft); border-radius:10px; padding:8px 15px; cursor:pointer;}
+.tgl.on{background:var(--surface-dark); border-color:var(--surface-dark); color:#fff;}
+.acctbox{background:var(--card); border:1px solid var(--line); border-left:4px solid var(--teal); border-radius:0 14px 14px 0; padding:18px 22px; font-size:15px; line-height:2.1; box-shadow:var(--shadow); max-width:64ch;}
+.acctbox.b{border-left-color:var(--gold);}
+.acctbox.shared{border-left-color:var(--plum);}
+.seg{border-radius:4px; padding:1px 2px;}
+.seg.clickable{cursor:pointer; border-bottom:2px solid;}
+.seg.clickable:hover{background:var(--gold-light);}
+.seg.loaded{border-color:var(--coral); background:rgba(209,72,31,0.17);}
+.seg.opinion{border-color:var(--gold); background:rgba(254,167,74,0.28);}
+.seg.factual{border-color:var(--teal); background:rgba(0,124,131,0.16);}
+.seg.sel{outline:2px solid var(--ink); outline-offset:1px;}
+.annot{margin-top:16px; background:var(--surface-dark); color:#fff; border-radius:16px; padding:20px 22px; min-height:92px;}
+.annot .ph{color:rgba(255,255,255,0.5); font-style:italic; font-size:14px;}
+.annot .atag{display:inline-block; font-family:'Nunito',sans-serif; font-weight:800; font-size:11px; letter-spacing:0.07em; text-transform:uppercase; padding:4px 11px; border-radius:999px; margin-bottom:11px; color:#2A1B0C;}
+.annot .awhy{margin:0; font-size:14px; line-height:1.6; color:rgba(255,255,255,0.93);}
+.missing{margin-top:14px; border-radius:14px; padding:15px 18px; background:var(--coral-light); border:1px solid var(--coral);}
+.missing .mlbl{font-family:'Nunito',sans-serif; font-weight:800; font-size:11px; letter-spacing:0.06em; text-transform:uppercase; color:var(--coral-dark); margin-bottom:7px;}
+.missing ul{margin:0; padding-left:18px; font-size:13.5px; line-height:1.7; color:var(--coral-dark);}
+
+/* shape comparison */
+.shape{border-radius:16px; padding:18px 20px; box-shadow:var(--shadow); border:1px solid var(--line); background:var(--card);}
+.shape h3{margin:0 0 3px; font-size:17px;}
+.shape .swho{font-size:12.5px; color:var(--ink-soft); margin-bottom:12px;}
+.shape ol{margin:0; padding-left:0; list-style:none; counter-reset:s;}
+.shape li{counter-increment:s; display:flex; gap:11px; align-items:flex-start; font-size:13.5px; line-height:1.5; margin-bottom:9px;}
+.shape li:last-child{margin-bottom:0;}
+.shape li::before{content:counter(s); flex-shrink:0; width:21px; height:21px; border-radius:50%; color:#fff; font-size:11px; font-weight:800; display:flex; align-items:center; justify-content:center; margin-top:1px; font-family:'Nunito',sans-serif;}
+.shape.report li::before{background:var(--plum);}
+.shape.story li::before{background:var(--coral);}
+
+/* senses */
+.sensegrid{display:grid; grid-template-columns:repeat(5,1fr); gap:10px;}
+@media(max-width:760px){.sensegrid{grid-template-columns:repeat(2,1fr);}}
+.sense{border-radius:14px; padding:14px 15px; border:1px solid var(--line); background:var(--card); box-shadow:var(--shadow); cursor:pointer; text-align:left; font-family:inherit;}
+.sense .sicon{font-size:22px; margin-bottom:5px;}
+.sense .sname{font-family:'Nunito',sans-serif; font-weight:800; font-size:14px; color:var(--ink);}
+.sense .seg2{font-family:'IBM Plex Mono',monospace; font-size:12px; line-height:1.5; color:var(--teal-dark); margin-top:8px; display:none;}
+.sense.open .seg2{display:block;}
+.sense .shint{font-size:11px; color:var(--ink-soft); margin-top:7px;}
+.sense.open .shint{display:none;}
+
+.reveal{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:14px 16px; margin-bottom:10px; box-shadow:var(--shadow); cursor:pointer;}
+.reveal-row{display:flex; justify-content:space-between; align-items:flex-start; gap:12px; flex-wrap:wrap;}
+.reveal-text{font-family:'IBM Plex Mono',monospace; font-size:13.5px; line-height:1.55; flex:1;}
+.reveal-ans{display:none; margin-top:10px; font-size:13.5px; line-height:1.55; color:var(--teal-dark); background:var(--teal-light); padding:10px 12px; border-radius:10px;}
+.reveal.open .reveal-ans{display:block;}
+
+/* prompt cards */
+.prompt-card{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:16px 18px; margin-bottom:12px; box-shadow:var(--shadow); border-left:4px solid var(--teal);}
+.prompt-card .plbl{font-family:'Nunito',sans-serif; font-weight:800; font-size:13px; margin-bottom:6px;}
+.prompt-card p{margin:0; font-size:14px; color:var(--ink); line-height:1.55;}
+.prompt-card.c1{border-left-color:var(--teal);} .prompt-card.c1 .plbl{color:var(--teal-dark);}
+.prompt-card.c2{border-left-color:var(--plum);} .prompt-card.c2 .plbl{color:var(--plum-dark);}
+.prompt-card.c3{border-left-color:var(--coral);} .prompt-card.c3 .plbl{color:var(--coral-dark);}
+
+/* quiz */
+.quiz-card{background:var(--card); border:1px solid var(--line); border-radius:16px; padding:18px; margin-bottom:14px; box-shadow:var(--shadow);}
+.quiz-q{font-weight:600; font-size:14.5px; margin-bottom:10px; line-height:1.5;}
+.quiz-opts{display:flex; gap:8px; flex-wrap:wrap;}
+.quiz-fb{font-size:13px; margin-top:10px; display:none; padding:8px 10px; border-radius:8px; line-height:1.55;}
+.quiz-fb.correct{background:var(--teal-light); color:var(--teal-dark); display:block;}
+.quiz-fb.wrong{background:var(--coral-light); color:var(--coral-dark); display:block;}
+
+.vocab-card{background:var(--card); border-left:4px solid var(--teal); border-radius:10px; padding:12px 16px; margin-bottom:10px; box-shadow:var(--shadow); font-size:14px; line-height:1.55;}
+.vocab-card b{font-family:'Nunito',sans-serif;}
+.hw-list{list-style:none; padding:0; margin:0;}
+.hw-list li{padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.15); font-size:14.5px; display:flex; gap:10px; align-items:center;}
+.hw-list li:last-child{border-bottom:none;}
+.hw-box{width:16px; height:16px; border-radius:4px; border:2px solid var(--gold); flex-shrink:0;}
+
+.navbar{position:sticky; bottom:0; background:var(--scrim); backdrop-filter:blur(8px); border-top:1px solid var(--line); padding:14px 20px; display:flex; justify-content:space-between; align-items:center; margin-top:26px; border-radius:16px 16px 0 0;}
+.step-count{font-size:12px; color:var(--ink-soft); font-family:'IBM Plex Mono',monospace;}
+.note{font-size:12.5px; color:var(--ink-soft); font-style:italic; margin-top:10px; line-height:1.55;}
+.objref{font-size:11px; color:var(--ink-soft); font-family:'IBM Plex Mono',monospace; background:var(--card); border:1px solid var(--line); padding:3px 9px; border-radius:999px; display:inline-block; margin-bottom:10px;}
+
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; scroll-behavior:auto !important;}
+}
+</style>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brandrow">
+      <div class="brand">
+        <div class="brand-mark"></div>
+        <div class="brand-text">Selong Bay School · Cambridge Lower Secondary English</div>
+      </div>
+      <div class="step-count mono"><span id="stepNow">1</span> / <span id="stepTotal">11</span></div>
+    </div>
+    <div class="dots" id="dots"></div>
+    <div class="reslinks">
+      <a href="https://claude.ai/code/artifact/1e5d24b4-5ca1-4148-b0ea-c1455b9f30dd" target="_blank" rel="noopener">↩ Lesson 2</a>
+      <a href="https://claude.ai/code/artifact/af4b817a-8b89-4c07-861e-b1602a2d8961" target="_blank" rel="noopener">🔬 Review page</a>
+    </div>
+  </div>
+</div>
+
+<div class="app">
+<div class="stage">
+
+  <!-- 0 -->
+  <section class="step active" data-step="0">
+    <span class="objref">Ref: 8Ri.03 · 8Ri.05 · 8Ws · 8Wv</span>
+    <span class="kicker">Lesson 3 of Unit 1B</span>
+    <h1 class="title">Claim, Order, Senses</h1>
+    <p class="lede">In the last two lessons you learned to spot life writing: first person, looking back, real people and places, personal reflection. Today the question changes. Everything in a piece of life writing can be completely true, and the writer still gets to make three choices that change how you feel about it.</p>
+
+    <div class="choices">
+      <div class="choice" style="background:#005F65;">
+        <div class="cnum">CHOICE 1</div>
+        <div class="cname">Claim</div>
+        <p>What you state, and whether it is a fact anyone could check or your own opinion.</p>
+      </div>
+      <div class="choice" style="background:#1E4664;">
+        <div class="cnum">CHOICE 2</div>
+        <div class="cname">Order</div>
+        <p>What you put first, second and last. The same events in a different order feel different.</p>
+      </div>
+      <div class="choice" style="background:#A6330F;">
+        <div class="cnum">CHOICE 3</div>
+        <div class="cname">Senses</div>
+        <p>Which details you let the reader see, hear, smell, taste and touch.</p>
+      </div>
+    </div>
+
+    <div class="card" style="background:var(--gold-light); border:none; margin-top:16px;">
+      <p style="margin:0; font-size:14.5px; color:var(--gold-dark); line-height:1.6;"><b>The big idea.</b> Two people can write about the same real morning, both tell the truth, and leave you with completely opposite impressions. By the end of today you will be able to see exactly how that happens, and do it on purpose in your own writing.</p>
+    </div>
+  </section>
+
+  <!-- 1 -->
+  <section class="step" data-step="1">
+    <span class="kicker">Warm-up</span>
+    <h1 class="title">What You Already Know</h1>
+    <p class="lede">The four conventions from Lessons 1 and 2, plus one question we are going to answer today. Say your answer out loud before you tap.</p>
+    <div class="grid grid-2" id="warmupFlips"></div>
+  </section>
+
+  <!-- 2 -->
+  <section class="step" data-step="2">
+    <span class="kicker">Choice 1 · Claim</span>
+    <h1 class="title">Fact or Opinion?</h1>
+    <p class="lede">Both belong in life writing. A piece made only of facts reads like a police report, and a piece made only of opinions is just someone shouting. The skill is knowing which one you are writing.</p>
+
+    <div class="vs">
+      <div class="vs-box a">
+        <div class="vlbl">Fact</div>
+        <h3>Someone could check it</h3>
+        <p>It can be proved right or wrong. It does not matter whether it is interesting, only whether it is checkable.</p>
+        <span class="eg">"The bus left at 6:15."<br>"Eleven houses burned."</span>
+      </div>
+      <div class="vs-box b">
+        <div class="vlbl">Opinion</div>
+        <h3>It is a judgement</h3>
+        <p>It might be completely reasonable, and you might agree with it, but nobody can prove it. It belongs to the writer.</p>
+        <span class="eg">"The journey was far too long."<br>"Nobody did enough to help."</span>
+      </div>
+    </div>
+
+    <div class="card" style="background:var(--coral-light); border:none; margin-top:16px;">
+      <p style="margin:0; font-size:14px; color:var(--coral-dark); line-height:1.6;"><b>Watch for this.</b> Words like <i>obviously</i>, <i>clearly</i>, <i>everyone knows</i> and <i>of course</i> are usually a sign that an opinion is being dressed up to look like a fact. That is where bias starts.</p>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section class="step" data-step="3">
+    <span class="kicker">Practice · Claim</span>
+    <h1 class="title">Sort These Eight</h1>
+    <p class="lede">All eight come from real pieces of life writing. Decide whether each one is something a reader could check, or a judgement belonging to the writer.</p>
+    <div id="factList"></div>
+  </section>
+
+  <!-- 4 -->
+  <section class="step" data-step="4">
+    <span class="kicker">Choice 1 · The centrepiece</span>
+    <h1 class="title">One Morning, Two True Accounts</h1>
+    <p class="lede">Two students wrote about the same beach clean-up. Neither of them lies. They even agree on the numbers. Switch between them, then tap any highlighted stretch to see what each writer is doing.</p>
+
+    <div class="toggle-row">
+      <button class="tgl on" data-view="a">Account A</button>
+      <button class="tgl" data-view="b">Account B</button>
+      <button class="tgl" data-view="shared">What they agree on</button>
+    </div>
+
+    <div class="acctbox" id="acctBox"></div>
+    <div class="annot" id="annot"><span class="ph">Tap any highlighted stretch above to see what the writer is doing there.</span></div>
+    <div id="missingWrap"></div>
+    <p class="note">Both accounts written for this lesson. Notice that the disagreement is not about the facts. It is about which facts got left out, and which words were chosen.</p>
+  </section>
+
+  <!-- 5 -->
+  <section class="step" data-step="5">
+    <span class="kicker">Choice 2 · Order</span>
+    <h1 class="title">Two Shapes for the Same Events</h1>
+    <p class="lede">You have five true things to tell someone. The order you choose decides what kind of piece you are writing. These are the two shapes you need.</p>
+
+    <div class="grid grid-2">
+      <div class="shape report">
+        <h3>The report shape</h3>
+        <div class="swho">News articles, reports, appeals. Front-loads everything.</div>
+        <ol>
+          <li>A headline that tells you the story in one line</li>
+          <li>The single most important thing, straight away</li>
+          <li>The supporting facts, in order of importance</li>
+          <li>Description and background</li>
+          <li>What the reader should do about it</li>
+        </ol>
+      </div>
+      <div class="shape story">
+        <h3>The story shape</h3>
+        <div class="swho">Life writing, memoir, travel writing. Holds things back.</div>
+        <ol>
+          <li>A hook: one vivid moment, no explanation yet</li>
+          <li>Detail building up, one piece at a time</li>
+          <li>The turn: something shifts or surprises you</li>
+          <li>What happened in the end</li>
+          <li>What you understand now, looking back</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="card" style="background:var(--teal-light); border:none; margin-top:16px;">
+      <p style="margin:0; font-size:14px; color:var(--teal-dark); line-height:1.6;"><b>The difference in one line.</b> A report gives you the ending first, because it wants you to know. A story saves the ending, because it wants you to feel.</p>
+    </div>
+  </section>
+
+  <!-- 6 -->
+  <section class="step" data-step="6">
+    <span class="kicker">Practice · Order</span>
+    <h1 class="title">Which Shape Is This Opening From?</h1>
+    <p class="lede">Six opening lines. Decide whether each one belongs to a report or to a story.</p>
+    <div id="shapeList"></div>
+  </section>
+
+  <!-- 7 -->
+  <section class="step" data-step="7">
+    <span class="kicker">Choice 3 · Senses</span>
+    <h1 class="title">You Have Five, and You Use One</h1>
+    <p class="lede">Almost every student writes only what they saw. The other four senses are where writing stops being a list of events and starts putting the reader in the room. Tap each sense for an example.</p>
+    <div class="sensegrid" id="senseGrid"></div>
+    <div class="card" style="background:var(--gold-light); border:none; margin-top:18px;">
+      <p style="margin:0; font-size:14px; color:var(--gold-dark); line-height:1.6;"><b>Smell is the strongest one.</b> Of all five senses, smell is the most closely wired to memory. If you can remember what a place smelled like, that detail will almost always do more work than what it looked like.</p>
+    </div>
+  </section>
+
+  <!-- 8 -->
+  <section class="step" data-step="8">
+    <span class="kicker">Practice · Senses</span>
+    <h1 class="title">Which Sense Is Doing the Work?</h1>
+    <p class="lede">Eight details from life writing. Name the sense before you tap, and notice how few of them are sight.</p>
+    <div id="senseList"></div>
+  </section>
+
+  <!-- 9 -->
+  <section class="step" data-step="9">
+    <span class="kicker">Now your turn</span>
+    <h1 class="title">Three Questions for Your Own Writing</h1>
+    <p class="lede">Get out the true story you wrote for homework. We will go through all three choices together, and you mark your changes onto Worksheet 3 as we go.</p>
+    <div class="prompt-card c1"><div class="plbl">CLAIM</div><p>Go through your piece and mark every sentence F for fact or O for opinion. Are your opinions clearly yours, or have you slipped in an <i>obviously</i> or a <i>clearly</i> that makes a judgement look like a fact?</p></div>
+    <div class="prompt-card c2"><div class="plbl">ORDER</div><p>Which shape did you actually use, report or story? Was that a decision or an accident? Now try moving your most surprising moment to the very start and read it again.</p></div>
+    <div class="prompt-card c3"><div class="plbl">SENSES</div><p>Count how many of your details are sight. Then find one place to add a sound, and one place to add a smell. You do not need more sentences, just better ones.</p></div>
+  </section>
+
+  <!-- 10 -->
+  <section class="step" data-step="10">
+    <span class="kicker">Quick check</span>
+    <h1 class="title">Seven Quick Questions</h1>
+    <p class="lede">Let's see what stuck from today.</p>
+    <div id="quizList"></div>
+    <div style="margin-top:28px;">
+      <h2 style="font-size:22px; margin:0 0 12px;">Today's words</h2>
+      <div id="vocabList"></div>
+    </div>
+    <div class="card" style="background:var(--surface-dark); color:#fff; border:none; margin-top:20px;">
+      <div class="kicker" style="background:rgba(255,255,255,0.12); color:var(--gold); margin-bottom:8px;">🏠 Homework: Worksheet 3</div>
+      <ul class="hw-list">
+        <li><div class="hw-box"></div>Sort ten statements into fact and opinion</li>
+        <li><div class="hw-box"></div>Find the bias in a short account, and say what was left out</li>
+        <li><div class="hw-box"></div>Rewrite one set of facts in both shapes, report and story</li>
+        <li><div class="hw-box"></div>Add four senses to a paragraph that only uses sight</li>
+      </ul>
+      <p style="margin:14px 0 0; font-size:13px; color:rgba(255,255,255,0.75);">Worksheet 3 and the review activity are both on Google Classroom.</p>
+    </div>
+    <p class="lede" style="margin-top:20px;">🎉 Good work. Next time we look at how a writer builds a voice, so a piece of life writing sounds like a real person and not like a school essay.</p>
+  </section>
+
+</div>
+
+<div class="navbar">
+  <button class="btn btn-ghost" id="prevBtn">← Back</button>
+  <button class="btn btn-primary" id="nextBtn">Next →</button>
+</div>
+</div>
+
+<script>
+const warmupData = [
+  {term:'First person', sub:'Why does "I" mean something different here than in a novel?', back:'Because the "I" is the writer themselves, remembering, not a character they invented. It is a promise that this really happened to them.', c:'#005F65'},
+  {term:'Retrospective', sub:'What does telling it from later let a writer do?', back:'It lets them add meaning that the version of themselves at the time did not have. They know how it ended, and they know what it came to mean.', c:'#1E4664'},
+  {term:'Real people and places', sub:'What is the writer promising the reader?', back:'That these people and places are not invented, and are often named. It is a promise of truth, and if the reader catches one invention they stop trusting all of it.', c:'#A6330F'},
+  {term:'Personal reflection', sub:'Why is this often the real point of the piece?', back:'Because life writing does not just report what happened. It explains what the writer now understands because of it, which is usually why they bothered writing it at all.', c:'#A65F06'},
+  {term:'Today’s question', sub:'Can a piece of writing be completely true and still be unfair?', back:'Yes, and that is exactly what today is about. A writer can tell you nothing but facts and still leave you with a false impression, just by choosing which facts to include.', c:'#2A1B0C'}
+];
+
+const factData = [
+  {name:'The bus left Praya at 6:15 in the morning.', correct:'Fact', reason:'A time and a place. Someone could check a timetable and prove this right or wrong.'},
+  {name:'The journey was far too long.', correct:'Opinion', reason:'"Too long" is a judgement. Four hours might be too long for one person and fine for another.'},
+  {name:'My grandmother was born in Mataram in 1951.', correct:'Fact', reason:'A checkable claim about a real person, with a place and a date.'},
+  {name:'My grandmother was the kindest person in our village.', correct:'Opinion', reason:'You may well agree, but there is no way to measure it. It is the writer’s judgement, and that is fine as long as the reader can tell.'},
+  {name:'The fire destroyed eleven houses.', correct:'Fact', reason:'A number. It could be confirmed or corrected by anyone who was there.'},
+  {name:'Nobody did enough to help afterwards.', correct:'Opinion', reason:'"Enough" is a judgement. This might be strongly felt and still not be checkable.'},
+  {name:'I was eight years old that summer.', correct:'Fact', reason:'A checkable statement about the writer’s own life.'},
+  {name:'It was obviously the best day of my whole life.', correct:'Opinion', reason:'A judgement, and notice the word "obviously" trying to make it sound like a fact everyone already agrees with. That is the exact move to watch for.'}
+];
+const factOptions = ['Fact','Opinion'];
+
+/* --- two accounts of the same event --- */
+const accounts = {
+  a: {
+    cls:'',
+    segs:[
+      {id:'a1', k:'factual', t:'Nearly forty of us turned up on Saturday morning,'},
+      {id:'a2', k:'loaded',  t:' which was more than anyone expected.'},
+      {id:'a3', k:'factual', t:' We filled eighty-six sacks before lunch.'},
+      {id:'a4', k:'factual', t:' Pak Yusuf said it was the best turnout he had seen in six years.'},
+      {id:'a5', k:'opinion', t:' By the time we finished, the whole north end of the beach was clear, and a family who had come down to swim stopped to thank us.'},
+      {id:'a6', k:'opinion', t:' It was a brilliant morning.'}
+    ],
+    missing:['Eleven people left before ten o’clock.','By the following weekend a lot of the plastic had come back.']
+  },
+  b: {
+    cls:'b',
+    segs:[
+      {id:'b1', k:'loaded',  t:'We were told to be at the beach by seven on a Saturday, which meant getting up at six on a day off.'},
+      {id:'b2', k:'factual', t:' Nearly forty people came,'},
+      {id:'b3', k:'opinion', t:' though eleven of them left before ten.'},
+      {id:'b4', k:'factual', t:' We filled eighty-six sacks,'},
+      {id:'b5', k:'opinion', t:' and by the following weekend a lot of the plastic was back.'},
+      {id:'b6', k:'loaded',  t:' Pak Yusuf said it was the best turnout in six years, but he says that every year.'},
+      {id:'b7', k:'loaded',  t:' It was a long morning.'}
+    ],
+    missing:['The whole north end of the beach was cleared.','A family stopped to thank them.']
+  },
+  shared: {
+    cls:'shared',
+    segs:[
+      {id:'s1', k:'factual', t:'Nearly forty people came.'},
+      {id:'s2', k:'factual', t:' They filled eighty-six sacks.'},
+      {id:'s3', k:'factual', t:' Pak Yusuf said it was the best turnout in six years.'},
+      {id:'s4', k:'factual', t:' It was a Saturday morning.'}
+    ],
+    missing:null
+  }
+};
+
+const accAnnot = {
+  a1:{k:'factual', title:'A shared fact', why:'Both writers give the same number. Neither of them is inventing anything, and this is the ground they agree on.'},
+  a2:{k:'loaded', title:'A judgement slipped in', why:'"More than anyone expected" sounds like information, but it is really the writer telling you to be impressed. Nobody measured what was expected.'},
+  a3:{k:'factual', title:'A shared fact', why:'Eighty-six sacks. Precise, checkable, and it appears in both accounts unchanged.'},
+  a4:{k:'factual', title:'A quoted fact', why:'A real quotation from a real person. Account B quotes exactly the same words, and then does something interesting with them.'},
+  a5:{k:'opinion', title:'Selected, not invented', why:'This almost certainly happened. But the writer has chosen to include the cleared beach and the grateful family, and has chosen to leave out the people who went home early.'},
+  a6:{k:'opinion', title:'The verdict', why:'"Brilliant" is pure opinion, and it comes last so it colours everything you have just read. Nothing wrong with it, as long as you can see it for what it is.'},
+  b1:{k:'loaded', title:'Loaded from the first word', why:'"We were told to be" makes it sound like an order rather than a choice, and mentioning the early start on a day off invites you to feel put upon before anything has happened.'},
+  b2:{k:'factual', title:'A shared fact', why:'The same forty people. Account A opens with this too, but with a very different feeling attached.'},
+  b3:{k:'opinion', title:'The fact Account A left out', why:'This is true, and Account A simply does not mention it. This is the clearest example today of bias by selection rather than by lying.'},
+  b4:{k:'factual', title:'A shared fact', why:'Eighty-six sacks again, completely unchanged. Both writers are working from the same real morning.'},
+  b5:{k:'opinion', title:'The other missing fact', why:'Also true, also absent from Account A. Including it turns the whole morning from an achievement into something closer to a waste of time.'},
+  b6:{k:'loaded', title:'A fact, then an undercut', why:'The quotation is identical to Account A. The five words added after it, "but he says that every year", destroy it completely without contradicting a single thing.'},
+  b7:{k:'loaded', title:'The verdict', why:'"A long morning" is the mirror image of "a brilliant morning". Same length, same position, opposite effect, and neither one is a lie.'},
+  s1:{k:'factual', title:'Agreed', why:'Both accounts state this. When two biased accounts agree on a number, that number is usually solid.'},
+  s2:{k:'factual', title:'Agreed', why:'Both accounts state this, unchanged.'},
+  s3:{k:'factual', title:'Agreed', why:'Both quote Pak Yusuf identically. The difference is only in what Account B adds afterwards.'},
+  s4:{k:'factual', title:'Agreed', why:'Both place it on a Saturday morning. Strip out every opinion and this is all that is left: the checkable core.'}
+};
+
+const kindMeta = {
+  factual:{label:'Shared fact', colour:'#FEA74A'},
+  opinion:{label:'Chosen detail', colour:'#FEA74A'},
+  loaded:{label:'Loaded wording', colour:'#FEA74A'}
+};
+const kindColour = {factual:'#7FD3D8', opinion:'#FFCE96', loaded:'#FF9E77'};
+const kindLabel  = {factual:'Shared fact', opinion:'Chosen detail', loaded:'Loaded wording'};
+
+const shapeData = [
+  {name:'Forty volunteers cleared eighty-six sacks of plastic from Selong Belanak on Saturday.', correct:'Report', reason:'The whole story in one line, right at the top. That is the report shape doing its job.'},
+  {name:'I did not want to get out of bed, and I said so twice before my mother stopped answering.', correct:'Story', reason:'One vivid moment with no explanation yet. You have to read on to find out what it is even about.'},
+  {name:'A family of four has been left without a home following a fire in the village on Tuesday night.', correct:'Report', reason:'Most important information first, written so a reader who stops after one sentence still knows what happened.'},
+  {name:'The smell reached us before we came round the last corner, and nobody said anything for a while.', correct:'Story', reason:'Sensory, withholding, and designed to make you want the next sentence. Pure story shape.'},
+  {name:'Anyone wishing to donate can do so at the village office until the end of the month.', correct:'Report', reason:'This is the last move of the report shape: telling the reader what to do about it.'},
+  {name:'It took me eleven years to understand what my grandfather meant that afternoon.', correct:'Story', reason:'Looking back from much later, and deliberately not telling you the answer yet.'}
+];
+const shapeOptions = ['Report','Story'];
+
+const senses = [
+  {icon:'👁️', name:'Sight', eg:'"Every classroom had a different coloured door."', c:'#005F65'},
+  {icon:'👂', name:'Sound', eg:'"The noise came off the tiled walls in waves."', c:'#1E4664'},
+  {icon:'👃', name:'Smell', eg:'"Her kitchen smelled of flour and something sweeter underneath."', c:'#A6330F'},
+  {icon:'✋', name:'Touch', eg:'"The handrail was still warm at seven in the morning."', c:'#A65F06'},
+  {icon:'👅', name:'Taste', eg:'"The water tasted faintly of the plastic bottle."', c:'#007C83'}
+];
+
+const senseData = [
+  {t:'"The rice tasted of woodsmoke for days afterwards."', a:'Taste, with a little smell behind it. Taste is the rarest sense in student writing, which is exactly why it stands out.'},
+  {t:'"You could hear the generator through the floor."', a:'Sound. Notice it also tells you something about the building without describing the building at all.'},
+  {t:'"The sand was too hot to stand still on."', a:'Touch. Not what it looked like, what it did to you. That is usually the stronger version.'},
+  {t:'"The whole street smelled of frying garlic by six."', a:'Smell, and a time of day. Smell plus a specific hour is a very efficient way to put a reader somewhere.'},
+  {t:'"Her hands were dusted white to the wrist."', a:'Sight, but a precise one. "To the wrist" is what makes it a real memory rather than a general description.'},
+  {t:'"The bell was flat, like something hitting a bucket."', a:'Sound, using a comparison. When a sound is hard to name, compare it to something the reader already knows.'},
+  {t:'"The bus seat stuck to the backs of my legs."', a:'Touch, and slightly unpleasant. Uncomfortable details are memorable precisely because writers usually leave them out.'},
+  {t:'"It was a nice day and everything looked lovely."', a:'This is the trap. It claims to be sight but shows you nothing at all. "Nice" and "lovely" are the two vaguest words in English.'}
+];
+
+const quizData = [
+  {q:'Which of these is a fact?', opts:['The walk was far too long','We walked for three hours and ten minutes','The walk was the worst part of the day'], correct:1, fb:'a time can be checked. "Too long" and "the worst part" are both judgements belonging to the writer.'},
+  {q:'A writer states nothing but true facts, but leaves several out. What is that?', opts:['Lying','Bias','Good reporting'], correct:1, fb:'bias. You do not have to lie to mislead. Choosing which true things to include is enough.'},
+  {q:'Which word is the biggest warning sign that an opinion is being dressed as a fact?', opts:['Obviously','Yesterday','Eleven'], correct:0, fb:'"obviously" tells the reader to agree without giving them a reason. So do "clearly", "of course" and "everyone knows".'},
+  {q:'A report puts the most important information where?', opts:['At the very end','Right at the start','In the middle'], correct:1, fb:'a report front-loads, because it wants you to know even if you stop reading after one line.'},
+  {q:'Why does a story shape hold the ending back?', opts:['To make the piece longer','Because it wants you to feel it, not just know it','Because the rules say so'], correct:1, fb:'a report gives you the ending first because it wants you to know. A story saves it because it wants you to feel.'},
+  {q:'Which sense is most closely connected to memory?', opts:['Sight','Smell','Taste'], correct:1, fb:'smell. If you can remember how a place smelled, that detail will usually do more work than what it looked like.'},
+  {q:'Your paragraph describes what you saw and nothing else. What is the quickest fix?', opts:['Make it longer','Add a sound and a smell','Add more adjectives to what you saw'], correct:1, fb:'adding a different sense does far more than piling more adjectives onto the same one.'}
+];
+
+const vocabData = [
+  {t:'Fact', d:'A statement someone could check and prove right or wrong.'},
+  {t:'Opinion', d:'A judgement belonging to the writer. It can be reasonable and still not be checkable.'},
+  {t:'Bias', d:'Leaning one way. It comes from which true things a writer includes and which words they choose, not only from what they get wrong.'},
+  {t:'Selection', d:'Choosing what goes in and what stays out. The most common way bias enters a completely truthful account.'},
+  {t:'Loaded language', d:'Wording that carries a judgement inside it, like "we were told to" instead of "we went".'},
+  {t:'Sensory detail', d:'A detail given through sight, sound, smell, taste or touch, which puts the reader in the place rather than telling them about it.'}
+];
+
+function makeKeyClickable(el){
+  el.tabIndex = 0;
+  el.setAttribute('role','button');
+  el.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); el.click(); } });
+}
+
+function buildSort(wrapId, data, options){
+  const wrap = document.getElementById(wrapId);
+  data.forEach(item=>{
+    const row = document.createElement('div');
+    row.className = 'sort-item';
+    const opts = options.map(o=>'<button class="opt-btn" data-val="' + o + '">' + o + '</button>').join('');
+    row.innerHTML = '<div style="flex:1;"><div class="sort-name">' + item.name + '</div><div class="sort-reason">' + item.reason + '</div></div><div class="sort-options">' + opts + '</div>';
+    row.querySelectorAll('.opt-btn').forEach(btn=>{
+      btn.onclick = ()=>{
+        if(row.classList.contains('answered')) return;
+        row.classList.add('answered');
+        row.querySelectorAll('.opt-btn').forEach(b=>{
+          if(b.dataset.val === item.correct) b.classList.add('correct');
+          else if(b === btn) b.classList.add('wrong');
+        });
+      };
+    });
+    wrap.appendChild(row);
+  });
+}
+
+/* warm-up */
+const warmupWrap = document.getElementById('warmupFlips');
+warmupData.forEach(item=>{
+  const el = document.createElement('div');
+  el.className = 'flip';
+  el.innerHTML = '<div class="flip-inner">'
+    + '<div class="flip-face flip-front"><div class="flip-term">' + item.term + '</div><div class="flip-sub">' + item.sub + '</div><div class="flip-hint">Tap to reveal ↻</div></div>'
+    + '<div class="flip-face flip-back" style="background:' + item.c + ';"><p>' + item.back + '</p></div>'
+    + '</div>';
+  el.onclick = ()=> el.classList.toggle('flipped');
+  makeKeyClickable(el);
+  warmupWrap.appendChild(el);
+});
+
+buildSort('factList', factData, factOptions);
+buildSort('shapeList', shapeData, shapeOptions);
+
+/* two-account viewer */
+const acctBox = document.getElementById('acctBox');
+const annotBox = document.getElementById('annot');
+const missingWrap = document.getElementById('missingWrap');
+let view = 'a', selId = null;
+
+function renderAccount(){
+  const acc = accounts[view];
+  acctBox.className = 'acctbox ' + acc.cls;
+  acctBox.innerHTML = '';
+  acc.segs.forEach(s=>{
+    const span = document.createElement('span');
+    span.className = 'seg clickable ' + s.k;
+    span.textContent = s.t;
+    span.dataset.id = s.id;
+    span.tabIndex = 0;
+    span.setAttribute('role','button');
+    const open = ()=> showAnnot(s.id);
+    span.onclick = open;
+    span.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); open(); } });
+    acctBox.appendChild(span);
+  });
+  missingWrap.innerHTML = acc.missing
+    ? '<div class="missing"><div class="mlbl">⚠ True things this account leaves out</div><ul>'
+      + acc.missing.map(m=>'<li>' + m + '</li>').join('') + '</ul></div>'
+    : '';
+  if(selId) markSel();
+}
+function markSel(){
+  acctBox.querySelectorAll('.seg').forEach(s=> s.classList.toggle('sel', s.dataset.id === selId));
+}
+function showAnnot(id){
+  selId = id; markSel();
+  const a = accAnnot[id];
+  annotBox.innerHTML = '<span class="atag" style="background:' + kindColour[a.k] + ';">' + kindLabel[a.k] + ' · ' + a.title + '</span>'
+    + '<p class="awhy">' + a.why + '</p>';
+}
+document.querySelectorAll('.tgl[data-view]').forEach(b=>{
+  b.onclick = ()=>{
+    document.querySelectorAll('.tgl[data-view]').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on');
+    view = b.dataset.view;
+    selId = null;
+    annotBox.innerHTML = '<span class="ph">Tap any highlighted stretch above to see what the writer is doing there.</span>';
+    renderAccount();
+  };
+});
+renderAccount();
+
+/* senses */
+const senseGrid = document.getElementById('senseGrid');
+senses.forEach(s=>{
+  const b = document.createElement('button');
+  b.className = 'sense';
+  b.setAttribute('aria-expanded','false');
+  b.innerHTML = '<div class="sicon">' + s.icon + '</div><div class="sname">' + s.name + '</div>'
+    + '<div class="seg2">' + s.eg + '</div><div class="shint">Tap for an example</div>';
+  b.onclick = ()=>{
+    b.classList.toggle('open');
+    b.setAttribute('aria-expanded', b.classList.contains('open') ? 'true' : 'false');
+  };
+  senseGrid.appendChild(b);
+});
+
+const senseList = document.getElementById('senseList');
+senseData.forEach(item=>{
+  const el = document.createElement('div');
+  el.className = 'reveal';
+  el.innerHTML = '<div class="reveal-row"><div class="reveal-text">' + item.t + '</div>'
+    + '<button class="btn btn-ghost btn-sm" tabindex="-1">Which sense?</button></div>'
+    + '<div class="reveal-ans">' + item.a + '</div>';
+  el.onclick = ()=> el.classList.toggle('open');
+  makeKeyClickable(el);
+  senseList.appendChild(el);
+});
+
+/* quiz */
+const quizWrap = document.getElementById('quizList');
+quizData.forEach(item=>{
+  const el = document.createElement('div');
+  el.className = 'quiz-card';
+  const opts = item.opts.map((o,i)=>'<button class="btn btn-sm btn-ghost" data-i="' + i + '">' + o + '</button>').join('');
+  el.innerHTML = '<div class="quiz-q">' + item.q + '</div><div class="quiz-opts">' + opts + '</div><div class="quiz-fb"></div>';
+  const fb = el.querySelector('.quiz-fb');
+  el.querySelectorAll('.quiz-opts button').forEach(btn=>{
+    btn.onclick = ()=>{
+      if(fb.classList.contains('correct')) return;
+      const ok = Number(btn.dataset.i) === item.correct;
+      fb.textContent = (ok ? '✓ ' : '✗ Not quite: ') + item.fb;
+      fb.className = 'quiz-fb ' + (ok ? 'correct' : 'wrong');
+      if(ok){ btn.style.background='var(--teal)'; btn.style.color='#fff'; }
+    };
+  });
+  quizWrap.appendChild(el);
+});
+
+const vocabWrap = document.getElementById('vocabList');
+vocabData.forEach(item=>{
+  const el = document.createElement('div');
+  el.className = 'vocab-card';
+  el.innerHTML = '<b>' + item.t + ':</b> ' + item.d;
+  vocabWrap.appendChild(el);
+});
+
+/* nav */
+const steps = document.querySelectorAll('.step');
+const dotsWrap = document.getElementById('dots');
+let current = 0;
+steps.forEach((s,i)=>{
+  const d = document.createElement('button');
+  d.className = 'dot' + (i===0?' active':'');
+  d.setAttribute('aria-label','Go to step ' + (i+1));
+  d.onclick = ()=> goTo(i);
+  dotsWrap.appendChild(d);
+});
+document.getElementById('stepTotal').textContent = steps.length;
+function goTo(i){
+  if(i<0 || i>=steps.length) return;
+  steps[current].classList.remove('active');
+  dotsWrap.children[current].classList.remove('active');
+  if(i>current) dotsWrap.children[current].classList.add('done');
+  current = i;
+  steps[current].classList.add('active');
+  Array.from(dotsWrap.children).forEach((d,idx)=> d.classList.toggle('active', idx===current));
+  document.getElementById('stepNow').textContent = current+1;
+  document.getElementById('prevBtn').disabled = current===0;
+  document.getElementById('nextBtn').textContent = current===steps.length-1 ? 'Finish 🎉' : 'Next →';
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+document.getElementById('prevBtn').onclick = ()=> goTo(current-1);
+document.getElementById('nextBtn').onclick = ()=> { if(current<steps.length-1) goTo(current+1); };
+document.addEventListener('keydown', e=>{
+  if(e.target && (e.target.tagName==='BUTTON' || e.target.tagName==='INPUT')) return;
+  if(e.key==='ArrowRight') goTo(current+1);
+  if(e.key==='ArrowLeft') goTo(current-1);
+});
+goTo(0);
+</script>

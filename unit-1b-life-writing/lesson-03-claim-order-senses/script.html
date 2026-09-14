@@ -1,0 +1,390 @@
+<title>Claim, Order, Senses Teaching Script</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&family=Nunito+Sans:wght@400;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap');
+
+:root{
+  --bg:#FDF7EE; --ink:#46280A; --ink-soft:#7A6450;
+  --teal:#007C83; --teal-dark:#005F65; --teal-light:#D7EDEC;
+  --coral:#D1481F; --coral-dark:#A6330F; --coral-light:#FBE3D8;
+  --gold:#FEA74A; --gold-dark:#A65F06; --gold-light:#FFF0DC;
+  --plum:#2C5F8A; --plum-dark:#1E4664; --plum-light:#E0EBF4;
+  --card:#FFFFFF; --line:#EADFCD;
+  --shadow: 0 8px 24px rgba(70,40,10,0.09);
+  --surface-dark:#2A1B0C;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#16110B; --ink:#F6EEE2; --ink-soft:#BBA890;
+    --teal:#2FA7AE; --teal-dark:#8FE3E6; --teal-light:#0E2E30;
+    --coral:#E2572B; --coral-dark:#FF9E77; --coral-light:#3A1F12;
+    --gold:#FEA74A; --gold-dark:#FFD09B; --gold-light:#3B2711;
+    --plum:#4E86B8; --plum-dark:#9CC6E6; --plum-light:#182B3A;
+    --card:#211A12; --line:#382B1D;
+    --shadow: 0 8px 24px rgba(0,0,0,0.45);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#16110B; --ink:#F6EEE2; --ink-soft:#BBA890;
+  --teal:#2FA7AE; --teal-dark:#8FE3E6; --teal-light:#0E2E30;
+  --coral:#E2572B; --coral-dark:#FF9E77; --coral-light:#3A1F12;
+  --gold:#FEA74A; --gold-dark:#FFD09B; --gold-light:#3B2711;
+  --plum:#4E86B8; --plum-dark:#9CC6E6; --plum-light:#182B3A;
+  --card:#211A12; --line:#382B1D;
+  --shadow: 0 8px 24px rgba(0,0,0,0.45);
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{background:var(--bg); color:var(--ink); font-family:'Nunito Sans','Segoe UI',system-ui,sans-serif; line-height:1.6;}
+h1,h2,h3{font-family:'Nunito','Nunito Sans',system-ui,sans-serif;}
+.mono{font-family:'IBM Plex Mono',monospace;}
+
+.app{max-width:800px; margin:0 auto; padding:0 20px 70px;}
+
+.topbar{background:linear-gradient(135deg,#2A1B0C,#4A3016); color:#fff; padding:26px 20px 22px;}
+.topbar-inner{max-width:800px; margin:0 auto;}
+.tabs{display:flex; gap:8px; flex-wrap:wrap; margin-top:16px;}
+.tabs a{padding:7px 14px; border-radius:999px; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.25); color:#fff; font-size:12.5px; font-weight:700; text-decoration:none;}
+.tabs a.active{background:var(--gold); border-color:var(--gold); color:#46280A;}
+.tabs a:hover{background:rgba(255,255,255,0.22);}
+.kicker{display:inline-flex; align-items:center; gap:8px; font-size:12px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--gold); margin:14px 0 8px;}
+h1.title{font-size:clamp(26px,4vw,36px); margin:0 0 6px; letter-spacing:-0.01em; text-wrap:balance;}
+.sub{color:rgba(255,255,255,0.82); font-size:14px; margin:0; max-width:600px;}
+
+.section{margin:26px 0;}
+.section h2{font-size:20px; color:var(--ink); margin:0 0 10px;}
+.section p{font-size:14.5px; color:var(--ink); margin:0 0 12px;}
+
+.timing{display:inline-block; background:var(--teal-light); color:var(--teal-dark); font-weight:700; font-size:12px; padding:3px 11px; border-radius:999px; margin-right:8px; font-family:'IBM Plex Mono',monospace;}
+
+.callout{border-left:4px solid var(--gold); background:var(--gold-light); border-radius:0 12px 12px 0; padding:14px 18px; margin:14px 0; font-size:13.5px; color:var(--gold-dark);}
+.callout strong:first-child{display:block; text-transform:uppercase; font-size:10.5px; letter-spacing:0.06em; margin-bottom:4px; font-family:'Nunito',sans-serif;}
+.callout.tip{border-color:var(--teal); background:var(--teal-light); color:var(--teal-dark);}
+.callout.watch{border-color:var(--coral); background:var(--coral-light); color:var(--coral-dark);}
+
+.say-block{background:var(--plum-light); border:1px dashed var(--plum); border-radius:12px; padding:14px 18px; margin:12px 0; font-size:14.5px; color:var(--ink);}
+.say-block .who{font-weight:800; color:var(--plum-dark); font-size:11px; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:6px; font-family:'Nunito',sans-serif;}
+
+.stage-card{background:var(--card); border:1px solid var(--line); border-radius:16px; padding:22px 24px; margin-bottom:18px; box-shadow:var(--shadow);}
+.stage-head{display:flex; align-items:center; gap:10px; margin-bottom:6px; flex-wrap:wrap;}
+.stage-num{width:28px; height:28px; border-radius:50%; background:var(--surface-dark); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:13px; flex-shrink:0;}
+.stage-head h2{margin:0; font-size:18px;}
+
+.tablewrap{overflow-x:auto;}
+table.simple{width:100%; border-collapse:collapse; margin:14px 0; font-size:13.5px;}
+table.simple th, table.simple td{border:1px solid var(--line); padding:9px 11px; text-align:left; vertical-align:top;}
+table.simple th{background:var(--teal-light); color:var(--teal-dark); font-size:11.5px; text-transform:uppercase; letter-spacing:0.04em;}
+
+.toc{background:var(--card); border:1px solid var(--line); border-radius:16px; padding:18px 22px; box-shadow:var(--shadow); margin:20px 0;}
+.toc h3{margin:0 0 10px; font-size:14px; text-transform:uppercase; letter-spacing:0.05em; color:var(--ink-soft);}
+.toc ol{margin:0; padding-left:20px; columns:2; column-gap:24px;}
+.toc li{font-size:13px; margin-bottom:6px; break-inside:avoid;}
+.toc a{color:var(--teal-dark); text-decoration:none; font-weight:600;}
+.toc a:hover{text-decoration:underline;}
+@media(max-width:560px){.toc ol{columns:1;}}
+
+.objbox{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:16px 20px; margin:16px 0; box-shadow:var(--shadow); font-size:14px;}
+.objbox b{font-family:'Nunito',sans-serif;}
+.objbox ul{margin:8px 0 0; padding-left:18px; line-height:1.7;}
+
+.choicerow{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin:14px 0;}
+@media(max-width:640px){.choicerow{grid-template-columns:1fr;}}
+.cc{border-radius:12px; padding:13px 15px; color:#fff;}
+.cc .ln{font-family:'Nunito',sans-serif; font-weight:800; font-size:15px; margin-bottom:3px;}
+.cc p{margin:0; font-size:12px; line-height:1.45; color:rgba(255,255,255,0.92);}
+
+.actions{display:flex; gap:10px; margin:30px 0 10px; flex-wrap:wrap;}
+.btn{font-family:'Nunito Sans',sans-serif; font-weight:700; font-size:13.5px; border:none; border-radius:10px; padding:10px 18px; cursor:pointer; text-decoration:none; display:inline-flex; align-items:center; gap:6px;}
+.btn-coral{background:var(--coral); color:#fff;}
+.btn-ghost{background:var(--card); color:var(--ink); border:1px solid var(--line);}
+
+[tabindex]:focus-visible, button:focus-visible, a:focus-visible{outline:2px solid var(--teal); outline-offset:2px; border-radius:8px;}
+
+footer{text-align:center; color:var(--ink-soft); font-size:12px; margin-top:40px;}
+
+@media (prefers-reduced-motion: reduce){ *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;} }
+@media print{
+  .no-print{display:none !important;}
+  .topbar{background:#2A1B0C !important; -webkit-print-color-adjust:exact; print-color-adjust:exact;}
+  body{background:#fff; --card:#fff; --bg:#fff;}
+  .stage-card{box-shadow:none; border:1px solid #ccc; break-inside:avoid;}
+}
+</style>
+
+<div class="topbar no-print">
+  <div class="topbar-inner">
+    <div class="kicker">🗣️ Teaching Script</div>
+    <h1 class="title">Claim, Order, Senses</h1>
+    <p class="sub">Lesson 3 · Cambridge Lower Secondary English, Unit 1B · Written for a tutor teaching this for the first time</p>
+    <div class="tabs">
+      <a href="https://claude.ai/code/artifact/44ae9788-585b-4845-8674-5e7eed353d93" target="_blank" rel="noopener">🕹️ Interactive lesson</a>
+      <a href="#" class="active">🗣️ Script</a>
+    </div>
+  </div>
+</div>
+
+<div class="app">
+
+  <div class="section">
+    <h2>Before you start</h2>
+    <p>Ethan has done two lessons. Both were about <em>recognising</em> life writing: the four conventions, and how to spot them in someone else's text. He can now identify the genre. What he cannot yet do is see the writer at work inside it.</p>
+    <p>That is the whole job of this lesson. It covers three things that could each be their own lesson, so the spine matters more than usual: everything in life writing can be true, and the writer still makes three choices that change how you feel. Keep saying "choice" and the three parts will hold together. Drop the spine and it becomes three unrelated topics in forty minutes, which will not stick.</p>
+
+    <div class="choicerow">
+      <div class="cc" style="background:#005F65;"><div class="ln">1. CLAIM</div><p>Fact, opinion, and bias by selection.</p></div>
+      <div class="cc" style="background:#1E4664;"><div class="ln">2. ORDER</div><p>Report shape against story shape.</p></div>
+      <div class="cc" style="background:#A6330F;"><div class="ln">3. SENSES</div><p>The four senses he is not using.</p></div>
+    </div>
+
+    <div class="objbox">
+      <b>Real curriculum references.</b> This lesson targets:
+      <ul>
+        <li><b>8Ri.05</b>: comment on the impact of bias in a text. <i>(Choice 1, and the heart of Stage 4.)</i></li>
+        <li><b>8Ri.03</b>: identify and discuss the impact of explicit information on the reader. <i>(Fact and opinion sorting.)</i></li>
+        <li><b>8Ws</b>: use features of text structure to demonstrate a sense of linked progression. <i>(Choice 2.)</i></li>
+        <li><b>8Wv</b>: create effects by using a range of linguistic and literary techniques. <i>(Choice 3.)</i></li>
+      </ul>
+    </div>
+
+    <div class="callout tip">
+      <strong>The one idea this whole lesson hangs on</strong>
+      You do not have to lie to mislead someone. Choosing which true things to include, and which words to wrap them in, is enough. Once Ethan sees that clearly in Stage 4, he will never read a piece of non-fiction the same way again, and he will start making those choices deliberately in his own writing.
+    </div>
+
+    <div class="callout watch">
+      <strong>Have his homework story to hand</strong>
+      Stage 9 applies all three choices to the true story he wrote for homework, the one with the headline. Ask him to have it open before you start. If he has not done it, use Account A from Stage 4 as the text he works on instead.
+    </div>
+  </div>
+
+  <div class="toc no-print">
+    <h3>Stages (matches the interactive lesson 1:1)</h3>
+    <ol>
+      <li><a href="#s0">0 · What &amp; why</a></li>
+      <li><a href="#s1">1 · Warm-up: what you already know</a></li>
+      <li><a href="#s2">2 · Claim: fact or opinion</a></li>
+      <li><a href="#s3">3 · Sort these eight</a></li>
+      <li><a href="#s4">4 · One morning, two true accounts</a></li>
+      <li><a href="#s5">5 · Order: two shapes</a></li>
+      <li><a href="#s6">6 · Which shape is this?</a></li>
+      <li><a href="#s7">7 · Senses: you have five</a></li>
+      <li><a href="#s8">8 · Which sense is working?</a></li>
+      <li><a href="#s9">9 · Three questions for his own writing</a></li>
+      <li><a href="#s10">10 · Quick check &amp; recap</a></li>
+    </ol>
+  </div>
+
+  <!-- 0 -->
+  <div class="stage-card" id="s0">
+    <div class="stage-head"><div class="stage-num">0</div><h2>What &amp; Why</h2></div>
+    <p><span class="timing">0-3 min</span>Set the spine immediately. Do not list the three choices as a menu, present them as one idea with three parts.</p>
+    <div class="say-block">
+      <div class="who">Say this</div>
+      "In your first two lessons you learned to spot life writing. Today the question changes. Everything in a piece of life writing can be completely true, and the writer still gets to make three choices that change how you feel about it."
+    </div>
+    <div class="say-block">
+      <div class="who">Say this</div>
+      "Two people can write about the same real morning, both tell the truth, and leave you with completely opposite impressions. By the end of today you will be able to see exactly how that happens."
+    </div>
+    <div class="callout tip">
+      <strong>That promise is the hook</strong>
+      Stage 4 pays it off literally. Make the promise clearly here so that when he gets there he recognises it landing.
+    </div>
+  </div>
+
+  <!-- 1 -->
+  <div class="stage-card" id="s1">
+    <div class="stage-head"><div class="stage-num">1</div><h2>Warm-up: What You Already Know</h2></div>
+    <p><span class="timing">3-6 min</span>Five flip cards. Four revise the conventions from Lessons 1 and 2. The fifth is not revision, it is today's question: can a piece of writing be completely true and still be unfair?</p>
+    <div class="say-block">
+      <div class="who">Say this</div>
+      "Four things you already know, and one question we are going to answer today. Say your answer out loud before you tap."
+    </div>
+    <div class="callout tip">
+      <strong>Let him sit with card five</strong>
+      Ask him for a real answer before flipping it. Most students say no at first, or say "only if they lie". Whatever he says, do not correct it. Say "hold that thought" and move on. You want him to discover the answer at Stage 4 rather than be told it now.
+    </div>
+  </div>
+
+  <!-- 2 -->
+  <div class="stage-card" id="s2">
+    <div class="stage-head"><div class="stage-num">2</div><h2>Choice 1: Fact or Opinion</h2></div>
+    <p><span class="timing">6-11 min</span>Two definition boxes with examples. The test for a fact is not whether it is interesting or important, only whether someone could check it.</p>
+    <div class="say-block">
+      <div class="who">Say this</div>
+      "A fact is something someone could check and prove right or wrong. An opinion is a judgement. It might be completely reasonable, and you might agree with it, but nobody can prove it."
+    </div>
+    <div class="say-block">
+      <div class="who">Say this</div>
+      "Both belong in life writing. A piece made only of facts reads like a police report. A piece made only of opinions is just someone shouting. The skill is knowing which one you are writing."
+    </div>
+    <div class="callout watch">
+      <strong>The common mistake</strong>
+      Students often think "opinion" means "wrong" or "not allowed". It does not. Say explicitly that opinions are welcome in life writing, in fact the personal reflection convention from Lesson 1 is <em>built</em> from opinion. The problem is only when an opinion is disguised as a fact.
+    </div>
+    <div class="say-block">
+      <div class="who">Say this</div>
+      "Watch for obviously, clearly, everyone knows and of course. Those words usually mean an opinion is being dressed up to look like a fact. That is where bias starts."
+    </div>
+  </div>
+
+  <!-- 3 -->
+  <div class="stage-card" id="s3">
+    <div class="stage-head"><div class="stage-num">3</div><h2>Practice: Sort These Eight</h2></div>
+    <p><span class="timing">11-15 min</span>Eight statements sorted into fact or opinion. They are deliberately paired, so items 3 and 4 are both about a grandmother and only one is checkable.</p>
+    <div class="say-block">
+      <div class="who">Say this</div>
+      "For each one, ask yourself one question only: could somebody check this?"
+    </div>
+    <div class="tablewrap">
+      <table class="simple">
+        <tr><th>Item</th><th>What to draw out</th></tr>
+        <tr><td>3 and 4</td><td>The paired grandmother sentences. Same subject, same affection, one checkable and one not. Best single illustration in the set, so slow down here.</td></tr>
+        <tr><td>6</td><td>"Nobody did enough to help." He may want to call this a fact because it feels true. Ask him: enough by whose measure?</td></tr>
+        <tr><td>8</td><td>The "obviously" item. This is the one that matters most, because it is the exact move Stage 4 is built on. Make sure he spots the word doing the work.</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- 4 -->
+  <div class="stage-card" id="s4">
+    <div class="stage-head"><div class="stage-num">4</div><h2>Centrepiece: One Morning, Two True Accounts</h2></div>
+    <p><span class="timing">15-22 min</span>The heart of the lesson, and the payoff for the promise at Stage 0. Two accounts of the same beach clean-up. Neither lies. They agree on every number.</p>
+    <div class="callout tip">
+      <strong>How to run this stage</strong>
+      Read Account A aloud together in full, and ask him how the morning went. He will say it went well. Then read Account B aloud in full and ask the same question. Only <em>after</em> both readings do you start tapping the highlights. If you annotate as you go, you lose the moment where he realises both are true.
+    </div>
+    <div class="say-block">
+      <div class="who">Ask him, after both readings</div>
+      "Which one of those two is lying?"
+    </div>
+    <p>Let him hunt for the lie. He will not find one. That is the lesson. Then switch to the third tab, "What they agree on", which strips out everything except the checkable core.</p>
+    <div class="say-block">
+      <div class="who">Say this</div>
+      "Neither of them lied. They agree on the number of people, the number of sacks, the quotation, even the day. Everything they disagree about comes from what they left out and which words they chose."
+    </div>
+    <div class="tablewrap">
+      <table class="simple">
+        <tr><th>Tap</th><th>What to draw out</th></tr>
+        <tr><td>A: "more than anyone expected"</td><td>Sounds like information, is actually instruction. Nobody measured what was expected. Ask him who decided what was expected.</td></tr>
+        <tr><td>B: "though eleven of them left before ten"</td><td>The clearest example in the lesson. This is true, and Account A simply does not mention it. Bias by selection, not by lying.</td></tr>
+        <tr><td>B: "but he says that every year"</td><td>The best moment in the whole lesson. The quotation is word for word identical to Account A. Five added words destroy it without contradicting anything.</td></tr>
+        <tr><td>A and B final sentences</td><td>"A brilliant morning" against "a long morning". Same length, same position, opposite effect, neither a lie. Show these two back to back.</td></tr>
+      </table>
+    </div>
+    <div class="callout watch">
+      <strong>Do not let him conclude that bias is cheating</strong>
+      The takeaway is not "Account B is dishonest". Both writers are being honest about their own experience. The takeaway is that a reader has to notice the choosing, and a writer should do the choosing deliberately. If he leaves thinking bias is something only bad people do, he will not recognise it in his own writing.
+    </div>
+  </div>
+
+  <!-- 5 -->
+  <div class="stage-card" id="s5">
+    <div class="stage-head"><div class="stage-num">5</div><h2>Choice 2: Two Shapes for the Same Events</h2></div>
+    <p><span class="timing">22-27 min</span>The report shape against the story shape, side by side. The report shape should be familiar: it is exactly what his homework task asked for.</p>
+    <div class="callout tip">
+      <strong>Connect this straight to his homework</strong>
+      His true-story homework asked for a headline, then the most important information, then facts, then description, then what people should do. That <em>is</em> the report shape. Naming it now turns something he already did into something he understands.
+    </div>
+    <div class="say-block">
+      <div class="who">Say this</div>
+      "You have already used one of these. Your homework asked for a headline, then the most important thing, then the facts, then description, then what people should do. That is the report shape, and now it has a name."
+    </div>
+    <div class="say-block">
+      <div class="who">Say this, and make him repeat it</div>
+      "A report gives you the ending first, because it wants you to know. A story saves the ending, because it wants you to feel."
+    </div>
+    <p>That single sentence is the most portable thing in this stage. If he remembers one line from Choice 2, it should be that one.</p>
+  </div>
+
+  <!-- 6 -->
+  <div class="stage-card" id="s6">
+    <div class="stage-head"><div class="stage-num">6</div><h2>Practice: Which Shape Is This Opening From?</h2></div>
+    <p><span class="timing">27-30 min</span>Six openings sorted into report or story. Run this fast, it is a confidence check rather than new teaching.</p>
+    <div class="say-block">
+      <div class="who">Say this</div>
+      "Quickfire. Report or story?"
+    </div>
+    <p>If he hesitates, the giveaway question is: does this sentence tell me what happened, or does it make me want to find out?</p>
+  </div>
+
+  <!-- 7 -->
+  <div class="stage-card" id="s7">
+    <div class="stage-head"><div class="stage-num">7</div><h2>Choice 3: You Have Five, and You Use One</h2></div>
+    <p><span class="timing">30-33 min</span>Five tappable sense cards, each with a real example. Short stage, but it changes his writing more than anything else today.</p>
+    <div class="say-block">
+      <div class="who">Open with this</div>
+      "Think about the last thing you wrote. How many of your details were things you could see?"
+    </div>
+    <p>The answer is almost always "all of them". Let him notice that himself before you present the five cards.</p>
+    <div class="say-block">
+      <div class="who">Say this</div>
+      "Of all five senses, smell is the most closely wired to memory. If you can remember what a place smelled like, that detail will almost always do more work than what it looked like."
+    </div>
+  </div>
+
+  <!-- 8 -->
+  <div class="stage-card" id="s8">
+    <div class="stage-head"><div class="stage-num">8</div><h2>Practice: Which Sense Is Doing the Work?</h2></div>
+    <p><span class="timing">33-35 min</span>Eight details, name the sense. Item 8 is a trap and is the one worth stopping on.</p>
+    <div class="callout tip">
+      <strong>Item 8 is the point of the exercise</strong>
+      "It was a nice day and everything looked lovely" claims to be sight but shows nothing. Ask him what he can actually picture from it. The answer is nothing. Compare it with item 5, "her hands were dusted white to the wrist", and ask which one he can see.
+    </div>
+  </div>
+
+  <!-- 9 -->
+  <div class="stage-card" id="s9">
+    <div class="stage-head"><div class="stage-num">9</div><h2>Now His Turn: Three Questions for His Own Writing</h2></div>
+    <p><span class="timing">35-38 min</span>All three choices applied live to his homework story, marking changes onto Worksheet 3.</p>
+    <div class="tablewrap">
+      <table class="simple">
+        <tr><th>Choice</th><th>What to actually do on the call</th></tr>
+        <tr><td>Claim</td><td>He marks every sentence F or O in the margin. Then look for any <i>obviously</i> or <i>clearly</i>. Most students find at least one.</td></tr>
+        <tr><td>Order</td><td>Ask which shape he used, then ask whether that was a decision or an accident. Then have him read it aloud starting from his most surprising sentence and ask which version he prefers.</td></tr>
+        <tr><td>Senses</td><td>Count the sight details out loud together. Then find exactly one place for a sound and one for a smell. Do not ask for all five, two additions is plenty.</td></tr>
+      </table>
+    </div>
+    <div class="callout watch">
+      <strong>Two additions, not five</strong>
+      If you ask him to add all five senses he will write a list of sensations instead of a story. One sound and one smell, placed well, teaches the principle without wrecking the piece.
+    </div>
+  </div>
+
+  <!-- 10 -->
+  <div class="stage-card" id="s10">
+    <div class="stage-head"><div class="stage-num">10</div><h2>Quick Check &amp; Recap</h2></div>
+    <p><span class="timing">38-40 min</span>Seven quickfire questions, the vocabulary list, then hand off to the homework.</p>
+    <div class="say-block">
+      <div class="who">Say this</div>
+      "On Google Classroom there is a review page with a video and a scored quiz, and Worksheet 3. The worksheet asks you to find the bias in a short account and say what was left out, which is exactly what we did with the two beach accounts."
+    </div>
+    <div class="say-block">
+      <div class="who">Say this</div>
+      "Next time we look at how a writer builds a voice, so a piece of life writing sounds like a real person and not like a school essay."
+    </div>
+    <div class="callout tip">
+      <strong>If you are running over</strong>
+      Skip the quiz entirely. It is repeated, in a scored version, on his review page. Protecting Stage 9 matters more.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>If you run short of time</h2>
+    <div class="tablewrap">
+      <table class="simple">
+        <tr><th>Cut this first</th><th>Never cut this</th></tr>
+        <tr><td>Stage 10 quiz (it is on his review page anyway)</td><td>Stage 4, and especially both full read-alouds</td></tr>
+        <tr><td>Stage 6, trim to three of the six openings</td><td>The "which one is lying?" question</td></tr>
+        <tr><td>Stage 8, trim to items 4, 5 and 8</td><td>Stage 9, at minimum the Claim and Senses passes</td></tr>
+      </table>
+    </div>
+    <p>This lesson carries three topics, so it is the most likely of the unit to overrun. The order above is deliberate: Choice 1 is the assessed objective (8Ri.05) and needs its full time, while Choices 2 and 3 can be thinner in the lesson because the worksheet drills both.</p>
+  </div>
+
+  <div class="actions no-print">
+    <button class="btn btn-coral" onclick="window.print()">🖨️ Print this script</button>
+    <a class="btn btn-ghost" href="https://claude.ai/code/artifact/44ae9788-585b-4845-8674-5e7eed353d93" target="_blank" rel="noopener">← Back to the interactive lesson</a>
+  </div>
+
+  <footer class="no-print">Lesson 3 · Unit 1B: Autobiography and Travel Writing · 8Ri.03, 8Ri.05, 8Ws, 8Wv</footer>
+</div>
