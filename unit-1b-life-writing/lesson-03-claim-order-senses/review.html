@@ -61,6 +61,7 @@ h1,h2,h3{font-family:'Nunito','Nunito Sans',system-ui,sans-serif;}
 .vpending{display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; height:100%; color:rgba(255,255,255,0.72); text-align:center; padding:24px;}
 .vpending .vicon{font-size:34px;}
 .vpending p{margin:0; font-size:14px; max-width:40ch;}
+.vpending .btn{margin-top:4px; text-decoration:none;}
 .vfoot{display:flex; align-items:center; justify-content:space-between; gap:12px; padding:13px 18px; flex-wrap:wrap;}
 .vfoot span{font-size:13px; color:var(--ink-soft);}
 
@@ -148,13 +149,19 @@ footer{text-align:center; color:var(--ink-soft); font-size:12px; margin-top:44px
   <!-- 1 -->
   <section class="block">
     <div class="block-head"><div class="block-num">1</div><h2>Watch first</h2></div>
-    <p class="block-intro">A short video on how a completely true account can still be unfair. Watch it before you do anything else on this page.</p>
+    <p class="block-intro">Watch this before you do anything else on this page. Watch the whole thing, then read the two questions underneath and see whether you can answer them.</p>
     <div class="videowrap">
       <div class="vframe" id="vframe"></div>
       <div class="vfoot">
-        <span id="vnote">Roughly 4 minutes.</span>
-        <a class="btn btn-teal btn-sm" id="vlink" href="#" target="_blank" rel="noopener" hidden>Open the video ↗</a>
+        <span id="vnote">Watch the whole thing before you carry on. If it will not play here, use the button.</span>
+        <a class="btn btn-teal btn-sm" id="vlink" href="#" target="_blank" rel="noopener" hidden>Open on YouTube ↗</a>
       </div>
+    </div>
+
+    <div class="card" style="background:var(--gold-light); border:none; margin-top:14px;">
+      <div style="font-family:'Nunito',sans-serif; font-weight:800; font-size:11.5px; letter-spacing:0.06em; text-transform:uppercase; color:var(--gold-dark); margin-bottom:9px;">Two things to listen out for</div>
+      <p style="margin:0 0 8px; font-size:14px; color:var(--gold-dark); line-height:1.6;"><b>1.</b> Any moment where somebody states an <b>opinion</b> as though it were a <b>fact</b>. Those are the moments we practised spotting in our lesson.</p>
+      <p style="margin:0; font-size:14px; color:var(--gold-dark); line-height:1.6;"><b>2.</b> Any moment where <b>leaving something out</b> changes the story, even though nothing untrue has been said. That is bias by selection, the same thing the two beach clean-up accounts were doing.</p>
     </div>
   </section>
 
@@ -213,7 +220,7 @@ footer{text-align:center; color:var(--ink-soft); font-size:12px; margin-top:44px
    VIDEO: paste the lesson video link here and republish.
    Works with a YouTube, Vimeo or Drive link, or any URL.
    ============================================================ */
-const VIDEO_URL = null;   // e.g. "https://www.youtube.com/watch?v=XXXXXXXXXXX"
+const VIDEO_URL = "https://www.youtube.com/watch?v=q-Y-z6HmRgI";
 
 function embedFor(url){
   try{
@@ -246,7 +253,17 @@ if(VIDEO_URL){
     f.title = 'Lesson 3 video: fact, opinion and bias';
     f.allow = 'accelerometer; clipboard-write; encrypted-media; picture-in-picture';
     f.allowFullscreen = true;
+    let loaded = false;
+    f.addEventListener('load', ()=>{ loaded = true; });
     vframe.appendChild(f);
+    // If the player never loads (some viewers block embedded video), offer a clear way out.
+    setTimeout(()=>{
+      if(loaded) return;
+      vframe.innerHTML = '<div class="vpending"><div class="vicon">\u25b6\ufe0f</div>'
+        + '<p>The video cannot play inside this page on your device.</p>'
+        + '<a class="btn btn-teal btn-sm" href="' + VIDEO_URL + '" target="_blank" rel="noopener">Watch it on YouTube \u2197</a>'
+        + '</div>';
+    }, 3500);
   } else {
     vframe.innerHTML = '<div class="vpending"><div class="vicon">🎬</div><p>Tap the button below to open the video.</p></div>';
   }
