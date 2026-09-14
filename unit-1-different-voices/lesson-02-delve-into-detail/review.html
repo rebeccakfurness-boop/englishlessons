@@ -163,11 +163,14 @@ footer{text-align:center; color:var(--ink-soft); font-size:12px; margin-top:44px
   <!-- 1 VIDEO -->
   <section class="block">
     <div class="block-head"><div class="block-num">1</div><h2>Watch first</h2></div>
-    <p class="block-intro">A short video about reading between the lines. Watch it before anything else on this page.</p>
+    <p class="block-intro">A recap from last lesson: describing a scene using the five senses &mdash; what you can see, hear, smell, touch and taste. Watch it before anything else on this page.</p>
+    <div class="card" style="background:var(--teal-light); border:none; margin-bottom:14px;">
+      <p style="margin:0; font-size:14px; color:var(--teal-dark); line-height:1.65;"><b>Why this, today?</b> Last lesson you used the five senses to <i>build</i> a scene. This lesson you did the opposite job &mdash; reading someone else&rsquo;s sensory details to work out what they really mean. Warm sand, a drum, the smell of the sea: those are the exact details a detective reads. Watch for how many senses the video uses, then look again at section 4 on this page and see which senses build each mood.</p>
+    </div>
     <div class="videowrap">
       <div class="vframe" id="vframe"></div>
       <div class="vfoot">
-        <span id="vnote">A few minutes.</span>
+        <span id="vnote">Watch the whole thing &mdash; it feeds section 4.</span>
         <a class="btn btn-teal btn-sm" id="vlink" href="#" target="_blank" rel="noopener" hidden>Open the video ↗</a>
       </div>
     </div>
@@ -275,7 +278,7 @@ footer{text-align:center; color:var(--ink-soft); font-size:12px; margin-top:44px
    VIDEO — paste the lesson video link here and republish.
    Works with a YouTube, Vimeo or Google Drive link.
    ============================================================ */
-const VIDEO_URL = null;   // e.g. "https://www.youtube.com/watch?v=XXXXXXXXXXX"
+const VIDEO_URL = "https://www.youtube.com/watch?v=ULPDb7xD0S4";   // Descriptive Writing: Using the 5 Senses
 
 /* Cross-links, filled in after publishing. */
 const LINKS = [];
@@ -306,7 +309,7 @@ if(VIDEO_URL){
   if(src){
     const f = document.createElement('iframe');
     f.src = src;
-    f.title = 'Lesson 2 video: reading between the lines';
+    f.title = 'Descriptive writing: using the five senses';
     f.allow = 'accelerometer; clipboard-write; encrypted-media; picture-in-picture';
     f.allowFullscreen = true;
     vframe.appendChild(f);
