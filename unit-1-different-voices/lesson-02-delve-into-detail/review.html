@@ -1,0 +1,529 @@
+<title>Detective Practice</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&family=Nunito+Sans:wght@400;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap');
+
+:root{
+  --bg:#FDF7EE; --ink:#46280A; --ink-soft:#7A6450;
+  --teal:#007C83; --teal-dark:#005F65; --teal-light:#D7EDEC;
+  --coral:#D1481F; --coral-dark:#A6330F; --coral-light:#FBE3D8;
+  --gold:#FEA74A; --gold-dark:#A65F06; --gold-light:#FFF0DC;
+  --plum:#2C5F8A; --plum-dark:#1E4664; --plum-light:#E0EBF4;
+  --card:#FFFFFF; --line:#EADFCD;
+  --shadow:0 8px 24px rgba(70,40,10,0.09);
+  --surface-dark:#2A1B0C;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#16110B; --ink:#F6EEE2; --ink-soft:#BBA890;
+    --teal:#2FA7AE; --teal-dark:#8FE3E6; --teal-light:#0E2E30;
+    --coral:#E2572B; --coral-dark:#FF9E77; --coral-light:#3A1F12;
+    --gold:#FEA74A; --gold-dark:#FFD09B; --gold-light:#3B2711;
+    --plum:#4E86B8; --plum-dark:#9CC6E6; --plum-light:#182B3A;
+    --card:#211A12; --line:#382B1D;
+    --shadow:0 8px 24px rgba(0,0,0,0.45);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#16110B; --ink:#F6EEE2; --ink-soft:#BBA890;
+  --teal:#2FA7AE; --teal-dark:#8FE3E6; --teal-light:#0E2E30;
+  --coral:#E2572B; --coral-dark:#FF9E77; --coral-light:#3A1F12;
+  --gold:#FEA74A; --gold-dark:#FFD09B; --gold-light:#3B2711;
+  --plum:#4E86B8; --plum-dark:#9CC6E6; --plum-light:#182B3A;
+  --card:#211A12; --line:#382B1D;
+  --shadow:0 8px 24px rgba(0,0,0,0.45);
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{background:var(--bg); color:var(--ink); font-family:'Nunito Sans','Segoe UI',system-ui,sans-serif;}
+h1,h2,h3{font-family:'Nunito','Nunito Sans',system-ui,sans-serif;}
+.mono{font-family:'IBM Plex Mono',monospace;}
+.app{max-width:760px; margin:0 auto; padding:0 20px 50px;}
+
+.hero{background:linear-gradient(135deg,var(--teal-dark),#0A4A50 60%,#2A1B0C); color:#fff; padding:34px 20px 30px;}
+.hero-inner{max-width:760px; margin:0 auto;}
+.hero .eyebrow{font-size:11.5px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--gold); margin:0 0 9px;}
+.hero h1{font-size:clamp(27px,5vw,38px); margin:0 0 9px; letter-spacing:-0.01em; text-wrap:balance;}
+.hero p{margin:0; font-size:15px; color:rgba(255,255,255,0.86); line-height:1.6; max-width:56ch;}
+.steps-strip{display:flex; gap:7px; flex-wrap:wrap; margin-top:18px;}
+.steps-strip span{font-size:11.5px; font-weight:700; padding:6px 12px; border-radius:999px; background:rgba(255,255,255,0.13); border:1px solid rgba(255,255,255,0.25);}
+
+.block{margin:30px 0;}
+.block-head{display:flex; align-items:center; gap:11px; margin-bottom:8px;}
+.block-num{width:29px; height:29px; border-radius:50%; background:var(--teal); color:#fff; display:flex; align-items:center; justify-content:center; font-family:'Nunito',sans-serif; font-weight:800; font-size:14px; flex-shrink:0;}
+.block-head h2{margin:0; font-size:20px;}
+.block-intro{font-size:14.5px; color:var(--ink-soft); line-height:1.65; margin:0 0 15px;}
+
+.card{background:var(--card); border:1px solid var(--line); border-radius:16px; padding:18px 20px; box-shadow:var(--shadow);}
+
+/* video */
+.videowrap{background:var(--card); border:1px solid var(--line); border-radius:16px; overflow:hidden; box-shadow:var(--shadow);}
+.vframe{position:relative; width:100%; max-width:100%; aspect-ratio:16/9; background:var(--surface-dark);}
+.vframe iframe{position:absolute; inset:0; width:100%; height:100%; border:0;}
+.vpending{display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; height:100%; color:rgba(255,255,255,0.72); text-align:center; padding:24px;}
+.vpending .vicon{font-size:34px;}
+.vpending p{margin:0; font-size:14px; max-width:40ch; line-height:1.6;}
+.vfoot{display:flex; align-items:center; justify-content:space-between; gap:12px; padding:13px 18px; flex-wrap:wrap;}
+.vfoot span{font-size:13px; color:var(--ink-soft);}
+
+.btn{font-family:'Nunito Sans',sans-serif; font-weight:700; font-size:13.5px; border:none; border-radius:10px; padding:10px 17px; cursor:pointer; text-decoration:none; display:inline-flex; align-items:center; gap:6px;}
+.btn-teal{background:var(--teal); color:#fff;}
+.btn-ghost{background:var(--card); color:var(--ink); border:1px solid var(--line);}
+.btn-sm{padding:7px 13px; font-size:12.5px;}
+.btn:disabled{opacity:.4; cursor:not-allowed;}
+[tabindex]:focus-visible, button:focus-visible, a:focus-visible, textarea:focus-visible{outline:2px solid var(--teal); outline-offset:2px; border-radius:8px;}
+
+/* reveal tiles */
+.tilegrid{display:grid; grid-template-columns:repeat(3,1fr); gap:12px;}
+@media(max-width:600px){.tilegrid{grid-template-columns:1fr;}}
+.tile{border-radius:14px; padding:15px 17px; color:#fff; cursor:pointer; border:none; text-align:left; font-family:inherit; box-shadow:var(--shadow);}
+.tile .tn{font-family:'Nunito',sans-serif; font-weight:800; font-size:15.5px; margin-bottom:4px;}
+.tile .tq{font-size:12.5px; opacity:0.88; line-height:1.5;}
+.tile .tb{font-size:13px; line-height:1.55; margin-top:9px; display:none;}
+.tile.open .tq{display:none;}
+.tile.open .tb{display:block;}
+
+/* prologue + evidence picker */
+.prose{background:var(--card); border:1px solid var(--line); border-radius:16px; padding:20px 24px; box-shadow:var(--shadow); font-size:15px; line-height:1.75;}
+.prose .pgtitle{font-family:'Nunito',sans-serif; font-weight:800; font-size:11.5px; letter-spacing:0.14em; text-transform:uppercase; color:var(--ink-soft); margin:0 0 4px;}
+.prose .stamp{font-style:italic; color:var(--ink-soft); font-size:13.5px; margin:0 0 14px;}
+.prose p{margin:0 0 12px;}
+.prose p:last-child{margin-bottom:0;}
+
+.ev{background:var(--card); border:1px solid var(--line); border-radius:15px; padding:16px 19px; box-shadow:var(--shadow); margin-bottom:12px;}
+.ev-q{font-family:'Nunito',sans-serif; font-weight:700; font-size:15px; margin-bottom:10px; line-height:1.5;}
+.ev-opts{display:flex; flex-direction:column; gap:8px;}
+.ev-opt{font-family:'IBM Plex Mono',monospace; font-size:12.5px; text-align:left; padding:11px 14px; border-radius:10px; border:1.5px solid var(--line); background:transparent; color:var(--ink); cursor:pointer; line-height:1.5;}
+.ev-opt:hover{border-color:var(--teal);}
+.ev-opt.good{background:var(--teal-light); border-color:var(--teal); color:var(--teal-dark); font-weight:600;}
+.ev-opt.bad{background:var(--coral-light); border-color:var(--coral); color:var(--coral-dark);}
+.ev-fb{margin-top:11px; font-size:13.5px; line-height:1.6; display:none; color:var(--ink-soft);}
+.ev.done .ev-fb{display:block;}
+
+/* word builder */
+.builder{display:grid; grid-template-columns:repeat(2,1fr); gap:11px;}
+@media(max-width:600px){.builder{grid-template-columns:1fr;}}
+.bw{background:var(--card); border:1px solid var(--line); border-radius:13px; padding:14px 16px; box-shadow:var(--shadow);}
+.bw .bword{font-family:'Nunito',sans-serif; font-weight:800; font-size:17px; margin-bottom:9px;}
+.bw .bparts{display:flex; gap:7px; flex-wrap:wrap;}
+.bw .bopt{font-family:'Nunito Sans',sans-serif; font-weight:700; font-size:12.5px; padding:7px 12px; border-radius:8px; border:1.5px solid var(--line); background:transparent; color:var(--ink-soft); cursor:pointer;}
+.bw .bopt:hover{border-color:var(--teal); color:var(--teal-dark);}
+.bw .bopt.good{background:var(--teal); border-color:var(--teal); color:#fff;}
+.bw .bopt.bad{background:var(--coral-light); border-color:var(--coral); color:var(--coral-dark);}
+.bw .bfb{font-size:12.5px; color:var(--ink-soft); line-height:1.55; margin-top:9px; display:none;}
+.bw.done .bfb{display:block;}
+
+/* quiz */
+.quiz-card{background:var(--card); border:1px solid var(--line); border-radius:15px; padding:16px 19px; box-shadow:var(--shadow); margin-bottom:12px;}
+.quiz-q{font-family:'Nunito',sans-serif; font-weight:700; font-size:15px; margin-bottom:11px; line-height:1.5;}
+.quiz-opts{display:flex; gap:8px; flex-wrap:wrap;}
+.qopt{font-family:'Nunito Sans',sans-serif; font-weight:600; font-size:13px; padding:9px 14px; border-radius:9px; border:1.5px solid var(--line); background:transparent; color:var(--ink); cursor:pointer;}
+.qopt:hover{border-color:var(--teal);}
+.qopt.good{background:var(--teal); border-color:var(--teal); color:#fff;}
+.qopt.bad{background:var(--coral-light); border-color:var(--coral); color:var(--coral-dark);}
+.quiz-fb{margin-top:11px; font-size:13.5px; line-height:1.6; display:none; color:var(--ink-soft);}
+.quiz-card.done .quiz-fb{display:block;}
+
+.scorepanel{background:var(--surface-dark); color:#fff; border-radius:16px; padding:20px 24px; margin-top:16px; box-shadow:var(--shadow);}
+.scorepanel .sbig{font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:30px; color:var(--gold); line-height:1.1;}
+.scorepanel p{margin:8px 0 0; font-size:14px; color:rgba(255,255,255,0.85); line-height:1.6;}
+.progtrack{height:8px; border-radius:99px; background:rgba(255,255,255,0.16); overflow:hidden; margin-top:14px;}
+.progfill{height:100%; width:0%; background:var(--gold); border-radius:99px; transition:width .4s ease;}
+
+/* writing box */
+.writebox{background:var(--card); border:1px solid var(--line); border-radius:16px; padding:18px 20px; box-shadow:var(--shadow);}
+.writebox label{display:block; font-family:'Nunito',sans-serif; font-weight:700; font-size:13.5px; margin-bottom:8px;}
+.writebox textarea{width:100%; min-height:110px; resize:vertical; font-family:'Nunito Sans',sans-serif; font-size:14.5px; line-height:1.65; color:var(--ink); background:var(--bg); border:1.5px solid var(--line); border-radius:11px; padding:12px 14px;}
+.writebox textarea:focus{border-color:var(--teal); outline:none;}
+.writerow{display:flex; align-items:center; gap:10px; margin-top:11px; flex-wrap:wrap;}
+.writerow .wstatus{font-size:12.5px; color:var(--ink-soft);}
+
+/* checklist */
+.check{list-style:none; padding:0; margin:0;}
+.check li{display:flex; gap:11px; align-items:flex-start; padding:11px 0; border-bottom:1px solid var(--line); font-size:14.5px; line-height:1.6;}
+.check li:last-child{border-bottom:none;}
+.check input{margin-top:3px; width:17px; height:17px; accent-color:var(--teal); flex-shrink:0;}
+
+footer{text-align:center; color:var(--ink-soft); font-size:12px; margin-top:44px; line-height:1.7;}
+@media (prefers-reduced-motion: reduce){ *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;} }
+</style>
+
+<div class="hero">
+  <div class="hero-inner">
+    <p class="eyebrow">Selong Bay School · Cambridge Primary English 6 · Lesson 2</p>
+    <h1>Detective Practice</h1>
+    <p>Everything from today's lesson, to do on your own. Work down the page in order — the video first, then the practice, then the quiz. When you finish, open Worksheet 2.</p>
+    <div class="steps-strip">
+      <span>🎬 Watch</span><span>🔍 Practise</span><span>🎭 Mood</span><span>🏛️ Word origins</span><span>✅ Quiz</span><span>✍️ Worksheet</span>
+    </div>
+  </div>
+</div>
+
+<div class="app">
+
+  <!-- 1 VIDEO -->
+  <section class="block">
+    <div class="block-head"><div class="block-num">1</div><h2>Watch first</h2></div>
+    <p class="block-intro">A short video about reading between the lines. Watch it before anything else on this page.</p>
+    <div class="videowrap">
+      <div class="vframe" id="vframe"></div>
+      <div class="vfoot">
+        <span id="vnote">A few minutes.</span>
+        <a class="btn btn-teal btn-sm" id="vlink" href="#" target="_blank" rel="noopener" hidden>Open the video ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 RECAP -->
+  <section class="block">
+    <div class="block-head"><div class="block-num">2</div><h2>Say it before you tap it</h2></div>
+    <p class="block-intro">Six ideas from the lesson. Try to explain each one out loud <em>first</em> — then tap to see whether you had it.</p>
+    <div class="tilegrid" id="tileGrid"></div>
+  </section>
+
+  <!-- 3 NEW PROLOGUE -->
+  <section class="block">
+    <div class="block-head"><div class="block-num">3</div><h2>A prologue you haven't seen</h2></div>
+    <p class="block-intro">Read this one twice — once quickly, once slowly. Then answer the four questions underneath. Each one asks you to choose the <b>best evidence</b>, not just any evidence.</p>
+
+    <div class="prose">
+      <p class="pgtitle">Prologue</p>
+      <p class="stamp">The last week of term, three years ago.</p>
+      <p>Nobody at Harbour Road School knew that Priya had already packed. Her bag sat under her bed with the zip half open, and on top of everything, folded twice, was the map.</p>
+      <p>She walked to school the long way that morning — past the fish market, past the blue gate, past the bench where she and Amina had eaten lunch every day for four years. She wanted to remember all of it properly.</p>
+      <p>Amina was waiting at the gate, the way she always was.</p>
+      <p>"You're late," Amina said.</p>
+      <p>"I know," said Priya. And that was the last ordinary thing either of them said to each other for a very long time.</p>
+    </div>
+
+    <div style="margin-top:16px;" id="evList"></div>
+  </section>
+
+  <!-- 4 MOOD -->
+  <section class="block">
+    <div class="block-head"><div class="block-num">4</div><h2>Which words build the mood?</h2></div>
+    <p class="block-intro">Each line below has been rewritten from the prologue you just read. Choose the mood each version creates.</p>
+    <div id="moodList"></div>
+  </section>
+
+  <!-- 5 WORD ORIGINS -->
+  <section class="block">
+    <div class="block-head"><div class="block-num">5</div><h2>Take the word apart</h2></div>
+    <p class="block-intro">Choose the meaning of the part in <b>bold</b>. Remember: <i>logos</i> is Greek for word or speech, and <i>pro</i> means before.</p>
+    <div class="builder" id="builderGrid"></div>
+    <div class="card" style="background:var(--gold-light); border:none; margin-top:14px;">
+      <p style="margin:0; font-size:14px; color:var(--gold-dark); line-height:1.65;"><b>Keep collecting these.</b> Write every new <i>-logy</i> or <i>-ology</i> word you meet into your learning journal. You will be surprised how fast the list grows once you start noticing.</p>
+    </div>
+  </section>
+
+  <!-- 6 QUIZ -->
+  <section class="block">
+    <div class="block-head"><div class="block-num">6</div><h2>Test yourself</h2></div>
+    <p class="block-intro">Ten questions on everything from the lesson. You get one attempt at each, so read carefully.</p>
+    <div id="quizList"></div>
+    <div class="scorepanel">
+      <div class="sbig" id="sBig">0 / 10</div>
+      <p id="sMsg">Answer the questions above and your score will appear here.</p>
+      <div class="progtrack"><div class="progfill" id="sFill"></div></div>
+    </div>
+  </section>
+
+  <!-- 7 WRITE -->
+  <section class="block">
+    <div class="block-head"><div class="block-num">7</div><h2>Plant one clue</h2></div>
+    <p class="block-intro">A warm-up for the last question on your worksheet. Below is a completely flat sentence. Rewrite it so that a reader starts to <em>worry</em> — without using any worrying words. Plant something and let them work it out.</p>
+    <div class="writebox">
+      <label for="plantBox">Flat sentence: <span class="mono" style="color:var(--gold-dark); font-weight:400;">"She got on the bus."</span> — now make me suspicious:</label>
+      <textarea id="plantBox" placeholder="She got on the bus with..."></textarea>
+      <div class="writerow">
+        <button class="btn btn-teal btn-sm" id="saveBtn">Save my answer</button>
+        <button class="btn btn-ghost btn-sm" id="exampleBtn">Show me one way</button>
+        <span class="wstatus" id="wStatus">Saved in this browser only — copy it into your worksheet.</span>
+      </div>
+      <div class="card" id="exampleCard" hidden style="margin-top:13px; background:var(--plum-light); border:none;">
+        <p style="margin:0; font-size:14px; color:var(--plum-dark); line-height:1.65;"><i>"She got on the bus with both suitcases, and she did not look back at the house."</i><br><br>Nothing in that sentence is frightening. Two suitcases and one refusal to look back do all the work — the reader builds the worry themselves. That is inference, from the writer's side.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 CHECKLIST -->
+  <section class="block">
+    <div class="block-head"><div class="block-num">8</div><h2>Before you open the worksheet</h2></div>
+    <p class="block-intro">Tick these off. If you can't tick one, scroll back up — the answer is on this page.</p>
+    <div class="card">
+      <ul class="check">
+        <li><input type="checkbox" id="c1"><label for="c1">I can explain what an <b>inference</b> is, and why it isn't a guess.</label></li>
+        <li><input type="checkbox" id="c2"><label for="c2">I know that every answer needs a <b>quotation</b> from the text.</label></li>
+        <li><input type="checkbox" id="c3"><label for="c3">I can name the <b>mood</b> of a piece and point at the words that create it.</label></li>
+        <li><input type="checkbox" id="c4"><label for="c4">I can tell <b>flashback</b> from <b>foreshadowing</b>, and spot an <b>all-knowing narrator</b>.</label></li>
+        <li><input type="checkbox" id="c5"><label for="c5">I can explain why <b>prologue</b> is called that, using <i>pro</i> and <i>logos</i>.</label></li>
+        <li><input type="checkbox" id="c6"><label for="c6">I know what <b>sub, trans, mono, micro</b> and <b>auto</b> mean.</label></li>
+      </ul>
+    </div>
+    <div class="card" style="background:var(--surface-dark); color:#fff; border:none; margin-top:14px;">
+      <p style="margin:0; font-size:14.5px; line-height:1.65;"><b style="color:var(--gold);">Now open Worksheet 2</b> on Google Classroom. You will be the detective on a new prologue, work with prefixes, and then write your own prologue with three clues hidden in it on purpose.</p>
+    </div>
+  </section>
+
+  <footer>
+    Lesson 2 · Unit 1: Different voices – different times · Session 1.2 <i>Delve into detail</i><br>
+    Cambridge Primary English Stage 6 · 6Ri.14 · 6Rv.04 · 6Rv.02 · 6Rv.01
+  </footer>
+</div>
+
+<script>
+/* ============================================================
+   VIDEO — paste the lesson video link here and republish.
+   Works with a YouTube, Vimeo or Google Drive link.
+   ============================================================ */
+const VIDEO_URL = null;   // e.g. "https://www.youtube.com/watch?v=XXXXXXXXXXX"
+
+/* Cross-links, filled in after publishing. */
+const LINKS = [];
+
+function embedFor(url){
+  try{
+    const u = new URL(url);
+    const h = u.hostname.replace(/^www\./,'');
+    if(h === 'youtu.be') return 'https://www.youtube.com/embed/' + u.pathname.slice(1);
+    if(h.endsWith('youtube.com')){
+      const v = u.searchParams.get('v');
+      if(v) return 'https://www.youtube.com/embed/' + v;
+      if(u.pathname.startsWith('/embed/')) return url;
+    }
+    if(h.endsWith('vimeo.com')) return 'https://player.vimeo.com/video/' + u.pathname.split('/').filter(Boolean)[0];
+    if(h.endsWith('drive.google.com')){
+      const m = u.pathname.match(/\/d\/([^/]+)/);
+      if(m) return 'https://drive.google.com/file/d/' + m[1] + '/preview';
+    }
+  }catch(e){ /* not a parseable URL */ }
+  return null;
+}
+const vframe = document.getElementById('vframe');
+const vlink = document.getElementById('vlink');
+const vnote = document.getElementById('vnote');
+if(VIDEO_URL){
+  const src = embedFor(VIDEO_URL);
+  if(src){
+    const f = document.createElement('iframe');
+    f.src = src;
+    f.title = 'Lesson 2 video: reading between the lines';
+    f.allow = 'accelerometer; clipboard-write; encrypted-media; picture-in-picture';
+    f.allowFullscreen = true;
+    vframe.appendChild(f);
+  } else {
+    vframe.innerHTML = '<div class="vpending"><div class="vicon">🎬</div><p>Tap the button below to open the video.</p></div>';
+  }
+  vlink.href = VIDEO_URL;
+  vlink.hidden = false;
+} else {
+  vframe.innerHTML = '<div class="vpending"><div class="vicon">🎬</div><p>The video for this lesson will appear here. If it isn’t here yet, carry on to section 2 and come back to it.</p></div>';
+  vnote.textContent = 'Video to be added.';
+}
+
+/* ---------------- recap tiles ---------------- */
+const tiles = [
+  {n:'Inference', q:'What is it, and how is it different from a guess?', c:'#005F65',
+   b:'A clue from the text PLUS what you already know. A guess has nothing behind it; an inference always starts with something really written down.'},
+  {n:'Evidence', q:'What has to go in every answer you write?', c:'#A65F06',
+   b:'A quotation — the exact words from the text, inside quotation marks. Without one, your answer is only an opinion.'},
+  {n:'Mood', q:'Whose feeling is it — the character’s or yours?', c:'#A6330F',
+   b:'Yours. Mood is the feeling the writing creates in the reader, and the writer builds it deliberately, one word choice at a time.'},
+  {n:'Foreshadowing', q:'Which direction does it point?', c:'#1E4664',
+   b:'Forwards. It hints at something coming later in the story, which is what builds suspense. "Three summers before the lights went out" is foreshadowing.'},
+  {n:'Flashback', q:'Which direction does this one point?', c:'#2C5F8A',
+   b:'Backwards. It takes you to something that happened before the main story, usually to explain how things got to be the way they are.'},
+  {n:'All-knowing narrator', q:'How do you spot one?', c:'#2A1B0C',
+   b:'It tells you something no character in the scene could know. "What she did not know was..." or "Neither of them noticed..." are the classic give-aways.'}
+];
+const tileWrap = document.getElementById('tileGrid');
+tiles.forEach(t=>{
+  const el = document.createElement('button');
+  el.className = 'tile';
+  el.style.background = t.c;
+  el.innerHTML = '<div class="tn">' + t.n + '</div><div class="tq">' + t.q + '</div><div class="tb">' + t.b + '</div>';
+  el.onclick = ()=> el.classList.toggle('open');
+  tileWrap.appendChild(el);
+});
+
+/* ---------------- evidence picker ---------------- */
+const evData = [
+  {q:'Which quotation best shows that Priya had already decided to leave?',
+   opts:['"Amina was waiting at the gate"','"Her bag sat under her bed with the zip half open"','"You’re late," Amina said'],
+   correct:1,
+   fb:'The packed bag is the proof. Nobody packs a bag and hides it under a bed by accident — and the map folded on top tells you she knows where she is going.'},
+  {q:'Which quotation best shows that Priya and Amina were close friends?',
+   opts:['"the bench where she and Amina had eaten lunch every day for four years"','"Amina was waiting at the gate"','"Nobody at Harbour Road School knew"'],
+   correct:0,
+   fb:'Four years, every single day, in the same place. The second option shows friendship too, but the first one proves how long and how steady it was — always choose the strongest evidence.'},
+  {q:'"She wanted to remember all of it properly." What does this suggest?',
+   opts:['She has a bad memory','She knows she is not coming back','She is late for school'],
+   correct:1,
+   fb:'You only try to memorise a walk you take every day if you think it is the last time you will take it. The text never says she is leaving for good — you infer it.'},
+  {q:'Which line tells you the story is about to change completely?',
+   opts:['"She walked to school the long way that morning"','"past the fish market, past the blue gate"','"that was the last ordinary thing either of them said to each other for a very long time"'],
+   correct:2,
+   fb:'"The last ordinary thing" means everything after it was extraordinary. And "for a very long time" means they were separated. That is foreshadowing — and it is also an all-knowing narrator, because neither girl knew it yet.'}
+];
+const evWrap = document.getElementById('evList');
+evData.forEach(item=>{
+  const el = document.createElement('div');
+  el.className = 'ev';
+  el.innerHTML = '<div class="ev-q">' + item.q + '</div><div class="ev-opts">'
+    + item.opts.map((o,i)=>'<button class="ev-opt" data-i="' + i + '">' + o + '</button>').join('')
+    + '</div><div class="ev-fb">' + item.fb + '</div>';
+  el.querySelectorAll('.ev-opt').forEach(btn=>{
+    btn.onclick = ()=>{
+      if(el.classList.contains('done')) return;
+      el.classList.add('done');
+      el.querySelectorAll('.ev-opt').forEach((b,i)=>{
+        if(i === item.correct) b.classList.add('good');
+        else if(b === btn) b.classList.add('bad');
+      });
+    };
+  });
+  evWrap.appendChild(el);
+});
+
+/* ---------------- mood rows ---------------- */
+const moodRows = [
+  {q:'"Amina was waiting at the gate, the way she always was."', opts:['Comfort','Fear','Anger'], correct:0,
+   fb:'"The way she always was" is the important bit. Something that happens every single day feels safe and familiar — which makes the ending land harder.'},
+  {q:'"Amina was not at the gate. Nobody was."', opts:['Comfort','Unease','Excitement'], correct:1,
+   fb:'Two short sentences, and the second is only three words. "Nobody was" answers a question you did not ask, and that is what makes it uncomfortable.'},
+  {q:'"Amina was at the gate early, jumping from foot to foot, grinning."', opts:['Sorrow','Unease','Excitement'], correct:2,
+   fb:'Early, jumping, grinning. Three details, all of them fast and physical — the mood changes without a single word about how anyone feels.'},
+  {q:'"Amina had waited at that gate every morning for four years. She would not wait there again."', opts:['Sorrow','Excitement','Comfort'], correct:0,
+   fb:'The first sentence builds something up and the second takes it away. That gap between them is where the sadness sits — and the narrator knows the future, so it is an all-knowing narrator too.'}
+];
+const moodWrap = document.getElementById('moodList');
+moodRows.forEach(item=>{
+  const el = document.createElement('div');
+  el.className = 'quiz-card';
+  el.innerHTML = '<div class="quiz-q">' + item.q + '</div><div class="quiz-opts">'
+    + item.opts.map((o,i)=>'<button class="qopt" data-i="' + i + '">' + o + '</button>').join('')
+    + '</div><div class="quiz-fb">' + item.fb + '</div>';
+  el.querySelectorAll('.qopt').forEach(btn=>{
+    btn.onclick = ()=>{
+      if(el.classList.contains('done')) return;
+      el.classList.add('done');
+      el.querySelectorAll('.qopt').forEach((b,i)=>{
+        if(i === item.correct) b.classList.add('good');
+        else if(b === btn) b.classList.add('bad');
+      });
+    };
+  });
+  moodWrap.appendChild(el);
+});
+
+/* ---------------- word builder ---------------- */
+const builderData = [
+  {w:'<b>pro</b>logue', opts:['before','after','under'], correct:0, fb:'pro = before. A prologue is the words before the story.'},
+  {w:'epi<b>logue</b>', opts:['book','word or speech','ending'], correct:1, fb:'logos = word or speech. An epilogue is the words added on at the end.'},
+  {w:'<b>mono</b>logue', opts:['many','loud','one'], correct:2, fb:'mono = one. One person speaking alone.'},
+  {w:'<b>auto</b>biography', opts:['self','famous','true'], correct:0, fb:'auto = self. An autobiography is a life story written by that person themselves.'},
+  {w:'<b>trans</b>late', opts:['across','again','quickly'], correct:0, fb:'trans = across. To translate is to carry meaning across into another language.'},
+  {w:'<b>micro</b>scope', opts:['bright','small','round'], correct:1, fb:'micro = small. A microscope is for looking at very small things.'},
+  {w:'<b>sub</b>heading', opts:['first','extra','under'], correct:2, fb:'sub = under or below. A subheading sits under the main heading.'},
+  {w:'ge<b>ology</b>', opts:['the study of','the map of','the shape of'], correct:0, fb:'-ology = the study of. Geology is the study of the earth.'}
+];
+const builderWrap = document.getElementById('builderGrid');
+builderData.forEach(item=>{
+  const el = document.createElement('div');
+  el.className = 'bw';
+  el.innerHTML = '<div class="bword">' + item.w + '</div><div class="bparts">'
+    + item.opts.map((o,i)=>'<button class="bopt" data-i="' + i + '">' + o + '</button>').join('')
+    + '</div><div class="bfb">' + item.fb + '</div>';
+  el.querySelectorAll('.bopt').forEach(btn=>{
+    btn.onclick = ()=>{
+      if(el.classList.contains('done')) return;
+      el.classList.add('done');
+      el.querySelectorAll('.bopt').forEach((b,i)=>{
+        if(i === item.correct) b.classList.add('good');
+        else if(b === btn) b.classList.add('bad');
+      });
+    };
+  });
+  builderWrap.appendChild(el);
+});
+
+/* ---------------- scored quiz ---------------- */
+const quizData = [
+  {q:'What are the two ingredients of an inference?', opts:['A clue from the text + what you already know','A guess + a feeling','A quotation + a long sentence'], correct:0,
+   fb:'A clue you can point at, plus what you already know about the world.'},
+  {q:'Where does an epilogue come?', opts:['Before chapter one','After the story ends','In the middle'], correct:1,
+   fb:'epi (in addition) + logos (word) — the words added after the story is over.'},
+  {q:'"Neither of them noticed the woman on the steps." What technique is this?', opts:['Flashback','Dialogue','All-knowing narrator'], correct:2,
+   fb:'If neither character noticed her, only the narrator could have — so the narrator knows more than the characters do.'},
+  {q:'What does mood mean in reading?', opts:['How the main character feels','The feeling the writing gives the reader','Whether a story is happy or sad at the end'], correct:1,
+   fb:'Mood is about you, the reader. The writer builds it out of word choices.'},
+  {q:'Which sentence contains foreshadowing?', opts:['"She had danced there since she could walk."','"Three summers before the lights went out."','"The sand was still warm."'], correct:1,
+   fb:'It warns you that something bad is coming, without saying what. That is foreshadowing.'},
+  {q:'prologue is built from which two Greek words?', opts:['pro + logos','pre + logue','epi + logos'], correct:0,
+   fb:'pro (before) + logos (word or speech).'},
+  {q:'What does the prefix auto mean?', opts:['Fast','Self','Machine'], correct:1,
+   fb:'auto = self. Autobiography, automatic, autograph — all about doing something yourself.'},
+  {q:'Which word does NOT use logos meaning word or speech?', opts:['dialogue','monorail','epilogue'], correct:1,
+   fb:'monorail is mono (one) + rail. It shares mono with monologue, but not logos.'},
+  {q:'You write: "Priya is leaving for good." What must you add to make it a full answer?', opts:['A longer sentence','A quotation that proves it','Another idea'], correct:1,
+   fb:'Objective 6Ri.14 — support your answer with a quotation. For example: because "she wanted to remember all of it properly".'},
+  {q:'A writer changes "took off her shoes" to "kicked off her shoes and ran, laughing". What has changed?', opts:['The event','The mood','The narrator'], correct:1,
+   fb:'The event is identical — she removes her shoes. Only the word choices changed, and with them the mood.'}
+];
+const quizWrap = document.getElementById('quizList');
+const sBig = document.getElementById('sBig'), sMsg = document.getElementById('sMsg'), sFill = document.getElementById('sFill');
+let score = 0, answered = 0;
+quizData.forEach(item=>{
+  const el = document.createElement('div');
+  el.className = 'quiz-card';
+  el.innerHTML = '<div class="quiz-q">' + item.q + '</div><div class="quiz-opts">'
+    + item.opts.map((o,i)=>'<button class="qopt" data-i="' + i + '">' + o + '</button>').join('')
+    + '</div><div class="quiz-fb">' + item.fb + '</div>';
+  el.querySelectorAll('.qopt').forEach(btn=>{
+    btn.onclick = ()=>{
+      if(el.classList.contains('done')) return;
+      el.classList.add('done');
+      const ok = Number(btn.dataset.i) === item.correct;
+      if(ok) score++;
+      answered++;
+      el.querySelectorAll('.qopt').forEach((b,i)=>{
+        if(i === item.correct) b.classList.add('good');
+        else if(b === btn) b.classList.add('bad');
+      });
+      sBig.textContent = score + ' / ' + quizData.length;
+      sFill.style.width = Math.round(answered / quizData.length * 100) + '%';
+      if(answered < quizData.length){
+        sMsg.textContent = answered + ' of ' + quizData.length + ' answered. Keep going.';
+      } else if(score === quizData.length){
+        sMsg.textContent = 'Every single one. Outstanding detective work — go straight to the worksheet.';
+      } else if(score >= 7){
+        sMsg.textContent = 'Strong. Scroll back up and re-read the feedback on any you missed, then open the worksheet.';
+      } else {
+        sMsg.textContent = 'Worth another look. Go back through sections 2 and 5, then try these again — the answers are all on this page.';
+      }
+    };
+  });
+  quizWrap.appendChild(el);
+});
+
+/* ---------------- writing box ---------------- */
+const plantBox = document.getElementById('plantBox');
+const wStatus = document.getElementById('wStatus');
+const KEY = 'sbs-l2-plant';
+try{
+  const saved = localStorage.getItem(KEY);
+  if(saved){ plantBox.value = saved; wStatus.textContent = 'Your saved answer is back.'; }
+}catch(e){ /* storage unavailable */ }
+document.getElementById('saveBtn').onclick = ()=>{
+  try{
+    localStorage.setItem(KEY, plantBox.value);
+    wStatus.textContent = 'Saved. Remember to copy it into your worksheet.';
+  }catch(e){
+    wStatus.textContent = 'Could not save here — copy your answer into the worksheet now.';
+  }
+};
+document.getElementById('exampleBtn').onclick = (e)=>{
+  const c = document.getElementById('exampleCard');
+  c.hidden = !c.hidden;
+  e.target.textContent = c.hidden ? 'Show me one way' : 'Hide the example';
+};
+</script>

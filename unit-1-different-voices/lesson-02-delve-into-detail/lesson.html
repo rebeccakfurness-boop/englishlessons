@@ -1,0 +1,793 @@
+<title>Read Like a Detective</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&family=Nunito+Sans:wght@400;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap');
+
+:root{
+  --bg:#FDF7EE; --ink:#46280A; --ink-soft:#7A6450;
+  --teal:#007C83; --teal-dark:#005F65; --teal-light:#D7EDEC;
+  --coral:#D1481F; --coral-dark:#A6330F; --coral-light:#FBE3D8;
+  --gold:#FEA74A; --gold-dark:#A65F06; --gold-light:#FFF0DC;
+  --plum:#2C5F8A; --plum-dark:#1E4664; --plum-light:#E0EBF4;
+  --card:#FFFFFF; --line:#EADFCD;
+  --shadow: 0 8px 24px rgba(70,40,10,0.09);
+  --scrim: rgba(253,247,238,0.93);
+  --surface-dark:#2A1B0C;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#16110B; --ink:#F6EEE2; --ink-soft:#BBA890;
+    --teal:#2FA7AE; --teal-dark:#8FE3E6; --teal-light:#0E2E30;
+    --coral:#E2572B; --coral-dark:#FF9E77; --coral-light:#3A1F12;
+    --gold:#FEA74A; --gold-dark:#FFD09B; --gold-light:#3B2711;
+    --plum:#4E86B8; --plum-dark:#9CC6E6; --plum-light:#182B3A;
+    --card:#211A12; --line:#382B1D;
+    --shadow: 0 8px 24px rgba(0,0,0,0.45);
+    --scrim: rgba(22,17,11,0.9);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#16110B; --ink:#F6EEE2; --ink-soft:#BBA890;
+  --teal:#2FA7AE; --teal-dark:#8FE3E6; --teal-light:#0E2E30;
+  --coral:#E2572B; --coral-dark:#FF9E77; --coral-light:#3A1F12;
+  --gold:#FEA74A; --gold-dark:#FFD09B; --gold-light:#3B2711;
+  --plum:#4E86B8; --plum-dark:#9CC6E6; --plum-light:#182B3A;
+  --card:#211A12; --line:#382B1D;
+  --shadow: 0 8px 24px rgba(0,0,0,0.45);
+  --scrim: rgba(22,17,11,0.9);
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{background:var(--bg); color:var(--ink); font-family:'Nunito Sans','Segoe UI',system-ui,sans-serif; min-height:100vh; overflow-x:hidden;}
+h1,h2,h3{font-family:'Nunito','Nunito Sans',system-ui,sans-serif;}
+.mono{font-family:'IBM Plex Mono',monospace;}
+
+.app{max-width:920px;margin:0 auto;padding:0 20px 40px;}
+.topbar{position:sticky; top:0; z-index:50; background:var(--scrim); backdrop-filter:blur(8px); border-bottom:1px solid var(--line); padding:14px 20px 10px;}
+.topbar-inner{max-width:920px;margin:0 auto;}
+.brandrow{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:10px;}
+.brand{display:flex; align-items:center; gap:8px;}
+.brand-mark{width:26px;height:26px;border-radius:8px; background:linear-gradient(135deg,var(--teal),var(--coral)); flex-shrink:0;}
+.brand-text{font-size:12px; letter-spacing:0.06em; text-transform:uppercase; color:var(--ink-soft); font-weight:600;}
+.reslinks{display:flex; gap:6px; justify-content:center; flex-wrap:wrap; margin-top:10px;}
+.reslinks a{padding:6px 12px; border-radius:999px; background:var(--card); border:1px solid var(--line); color:var(--ink-soft); font-size:11.5px; font-weight:700; text-decoration:none; white-space:nowrap;}
+.reslinks a:hover{border-color:var(--teal); color:var(--teal-dark);}
+@media(max-width:640px){.reslinks{display:none;}}
+.dots{display:flex; gap:6px; justify-content:center; flex-wrap:wrap;}
+.dot{width:22px; height:5px; border-radius:3px; background:var(--line); border:none; cursor:pointer; padding:0; transition:all .25s ease;}
+.dot.active{background:var(--teal); width:34px;}
+.dot.done{background:var(--gold);}
+
+.stage{padding-top:28px; min-height:62vh;}
+.step{display:none; animation:fadein .35s ease;}
+.step.active{display:block;}
+@keyframes fadein{from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:translateY(0);}}
+
+.kicker{display:inline-flex; align-items:center; gap:8px; font-size:12px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--teal-dark); background:var(--teal-light); padding:5px 12px; border-radius:20px; margin-bottom:14px;}
+h1.title{font-size:clamp(28px,5vw,42px); line-height:1.08; margin:0 0 12px; letter-spacing:-0.01em; text-wrap:balance;}
+p.lede{font-size:17px; color:var(--ink-soft); max-width:640px; line-height:1.55; margin:0 0 24px;}
+.objref{font-size:11px; color:var(--ink-soft); font-family:'IBM Plex Mono',monospace; background:var(--card); border:1px solid var(--line); padding:3px 9px; border-radius:999px; display:inline-block; margin-bottom:10px;}
+
+.grid{display:grid; gap:14px;}
+.grid-2{grid-template-columns:1fr 1fr;}
+.grid-3{grid-template-columns:repeat(3,1fr);}
+@media(max-width:640px){.grid-2,.grid-3{grid-template-columns:1fr;}}
+.card{background:var(--card); border:1px solid var(--line); border-radius:16px; padding:18px 20px; box-shadow:var(--shadow);}
+
+.btn{font-family:'Nunito Sans','Segoe UI',system-ui,sans-serif; font-weight:600; font-size:14px; border:none; border-radius:10px; padding:10px 18px; cursor:pointer; transition:transform .15s ease, box-shadow .15s ease;}
+.btn:hover{transform:translateY(-1px);}
+.btn-primary{background:var(--teal); color:#fff;}
+.btn-primary:hover{box-shadow:0 6px 16px rgba(0,124,131,0.4);}
+.btn-ghost{background:transparent; color:var(--ink-soft); border:1px solid var(--line);}
+.btn-ghost:hover{border-color:var(--teal);}
+.btn:disabled{opacity:0.35; cursor:not-allowed; transform:none; box-shadow:none;}
+.btn-sm{padding:7px 12px; font-size:12.5px; border-radius:8px;}
+[tabindex]:focus-visible, button:focus-visible, a:focus-visible{outline:2px solid var(--teal); outline-offset:2px; border-radius:8px;}
+
+/* flip cards */
+.flip{perspective:1200px; height:186px; cursor:pointer;}
+.flip-inner{position:relative; width:100%; height:100%; transition:transform .5s cubic-bezier(.2,.8,.2,1); transform-style:preserve-3d;}
+.flip.flipped .flip-inner{transform:rotateY(180deg);}
+.flip-face{position:absolute; inset:0; backface-visibility:hidden; border-radius:16px; padding:16px 18px; display:flex; flex-direction:column; justify-content:center; border:1px solid var(--line); box-shadow:var(--shadow); overflow:auto;}
+.flip-front{background:var(--card);}
+.flip-back{transform:rotateY(180deg); color:#fff;}
+.flip-front .flip-term{font-family:'Nunito','Nunito Sans',system-ui,sans-serif; font-weight:700; font-size:18px; margin-bottom:4px; line-height:1.4;}
+.flip-front .flip-sub{font-size:12.5px; color:var(--ink-soft); line-height:1.45;}
+.flip-front .flip-hint{font-size:12px; color:var(--ink-soft); margin-top:8px;}
+.flip-back p{margin:0; font-size:13px; line-height:1.5; white-space:pre-line;}
+
+/* inference equation */
+.equation{display:flex; align-items:stretch; gap:10px; flex-wrap:wrap; margin:6px 0 4px;}
+.eq-box{flex:1 1 180px; border-radius:14px; padding:14px 16px; box-shadow:var(--shadow);}
+.eq-box .eq-lbl{font-family:'Nunito','Nunito Sans',sans-serif; font-weight:800; font-size:11px; text-transform:uppercase; letter-spacing:0.07em; margin-bottom:5px;}
+.eq-box p{margin:0; font-size:13px; line-height:1.5;}
+.eq-a{background:var(--teal-light); color:var(--teal-dark); border:1px solid var(--teal);}
+.eq-b{background:var(--gold-light); color:var(--gold-dark); border:1px solid var(--gold);}
+.eq-c{background:var(--surface-dark); color:#fff; border:1px solid var(--surface-dark);}
+.eq-c .eq-lbl{color:var(--gold);}
+.eq-op{display:flex; align-items:center; justify-content:center; font-size:26px; font-weight:800; color:var(--ink-soft); font-family:'Nunito',sans-serif; flex:0 0 auto; padding:0 2px;}
+@media(max-width:640px){.eq-op{transform:rotate(90deg); padding:2px 0;} .equation{flex-direction:column;} .eq-box{flex:1 1 auto;}}
+
+/* prologue text + clues */
+.prose{background:var(--card); border:1px solid var(--line); border-radius:16px; padding:22px 26px; box-shadow:var(--shadow); font-size:15.5px; line-height:1.75; max-width:68ch;}
+.prose .pgtitle{font-family:'Nunito',sans-serif; font-weight:800; font-size:12px; letter-spacing:0.14em; text-transform:uppercase; color:var(--ink-soft); margin:0 0 4px;}
+.prose .stamp{font-style:italic; color:var(--ink-soft); font-size:14px; margin:0 0 16px;}
+.prose p{margin:0 0 13px;}
+.prose .note{border-top:1px dashed var(--line); margin-top:18px; padding-top:16px; font-style:italic; color:var(--plum-dark);}
+.prose .sign{text-align:right; font-style:italic; color:var(--plum-dark); margin:0;}
+.clue{display:inline; font:inherit; background:var(--gold-light); color:inherit; border:none; border-bottom:2px dotted var(--gold-dark); padding:1px 2px; margin:0; cursor:pointer; border-radius:3px; box-decoration-break:clone; -webkit-box-decoration-break:clone;}
+.clue:hover{background:var(--gold); color:#46280A;}
+.clue.found{background:var(--teal-light); border-bottom-color:var(--teal); color:var(--teal-dark); font-weight:600;}
+.cluecount{display:inline-flex; align-items:center; gap:8px; font-family:'IBM Plex Mono',monospace; font-size:12.5px; font-weight:600; color:var(--teal-dark); background:var(--teal-light); padding:6px 13px; border-radius:999px; margin-bottom:12px;}
+.cluepanel{background:var(--surface-dark); color:#fff; border-radius:16px; padding:18px 22px; margin-top:14px; box-shadow:var(--shadow); min-height:96px;}
+.cluepanel .cp-tag{display:inline-block; font-family:'Nunito',sans-serif; font-weight:800; font-size:10.5px; letter-spacing:0.07em; text-transform:uppercase; background:var(--gold); color:#46280A; padding:3px 10px; border-radius:999px; margin-bottom:9px;}
+.cluepanel .cp-quote{font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--gold); line-height:1.5; margin:0 0 9px;}
+.cluepanel p{margin:0; font-size:14px; line-height:1.6; color:rgba(255,255,255,0.93);}
+.cluepanel .cp-idle{color:rgba(255,255,255,0.6); font-style:italic;}
+
+/* mood chips */
+.modeswitch{display:inline-flex; background:var(--card); border:1px solid var(--line); border-radius:999px; padding:4px; gap:4px; margin-bottom:14px; box-shadow:var(--shadow);}
+.modeswitch button{border:none; background:transparent; font-family:'Nunito',sans-serif; font-weight:700; font-size:13px; color:var(--ink-soft); padding:7px 15px; border-radius:999px; cursor:pointer;}
+.modeswitch button.on{background:var(--teal); color:#fff;}
+.chips{display:flex; flex-wrap:wrap; gap:9px;}
+.chip{font-family:'Nunito',sans-serif; font-weight:700; font-size:13.5px; padding:9px 16px; border-radius:999px; border:1.5px solid var(--line); background:var(--card); color:var(--ink); cursor:pointer;}
+.chip:hover{border-color:var(--teal);}
+.chip.yes{background:var(--teal); border-color:var(--teal); color:#fff;}
+.chip.no{background:var(--coral-light); border-color:var(--coral); color:var(--coral-dark); text-decoration:line-through;}
+.chipfb{margin-top:13px; font-size:14px; line-height:1.6; padding:14px 18px; border-radius:14px; background:var(--card); border:1px solid var(--line); box-shadow:var(--shadow); color:var(--ink); min-height:54px;}
+.chipfb.idle{color:var(--ink-soft); font-style:italic;}
+
+/* sort rows */
+.sort-item{display:flex; gap:14px; align-items:center; justify-content:space-between; background:var(--card); border:1px solid var(--line); border-radius:14px; padding:14px 18px; box-shadow:var(--shadow); margin-bottom:11px; flex-wrap:wrap;}
+.sort-name{font-size:14.5px; line-height:1.6; color:var(--ink);}
+.sort-reason{font-size:13px; color:var(--ink-soft); margin-top:7px; display:none; line-height:1.55;}
+.sort-item.answered .sort-reason{display:block;}
+.sort-options{display:flex; gap:7px; flex-wrap:wrap; flex-shrink:0;}
+.opt-btn{font-family:'Nunito Sans',sans-serif; font-weight:700; font-size:12.5px; padding:8px 13px; border-radius:9px; border:1.5px solid var(--line); background:var(--card); color:var(--ink-soft); cursor:pointer;}
+.opt-btn:hover{border-color:var(--teal); color:var(--teal-dark);}
+.sort-item.answered .opt-btn{cursor:default;}
+.opt-btn.correct{background:var(--teal); border-color:var(--teal); color:#fff;}
+.opt-btn.wrong{background:var(--coral-light); border-color:var(--coral); color:var(--coral-dark);}
+
+/* word tree */
+.tree{display:flex; align-items:center; gap:10px; flex-wrap:wrap; justify-content:center; margin:4px 0 2px;}
+.tnode{border-radius:12px; padding:11px 15px; text-align:center; min-width:112px; box-shadow:var(--shadow);}
+.tnode .tlang{font-family:'Nunito',sans-serif; font-weight:800; font-size:9.5px; letter-spacing:0.1em; text-transform:uppercase; opacity:0.75; margin-bottom:2px;}
+.tnode .tword{font-family:'Nunito',sans-serif; font-weight:800; font-size:17px; line-height:1.2;}
+.tnode .tmean{font-size:11.5px; font-style:italic; margin-top:2px; opacity:0.9;}
+.tnode.greek{background:var(--plum-light); color:var(--plum-dark); border:1px solid var(--plum);}
+.tnode.eng{background:var(--teal); color:#fff; border:1px solid var(--teal-dark);}
+.tplus{font-size:22px; font-weight:800; color:var(--ink-soft); font-family:'Nunito',sans-serif;}
+.tarrow{font-size:20px; color:var(--ink-soft);}
+
+/* logos family */
+.famgrid{display:grid; grid-template-columns:repeat(3,1fr); gap:11px;}
+@media(max-width:640px){.famgrid{grid-template-columns:1fr 1fr;}}
+.fam{background:var(--card); border:1px solid var(--line); border-radius:13px; padding:13px 14px; box-shadow:var(--shadow); cursor:pointer; text-align:left; font-family:inherit;}
+.fam .fw{font-family:'Nunito',sans-serif; font-weight:800; font-size:15.5px; color:var(--ink); margin-bottom:3px;}
+.fam .fb{font-size:12.5px; color:var(--ink-soft); line-height:1.5;}
+.fam.open{background:var(--plum-light); border-color:var(--plum);}
+.fam.open .fw{color:var(--plum-dark);}
+.fam.open .fb{color:var(--plum-dark);}
+
+/* quiz */
+.quiz-card{background:var(--card); border:1px solid var(--line); border-radius:15px; padding:16px 19px; box-shadow:var(--shadow); margin-bottom:12px;}
+.quiz-q{font-family:'Nunito',sans-serif; font-weight:700; font-size:15px; margin-bottom:11px; line-height:1.5;}
+.quiz-opts{display:flex; gap:8px; flex-wrap:wrap;}
+.quiz-fb{margin-top:11px; font-size:13.5px; line-height:1.6; display:none;}
+.quiz-fb.correct{display:block; color:var(--teal-dark);}
+.quiz-fb.wrong{display:block; color:var(--coral-dark);}
+.scorebar{display:flex; align-items:center; gap:12px; background:var(--surface-dark); color:#fff; border-radius:14px; padding:13px 18px; margin-bottom:16px;}
+.scorebar .sc-n{font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:15px; color:var(--gold);}
+.scorebar .sc-t{font-size:13.5px; color:rgba(255,255,255,0.85);}
+
+.vocab-card{background:var(--card); border-left:4px solid var(--teal); border-radius:10px; padding:12px 16px; margin-bottom:10px; box-shadow:var(--shadow); font-size:14px; line-height:1.55;}
+.vocab-card b{font-family:'Nunito','Nunito Sans',system-ui,sans-serif;}
+.hw-list{list-style:none; padding:0; margin:0;}
+.hw-list li{padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.15); font-size:14.5px; display:flex; gap:10px; align-items:center;}
+.hw-list li:last-child{border-bottom:none;}
+.hw-box{width:16px; height:16px; border-radius:4px; border:2px solid var(--gold); flex-shrink:0;}
+
+.navbar{position:sticky; bottom:0; background:var(--scrim); backdrop-filter:blur(8px); border-top:1px solid var(--line); padding:14px 20px; display:flex; justify-content:space-between; align-items:center; margin-top:26px; border-radius:16px 16px 0 0;}
+.step-count{font-size:12px; color:var(--ink-soft); font-family:'IBM Plex Mono',monospace;}
+.note-i{font-size:12.5px; color:var(--ink-soft); font-style:italic; margin-top:10px; line-height:1.55;}
+
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; scroll-behavior:auto !important;}
+}
+</style>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brandrow">
+      <div class="brand">
+        <div class="brand-mark"></div>
+        <div class="brand-text">Selong Bay School · Cambridge Primary English 6</div>
+      </div>
+      <div class="step-count mono"><span id="stepNow">1</span> / <span id="stepTotal">10</span></div>
+    </div>
+    <div class="dots" id="dots"></div>
+    <div class="reslinks" id="reslinks"></div>
+  </div>
+</div>
+
+<div class="app">
+<div class="stage">
+
+  <!-- STEP 0 -->
+  <section class="step active" data-step="0">
+    <span class="objref">Ref: 6Ri.14 · 6Rv.04 · 6Rv.02</span>
+    <span class="kicker">Lesson 2 · Unit 1</span>
+    <h1 class="title">Read Like a Detective</h1>
+    <p class="lede">Last lesson you learned what a prologue is and how a writer sets the scene with characters, environment and time. Today you go back into a prologue and hunt for what the writer <em>didn&rsquo;t</em> say out loud — the clues hidden in it about the story still to come.</p>
+
+    <div class="grid grid-2">
+      <div class="card" style="background:var(--teal-light); border:none;">
+        <div style="font-family:'Nunito',sans-serif; font-weight:700; font-size:12px; text-transform:uppercase; letter-spacing:0.06em; color:var(--teal-dark); margin-bottom:8px;">By the end you will be able to&hellip;</div>
+        <ul style="margin:0; padding-left:18px; font-size:14px; color:var(--teal-dark); line-height:1.85;">
+          <li>Find clues in a prologue and say what they suggest</li>
+          <li>Back up every answer with a quotation</li>
+          <li>Name the <b>mood</b> of a piece and the words that create it</li>
+          <li>Spot foreshadowing, flashback and an all-knowing narrator</li>
+          <li>Break a word into its parts to work out what it means</li>
+        </ul>
+      </div>
+      <div class="card" style="background:var(--surface-dark); color:#fff; border:none;">
+        <div class="kicker" style="background:rgba(255,255,255,0.12); color:var(--gold); margin-bottom:10px;">🔗 From Lesson 1</div>
+        <p style="margin:0 0 10px; font-size:14px; line-height:1.6; color:#fff;">You already know a prologue sits <b>before</b> chapter one and its job is to hook the reader. You described characters, the environment and the time.</p>
+        <p style="margin:0; font-size:14px; line-height:1.6; color:rgba(255,255,255,0.8);">Today: a prologue doesn&rsquo;t just set a scene. It <i>plants</i> things. Your job is to dig them up.</p>
+      </div>
+    </div>
+
+    <div class="card" style="background:var(--gold-light); border:none; margin-top:14px;">
+      <p style="margin:0; font-size:14px; color:var(--gold-dark); line-height:1.6;"><b>Cambridge objective 6Ri.14</b> asks you to <i>&ldquo;support answers to questions with reference to, or quotations from, one or more points in a text.&rdquo;</i> That is the whole lesson in one sentence: never just say what you think — show where in the text you got it from.</p>
+    </div>
+  </section>
+
+  <!-- STEP 1 -->
+  <section class="step" data-step="1">
+    <span class="kicker">Warm-up · 3 min</span>
+    <h1 class="title">What You Already Know</h1>
+    <p class="lede">Say your answer out loud <em>before</em> you tap the card.</p>
+    <div class="grid grid-2" id="warmupFlips"></div>
+  </section>
+
+  <!-- STEP 2 -->
+  <section class="step" data-step="2">
+    <span class="kicker">Teach · The detective&rsquo;s method</span>
+    <h1 class="title">Clue + What You Know</h1>
+    <p class="lede">A detective never guesses. They take something that is actually there, add what they already know about the world, and reach a conclusion. Reading works exactly the same way — and it has a name.</p>
+
+    <div class="equation">
+      <div class="eq-box eq-a">
+        <div class="eq-lbl">The clue</div>
+        <p>Something really written in the text. You can point at it and quote it.</p>
+      </div>
+      <div class="eq-op">+</div>
+      <div class="eq-box eq-b">
+        <div class="eq-lbl">What you already know</div>
+        <p>About people, places, stories, life. You bring this yourself.</p>
+      </div>
+      <div class="eq-op">=</div>
+      <div class="eq-box eq-c">
+        <div class="eq-lbl">An inference</div>
+        <p>A sensible conclusion the writer never actually wrote down.</p>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:16px;">
+      <div style="font-family:'Nunito',sans-serif; font-weight:700; font-size:13px; color:var(--teal-dark); margin-bottom:9px;">Try it with something ordinary</div>
+      <p style="margin:0 0 10px; font-size:14.5px; line-height:1.65;"><span class="mono" style="color:var(--gold-dark);">&ldquo;She unlaced her shoes at the door and left them beside three other pairs.&rdquo;</span></p>
+      <p style="margin:0; font-size:14px; color:var(--ink-soft); line-height:1.65;"><b>Clue:</b> three other pairs of shoes. <b>What you know:</b> people take shoes off at the door in many homes, and one person has one pair. <b>Inference:</b> she is arriving somewhere other people are already waiting — and she isn&rsquo;t the guest of honour.</p>
+      <p class="note-i">Nowhere does it say &ldquo;other people were there&rdquo;. You worked it out. That is inference.</p>
+    </div>
+
+    <div class="card" style="background:var(--coral-light); border:none; margin-top:14px;">
+      <p style="margin:0; font-size:14px; color:var(--coral-dark); line-height:1.6;"><b>The rule that gets you the marks:</b> an inference without a quotation is only an opinion. Always finish your answer with <i>&ldquo;&hellip;because the text says &lsquo;______&rsquo;.&rdquo;</i></p>
+    </div>
+  </section>
+
+  <!-- STEP 3 -->
+  <section class="step" data-step="3">
+    <span class="kicker">Read · Together, out loud</span>
+    <h1 class="title">The Last Dance</h1>
+    <p class="lede">A prologue in two halves. Read it twice: once straight through, then once slowly, looking for anything the writer has planted on purpose.</p>
+
+    <div class="prose">
+      <p class="pgtitle">Prologue</p>
+      <p class="stamp">Three summers before the lights went out.</p>
+      <p>The sand was still warm when Mira took off her shoes and stepped into the circle. Somewhere behind her a drum began — slow at first, the way her grandmother always started, as though the music had to be coaxed out of the ground rather than played.</p>
+      <p>She had danced on this beach every year since she could walk. She knew the count. She knew the turn. She knew that when the drum quickened, the whole village would move in together like one long breath.</p>
+      <p>What she did not know was that this would be the last time.</p>
+      <div class="note">
+        <p>If you are reading this, then you found the box, and the shoes are inside it. Wear them. Dance the old way, the way I showed you, with your heels in the sand and your chin up. Do not look for me in the places I told you about — look for me in the places I never mentioned. I am sorry I could not explain before I left. There was not enough time, and there were too many people listening.</p>
+        <p class="sign">— M.</p>
+      </div>
+    </div>
+
+    <div class="card" style="background:var(--plum-light); border:none; margin-top:14px;">
+      <p style="margin:0; font-size:14px; color:var(--plum-dark); line-height:1.65;"><b>Notice the shape before the detail.</b> Two parts, and they don&rsquo;t match. The first is told <i>about</i> Mira by someone else — &ldquo;she&rdquo;, &ldquo;her&rdquo;. The second is in italics, and someone is speaking straight to you — &ldquo;I&rdquo;, &ldquo;you&rdquo;. Who is each one? That question is the hook.</p>
+    </div>
+  </section>
+
+  <!-- STEP 4 -->
+  <section class="step" data-step="4">
+    <span class="kicker">Activity · Clue hunt</span>
+    <h1 class="title">Dig Up the Evidence</h1>
+    <p class="lede">Every highlighted phrase was planted deliberately. Tap one, say what you think it tells us, <em>then</em> read what it gives away.</p>
+
+    <div class="cluecount"><span>🔍</span><span><span id="clueFound">0</span> of <span id="clueTotal">8</span> clues found</span></div>
+
+    <div class="prose" id="clueProse">
+      <p class="pgtitle">Prologue</p>
+      <p class="stamp"><span class="clue" role="button" tabindex="0" data-c="a">Three summers before the lights went out.</span></p>
+      <p>The sand was still warm when Mira took off her shoes and stepped into the circle. Somewhere behind her a drum began — slow at first, <span class="clue" role="button" tabindex="0" data-c="b">the way her grandmother always started</span>, as though the music had to be coaxed out of the ground rather than played.</p>
+      <p><span class="clue" role="button" tabindex="0" data-c="c">She had danced on this beach every year since she could walk.</span> She knew the count. She knew the turn. She knew that when the drum quickened, the whole village would move in together like one long breath.</p>
+      <p><span class="clue" role="button" tabindex="0" data-c="d">What she did not know was that this would be the last time.</span></p>
+      <div class="note">
+        <p>If you are reading this, then <span class="clue" role="button" tabindex="0" data-c="e">you found the box, and the shoes are inside it</span>. Wear them. Dance the old way, the way I showed you, with your heels in the sand and your chin up. <span class="clue" role="button" tabindex="0" data-c="f">Do not look for me in the places I told you about — look for me in the places I never mentioned.</span> I am sorry I could not explain before I left. <span class="clue" role="button" tabindex="0" data-c="g">There was not enough time, and there were too many people listening.</span></p>
+        <p class="sign"><span class="clue" role="button" tabindex="0" data-c="h">— M.</span></p>
+      </div>
+    </div>
+
+    <div class="cluepanel" id="cluePanel"><p class="cp-idle">Tap any highlighted phrase above to open it.</p></div>
+  </section>
+
+  <!-- STEP 5 -->
+  <section class="step" data-step="5">
+    <span class="kicker">Teach &amp; do · Mood</span>
+    <h1 class="title">How the Writing Feels</h1>
+    <p class="lede"><b>Mood</b> is the feeling a piece of writing gives the reader. The writer builds it deliberately, out of word choices. Choose a part, then tap the mood words you think fit it.</p>
+
+    <div class="modeswitch" id="moodSwitch">
+      <button data-m="p1" class="on">Part 1 · the beach</button>
+      <button data-m="p2">Part 2 · the note</button>
+    </div>
+    <div class="chips" id="moodChips"></div>
+    <div class="chipfb idle" id="moodFb">Tap a mood word to test it against the text.</div>
+
+    <div class="card" style="background:var(--gold-light); border:none; margin-top:16px;">
+      <p style="margin:0; font-size:14px; color:var(--gold-dark); line-height:1.65;"><b>Two moods in one prologue is not a mistake.</b> The warm opening is there so that the note feels colder by comparison. Writers set up a feeling in order to break it.</p>
+    </div>
+  </section>
+
+  <!-- STEP 6 -->
+  <section class="step" data-step="6">
+    <span class="kicker">Activity · Change the mood</span>
+    <h1 class="title">Same Moment, Three Feelings</h1>
+    <p class="lede">Here is the opening sentence again, rewritten three times. The event never changes — only a few words do. Match each version to the mood it creates.</p>
+
+    <div class="card" style="margin-bottom:16px; background:var(--teal-light); border:none;">
+      <p style="margin:0; font-size:14.5px; color:var(--teal-dark); line-height:1.6;"><b>Original:</b> <i>&ldquo;The sand was still warm when Mira took off her shoes and stepped into the circle.&rdquo;</i></p>
+    </div>
+
+    <div id="moodShiftList"></div>
+
+    <p class="note-i">Notice how few words had to change. Mood is built in the small choices — a verb, an adjective, one extra detail at the end of the sentence.</p>
+  </section>
+
+  <!-- STEP 7 -->
+  <section class="step" data-step="7">
+    <span class="kicker">Teach · Three ways to open</span>
+    <h1 class="title">Backwards, Forwards, or All-Knowing</h1>
+    <p class="lede">Prologues play with time. There are three moves a writer can make — read each opening and decide which one it is.</p>
+
+    <div class="grid grid-3" style="margin-bottom:18px;">
+      <div class="card" style="background:var(--plum-light); border:1px solid var(--plum);">
+        <div style="font-family:'Nunito',sans-serif; font-weight:800; font-size:14.5px; color:var(--plum-dark); margin-bottom:5px;">⏪ Flashback</div>
+        <p style="margin:0; font-size:12.5px; color:var(--plum-dark); line-height:1.55;">Takes you <b>back</b> to something that already happened, to explain how things got here.</p>
+      </div>
+      <div class="card" style="background:var(--coral-light); border:1px solid var(--coral);">
+        <div style="font-family:'Nunito',sans-serif; font-weight:800; font-size:14.5px; color:var(--coral-dark); margin-bottom:5px;">⏩ Foreshadowing</div>
+        <p style="margin:0; font-size:12.5px; color:var(--coral-dark); line-height:1.55;">Hints at something <b>ahead</b>. A flash forward builds suspense by showing you a piece of the ending.</p>
+      </div>
+      <div class="card" style="background:var(--teal-light); border:1px solid var(--teal);">
+        <div style="font-family:'Nunito',sans-serif; font-weight:800; font-size:14.5px; color:var(--teal-dark); margin-bottom:5px;">👁️ All-knowing narrator</div>
+        <p style="margin:0; font-size:12.5px; color:var(--teal-dark); line-height:1.55;">A voice that knows <b>more than the characters do</b> and tells you things they cannot know.</p>
+      </div>
+    </div>
+
+    <div id="typeList"></div>
+
+    <div class="card" style="background:var(--surface-dark); color:#fff; border:none; margin-top:16px;">
+      <p style="margin:0; font-size:14px; line-height:1.65;"><b style="color:var(--gold);">Back to our prologue:</b> it uses two of the three at once. &ldquo;What she did not know&hellip;&rdquo; is an <b>all-knowing narrator</b> — Mira cannot know it, but the voice telling the story does. And <i>&ldquo;Three summers before the lights went out&rdquo;</i> is <b>foreshadowing</b> — something goes badly wrong, and you now have to keep reading to find out what.</p>
+    </div>
+  </section>
+
+  <!-- STEP 8 -->
+  <section class="step" data-step="8">
+    <span class="objref">Ref: 6Rv.02 — explore word origins and derivations</span>
+    <span class="kicker">Teach &amp; do · Where words come from</span>
+    <h1 class="title">Take the Word Apart</h1>
+    <p class="lede">You have used the word <b>prologue</b> for two lessons. It is actually two ancient Greek words stuck together — and once you can see them, you can unlock dozens of other words.</p>
+
+    <div class="card" style="margin-bottom:14px;">
+      <div class="tree">
+        <div class="tnode greek"><div class="tlang">Greek</div><div class="tword">pro</div><div class="tmean">before</div></div>
+        <div class="tplus">+</div>
+        <div class="tnode greek"><div class="tlang">Greek</div><div class="tword">logos</div><div class="tmean">word, speech</div></div>
+        <div class="tarrow">→</div>
+        <div class="tnode eng"><div class="tlang">English</div><div class="tword">prologue</div><div class="tmean">the words before</div></div>
+      </div>
+      <p style="margin:14px 0 0; font-size:13.5px; color:var(--ink-soft); line-height:1.6; text-align:center;">Which means the opposite exists too: <b style="color:var(--plum-dark);">epi</b> (in addition) + <b style="color:var(--plum-dark);">logos</b> → <b style="color:var(--ink);">epilogue</b>, the words <i>after</i> the story ends.</p>
+    </div>
+
+    <h3 style="font-size:16px; margin:20px 0 10px;">The <i>logos</i> family — tap to take each one apart</h3>
+    <div class="famgrid" id="famGrid"></div>
+
+    <h3 style="font-size:16px; margin:24px 0 10px;">Five more prefixes — guess before you flip</h3>
+    <div class="grid grid-3" id="prefixFlips"></div>
+
+    <div class="card" style="background:var(--gold-light); border:none; margin-top:16px;">
+      <p style="margin:0; font-size:14px; color:var(--gold-dark); line-height:1.65;"><b>One for a dancer.</b> <b>Choreography</b> comes from Greek <i>khoreia</i> (dancing) + <i>graphein</i> (to write). A choreographer is literally someone who <i>writes a dance down</i>. Every time you learn a routine, you are reading something that was written — just not in letters.</p>
+    </div>
+  </section>
+
+  <!-- STEP 9 -->
+  <section class="step" data-step="9">
+    <span class="kicker">Quiz · 5 min</span>
+    <h1 class="title">Check Yourself</h1>
+    <p class="lede">Eight quick questions. Say why you chose your answer before you tap it.</p>
+    <div class="scorebar"><span class="sc-n" id="scoreN">0 / 8</span><span class="sc-t" id="scoreT">Answer them in any order.</span></div>
+    <div id="quizList"></div>
+  </section>
+
+  <!-- STEP 10 -->
+  <section class="step" data-step="10">
+    <span class="kicker">Recap</span>
+    <h1 class="title">Well Danced</h1>
+    <p class="lede">The words from today — keep these in your learning journal.</p>
+    <div id="vocabList"></div>
+
+    <div class="card" style="background:var(--surface-dark); color:#fff; border:none; margin-top:20px;">
+      <div class="kicker" style="background:rgba(255,255,255,0.12); color:var(--gold); margin-bottom:10px;">🏠 Homework · Worksheet 2</div>
+      <ul class="hw-list">
+        <li><div class="hw-box"></div>Be the detective on a brand-new prologue — four clues, each with a quotation</li>
+        <li><div class="hw-box"></div>Name the mood and quote the words that build it</li>
+        <li><div class="hw-box"></div>Rewrite one sentence to change its mood completely</li>
+        <li><div class="hw-box"></div>Fill in the prefix table and the <i>logos</i> family</li>
+        <li><div class="hw-box"></div>Write your own two-part prologue with three clues planted on purpose</li>
+      </ul>
+      <p style="margin:14px 0 0; font-size:13px; color:rgba(255,255,255,0.75);">Worksheet 2 and your review page are both on Google Classroom. Do the review page first — it has the video.</p>
+    </div>
+
+    <p class="lede" style="margin-top:20px;">🎉 Next lesson: <b>Focus on technique</b> — first person and third person, why writers use italics, and how to build a character a reader can picture in one line.</p>
+  </section>
+
+</div>
+
+<div class="navbar">
+  <button class="btn btn-ghost" id="prevBtn">← Back</button>
+  <button class="btn btn-primary" id="nextBtn">Next →</button>
+</div>
+</div>
+
+<script>
+/* ============================================================
+   CROSS-LINKS — fill these in after publishing, then republish.
+   ============================================================ */
+const LINKS = [
+  {label:'🧑‍🎓 Student review page', url:'https://claude.ai/artifact/AY9x2weCZZY922UuibFpmi'},
+  {label:'🗣️ Teaching script', url:'https://claude.ai/artifact/MPRiAWa8UR5oVn9yDppwkh'}
+];
+
+const warmupData = [
+  {term:'What is a prologue?', sub:'Where does it sit, and what is it for?', back:"A short piece of writing that comes BEFORE chapter one. Its job is to hook the reader — to make you need to know what happens next.", colour:'#005F65'},
+  {term:'Setting the scene', sub:'Three things you described last lesson. What were they?', back:"CHARACTERS — who is here and what they are like.\nENVIRONMENT — what you can see, hear, smell, touch, taste.\nTIME — when it is happening, broad or exact.", colour:'#A65F06'},
+  {term:'Which is stronger?', sub:'“It was a nice beach” or “I could taste salt on my lips”?', back:"The second one. Naming a feeling tells the reader. Giving them something they can sense lets them feel it themselves — and they trust it more.", colour:'#A6330F'},
+  {term:'A new word: EVIDENCE', sub:'Have a guess — what does it mean in reading?', back:"The exact words from the text that prove your answer is right. In this lesson you will never give an answer without it.", colour:'#1E4664'}
+];
+
+const clues = {
+  a:{tag:'Time · and a warning', quote:'“Three summers before the lights went out.”',
+     why:"Two jobs in seven words. It sets the TIME (three summers ago), and it tells you something terrible is coming — the lights go out. You do not yet know whether that means a power cut, a town emptying, or something worse. That is exactly why you keep reading."},
+  b:{tag:'Character · who matters', quote:'“the way her grandmother always started”',
+     why:"The grandmother is not in the scene, but she is in the writing. Mira is copying her. This tells you the dance is handed down through a family, and that the grandmother is going to matter — writers do not mention a relative in a prologue by accident."},
+  c:{tag:'Character · belonging', quote:'“She had danced on this beach every year since she could walk.”',
+     why:"This is Mira's whole life in one sentence. She belongs here completely. Which means that when something takes it away, the loss will be enormous — the writer is building up what there is to lose."},
+  d:{tag:'Narrator · knows more than she does', quote:'“What she did not know was that this would be the last time.”',
+     why:"Ask who is speaking. Not Mira — she doesn't know. Someone telling the story who can see further than the character can. This is an ALL-KNOWING narrator, and it lets the writer hand you a piece of the future while the character dances on, happily unaware."},
+  e:{tag:'Object · remember this', quote:'“you found the box, and the shoes are inside it”',
+     why:"A box, hidden. Shoes, kept. When an object is placed this carefully in a prologue it always comes back. Good detectives keep a list of objects — they are usually the key to the plot."},
+  f:{tag:'Mystery · a search is coming', quote:'“look for me in the places I never mentioned”',
+     why:"This is an instruction, which means someone is expected to go looking. It also means the writer was being watched or overheard, so the real places had to stay unspoken. You now know the story ahead involves a journey, and a search."},
+  g:{tag:'Danger · why it had to be a note', quote:'“there were too many people listening”',
+     why:"The reason for the secrecy. Somebody dangerous is nearby. Notice the writer never says 'I was in danger' — they show you a room with too many ears in it and let you work it out. That is inference doing the work."},
+  h:{tag:'Identity · the biggest question', quote:'“— M.”',
+     why:"One letter. Mira starts with M — but so might a mother, or a grandmother. The writer could easily have given a full name and chose not to. Holding back a name is one of the oldest ways of making a reader turn the page."}
+};
+
+const moodData = [
+  {w:'peace',        p1:{ok:true,  why:"Yes. Warm sand, a slow drum, a dance she has known all her life. Nothing threatens her yet — and that is deliberate."},
+                     p2:{ok:false, why:"No. The note was written in a hurry by someone who has already gone. Nothing about it is peaceful."}},
+  {w:'wistfulness',  p1:{ok:true,  why:"Yes — a gentle sadness for something lovely that is ending. The narrator already knows it is the last time, even though Mira doesn't."},
+                     p2:{ok:false, why:"Close, but not quite. The note is too urgent to be wistful — it gives instructions and warnings rather than looking back fondly."}},
+  {w:'excitement',   p1:{ok:true,  why:"Yes, in a quiet way. The drum quickens and the whole village moves “like one long breath” — something is building."},
+                     p2:{ok:false, why:"No. The writer of the note is frightened and sorry, not excited."}},
+  {w:'suspense',     p1:{ok:true,  why:"Yes — created by one line. “This would be the last time” makes you need to know what happens, right at the end of a calm scene."},
+                     p2:{ok:true,  why:"Yes. “Too many people listening” tells you somebody is in danger without telling you who, or why, or what happened next."}},
+  {w:'mystery',      p1:{ok:false, why:"Not really. Part 1 is clear and calm — you can picture everything in it. The mystery begins when the note starts."},
+                     p2:{ok:true,  why:"Yes. A hidden box, a pair of shoes, places that were never mentioned, and a writer who signs with a single letter."}},
+  {w:'fear',         p1:{ok:false, why:"No — nothing in the beach scene is frightening. That is exactly why the final line lands so hard."},
+                     p2:{ok:true,  why:"Yes. “There were too many people listening” turns a goodbye into a warning."}},
+  {w:'regret',       p1:{ok:false, why:"No. Mira is completely happy here — she has nothing to regret yet."},
+                     p2:{ok:true,  why:"Yes, and you can quote it directly: “I am sorry I could not explain before I left.”"}},
+  {w:'sorrow',       p1:{ok:false, why:"Not in the scene itself. Any sadness belongs to the narrator, who knows what is coming — not to Mira, who doesn't."},
+                     p2:{ok:true,  why:"Yes. Underneath the instructions there is real grief — this is somebody saying goodbye without being allowed to say goodbye."}},
+  {w:'anger',        p1:{ok:false, why:"No. Nothing here is angry."},
+                     p2:{ok:false, why:"No — and this one is worth checking carefully. Look at the actual words: “sorry”, “could not”, “not enough time”. That is someone sad and afraid, not someone furious."}},
+  {w:'hilarity',     p1:{ok:false, why:"No. It is warm and happy, but nobody is laughing — “hilarity” means something much stronger."},
+                     p2:{ok:false, why:"Definitely not. There is nothing funny anywhere in the note."}}
+];
+
+const moodShiftData = [
+  {name:'<b>Version A.</b> “The sand <u>had gone cold</u> when Mira <u>pulled</u> off her shoes and stepped into the <u>empty</u> circle.”',
+   opts:['Sorrow','Excitement','Suspense'], correct:'Sorrow',
+   reason:"Three small changes do it: warm becomes cold, took becomes pulled, and the circle is empty. Nobody is there. The event is identical — a girl removing her shoes — but it now feels like an ending."},
+  {name:'<b>Version B.</b> “The sand was still warm when Mira <u>kicked off</u> her shoes and <u>ran</u> into the circle, <u>laughing</u>.”',
+   opts:['Sorrow','Excitement','Suspense'], correct:'Excitement',
+   reason:"The verbs carry it. Kicked and ran are fast and careless where took and stepped were careful. Add “laughing” and the whole sentence speeds up."},
+  {name:'<b>Version C.</b> “The sand was still warm when Mira <u>slid</u> off her shoes and stepped into the circle, <u>listening for footsteps behind her</u>.”',
+   opts:['Sorrow','Excitement','Suspense'], correct:'Suspense',
+   reason:"Almost nothing changed except the ending. “Slid” is quiet and careful, and the last six words tell you she is being followed — or thinks she is. A detail saved for the end of a sentence hits hardest."}
+];
+
+const typeData = [
+  {name:'“Long before any of this, when the harbour was still full of boats, my mother learned the same dance in the same place.”',
+   opts:['Flashback','Foreshadowing','All-knowing narrator'], correct:'Flashback',
+   reason:"“Long before any of this” takes you backwards in time. It explains how things came to be as they are — that is a flashback."},
+  {name:'“One day you will stand in this circle alone, and you will understand why I had to go.”',
+   opts:['Flashback','Foreshadowing','All-knowing narrator'], correct:'Foreshadowing',
+   reason:"“One day you will” points forwards. It shows you a piece of what is coming without explaining it, which is precisely how suspense is made."},
+  {name:'“Neither of them noticed the woman watching from the top of the steps.”',
+   opts:['Flashback','Foreshadowing','All-knowing narrator'], correct:'All-knowing narrator',
+   reason:"If neither character noticed her, who did? The voice telling the story. Only an all-knowing narrator can hand the reader information that every character in the scene has missed."}
+];
+
+const famData = [
+  {w:'prologue',  b:'pro (before) + logos (word) → the words that come before the story.'},
+  {w:'epilogue',  b:'epi (in addition) + logos (word) → the words added after the story ends.'},
+  {w:'monologue', b:'mono (one) + logos (speech) → one person speaking alone, on stage or in a film.'},
+  {w:'dialogue',  b:'dia (between) + logos (speech) → speech passing between two or more people.'},
+  {w:'biology',   b:'bio (life) + logos → -ology means “the study of”. Biology is the study of living things.'},
+  {w:'geology',   b:'geo (earth) + logos → the study of the earth: rocks, mountains, volcanoes.'}
+];
+
+const prefixData = [
+  {term:'sub',   sub:'Where have you seen it? Try: marine, heading, tropical.', back:"UNDER or BELOW.\n\nsubmarine — a boat that travels under the sea\nsubheading — a smaller heading under the main one\nsubtropical — just below the tropics", colour:'#005F65'},
+  {term:'trans', sub:'Try: port, late, form.', back:"ACROSS.\n\ntransport — to carry across a distance\ntranslate — to carry meaning across into another language\ntransform — to change across into something else", colour:'#A65F06'},
+  {term:'mono',  sub:'Try: logue, rail, tone.', back:"ONE.\n\nmonologue — one person speaking\nmonorail — a railway running on one rail\nmonotone — one single tone, with no variation", colour:'#A6330F'},
+  {term:'micro', sub:'Try: scope, phone, wave.', back:"SMALL.\n\nmicroscope — for looking at very small things\nmicrophone — for making small sounds bigger\nmicrowave — a very short (small) wave", colour:'#1E4664'},
+  {term:'auto',  sub:'Try: biography, matic, graph.', back:"SELF.\n\nautobiography — the story of a life, written by that person themselves\nautomatic — works by itself\nautograph — a person's name written by their own hand", colour:'#2A1B0C'},
+  {term:'pro',   sub:'Careful — this one has TWO meanings.', back:"1. BEFORE in time, place or order\nprologue — the words before\nprogramme — written up before the show\nproceed — to go forward\n\n2. IN FAVOUR OF, supporting\n“I am very pro-dance” means you are all for it.", colour:'#007C83'}
+];
+
+const quizData = [
+  {q:'Where does a prologue come in a book?', opts:['Before chapter one','In the middle','Right at the end'], correct:0,
+   fb:'A prologue comes before the story proper begins. The piece at the end is an epilogue.'},
+  {q:'What is an inference?', opts:['A guess with no evidence','A clue from the text plus what you already know','A word copied straight out of the text'], correct:1,
+   fb:'Clue + what you already know = inference. It has to start with something really written in the text.'},
+  {q:'Which quotation best shows the writer of the note was in danger?', opts:['“Wear them.”','“there were too many people listening”','“the sand was still warm”'], correct:1,
+   fb:'Nobody says “I was in danger”. The detail about people listening lets you work it out — and it is the line you would quote to prove it.'},
+  {q:'What is the mood of Part 1, the beach?', opts:['Warm and peaceful, with suspense at the very end','Frightening the whole way through','Funny'], correct:0,
+   fb:'Part 1 is calm and happy right up to “this would be the last time”, which drops suspense into the final line.'},
+  {q:'“What she did not know was that this would be the last time.” Which technique is this?', opts:['Flashback','An all-knowing narrator','A dialogue'], correct:1,
+   fb:'The voice knows something Mira does not. Only an all-knowing narrator can do that — and here it foreshadows as well.'},
+  {q:'prologue = pro + logos. What do those two Greek words mean?', opts:['“before” + “word”','“after” + “story”','“one” + “speech”'], correct:0,
+   fb:'pro = before, logos = word or speech. So a prologue is literally “the words before”.'},
+  {q:'Which of these does NOT come from logos, meaning word or speech?', opts:['monologue','dialogue','monorail'], correct:2,
+   fb:'monorail is mono (one) + rail — a railway on a single rail. The other two are built on logos.'},
+  {q:'You have written a brilliant answer about a character. What must you always add?', opts:['A longer sentence','A quotation from the text','Your own opinion about the character'], correct:1,
+   fb:'Objective 6Ri.14 exactly: support your answer with a reference to, or a quotation from, the text. Without it, it is only an opinion.'}
+];
+
+const vocabData = [
+  {t:'Inference', d:'A conclusion you reach by combining a clue in the text with what you already know. The writer never states it directly.'},
+  {t:'Evidence', d:'The exact words from the text that prove your answer. Usually written inside quotation marks.'},
+  {t:'Mood', d:'The feeling a piece of writing creates in the reader — peaceful, tense, sorrowful — built out of word choices.'},
+  {t:'Foreshadowing', d:'A hint early in a story about something that will happen later. It builds suspense.'},
+  {t:'Flashback', d:'A jump backwards to something that happened before the main story, to explain how things got here.'},
+  {t:'All-knowing narrator', d:'A storytelling voice that knows more than the characters and can tell the reader things they do not know.'},
+  {t:'Prefix', d:'A word part added to the front of a word to change its meaning: sub, trans, mono, micro, auto, pro.'},
+  {t:'Word origin', d:'Where a word came from. Many English words are built from ancient Greek and Latin parts — prologue is pro + logos.'},
+  {t:'Epilogue', d:'A short section after the story ends. epi (in addition) + logos (word).'}
+];
+
+/* ---------- cross-links ---------- */
+const rl = document.getElementById('reslinks');
+LINKS.forEach(l=>{
+  const a = document.createElement('a');
+  a.href = l.url; a.target = '_blank'; a.rel = 'noopener'; a.textContent = l.label;
+  rl.appendChild(a);
+});
+
+/* ---------- flip card builder ---------- */
+function buildFlips(wrap, data){
+  data.forEach(item=>{
+    const el = document.createElement('div');
+    el.className = 'flip';
+    el.tabIndex = 0;
+    el.setAttribute('role','button');
+    el.setAttribute('aria-label', 'Reveal: ' + item.term);
+    el.innerHTML = '<div class="flip-inner">'
+      + '<div class="flip-face flip-front"><div class="flip-term">' + item.term + '</div><div class="flip-sub">' + item.sub + '</div><div class="flip-hint">Tap to check →</div></div>'
+      + '<div class="flip-face flip-back" style="background:' + item.colour + ';"><p>' + item.back + '</p></div>'
+      + '</div>';
+    const go = ()=> el.classList.toggle('flipped');
+    el.onclick = go;
+    el.onkeydown = e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); go(); } };
+    wrap.appendChild(el);
+  });
+}
+buildFlips(document.getElementById('warmupFlips'), warmupData);
+buildFlips(document.getElementById('prefixFlips'), prefixData);
+
+/* ---------- clue hunt ---------- */
+const cluePanel = document.getElementById('cluePanel');
+const clueFoundEl = document.getElementById('clueFound');
+const clueBtns = document.querySelectorAll('#clueProse .clue');
+document.getElementById('clueTotal').textContent = clueBtns.length;
+let found = 0;
+clueBtns.forEach(btn=>{
+  btn.onkeydown = e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); btn.click(); } };
+  btn.onclick = ()=>{
+    const c = clues[btn.dataset.c];
+    if(!btn.classList.contains('found')){
+      btn.classList.add('found');
+      found++;
+      clueFoundEl.textContent = found;
+    }
+    cluePanel.innerHTML = '<span class="cp-tag">' + c.tag + '</span>'
+      + '<p class="cp-quote">' + c.quote + '</p>'
+      + '<p>' + c.why + '</p>';
+  };
+});
+
+/* ---------- mood chips ---------- */
+let moodMode = 'p1';
+const moodChipsWrap = document.getElementById('moodChips');
+const moodFb = document.getElementById('moodFb');
+function renderChips(){
+  moodChipsWrap.innerHTML = '';
+  moodData.forEach(m=>{
+    const b = document.createElement('button');
+    b.className = 'chip';
+    b.textContent = m.w;
+    b.onclick = ()=>{
+      const r = m[moodMode];
+      b.classList.remove('yes','no');
+      b.classList.add(r.ok ? 'yes' : 'no');
+      moodFb.className = 'chipfb';
+      moodFb.innerHTML = (r.ok ? '✓ ' : '✗ ') + '<b>' + m.w + '</b> — ' + r.why;
+    };
+    moodChipsWrap.appendChild(b);
+  });
+}
+renderChips();
+document.querySelectorAll('#moodSwitch button').forEach(b=>{
+  b.onclick = ()=>{
+    document.querySelectorAll('#moodSwitch button').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on');
+    moodMode = b.dataset.m;
+    renderChips();
+    moodFb.className = 'chipfb idle';
+    moodFb.textContent = moodMode === 'p1'
+      ? 'Judging Part 1 — the beach. Tap a mood word to test it.'
+      : 'Now judging Part 2 — the note. Some words that failed before will work now.';
+  };
+});
+
+/* ---------- sort-row builder (mood shift + prologue types) ---------- */
+function buildSort(wrapId, data){
+  const wrap = document.getElementById(wrapId);
+  data.forEach(item=>{
+    const row = document.createElement('div');
+    row.className = 'sort-item';
+    const optsHtml = item.opts.map(o=>'<button class="opt-btn" data-val="' + o + '">' + o + '</button>').join('');
+    row.innerHTML = '<div style="flex:1 1 300px;"><div class="sort-name">' + item.name + '</div><div class="sort-reason">' + item.reason + '</div></div>'
+      + '<div class="sort-options">' + optsHtml + '</div>';
+    row.querySelectorAll('.opt-btn').forEach(btn=>{
+      btn.onclick = ()=>{
+        if(row.classList.contains('answered')) return;
+        row.classList.add('answered');
+        row.querySelectorAll('.opt-btn').forEach(b=>{
+          if(b.dataset.val === item.correct) b.classList.add('correct');
+          else if(b === btn) b.classList.add('wrong');
+        });
+      };
+    });
+    wrap.appendChild(row);
+  });
+}
+buildSort('moodShiftList', moodShiftData);
+buildSort('typeList', typeData);
+
+/* ---------- logos family ---------- */
+const famWrap = document.getElementById('famGrid');
+famData.forEach(f=>{
+  const el = document.createElement('button');
+  el.className = 'fam';
+  el.innerHTML = '<div class="fw">' + f.w + '</div><div class="fb">Tap to break it apart</div>';
+  el.onclick = ()=>{
+    el.classList.add('open');
+    el.querySelector('.fb').textContent = f.b;
+  };
+  famWrap.appendChild(el);
+});
+
+/* ---------- quiz ---------- */
+const quizWrap = document.getElementById('quizList');
+const scoreN = document.getElementById('scoreN');
+const scoreT = document.getElementById('scoreT');
+let score = 0, answered = 0;
+quizData.forEach(item=>{
+  const el = document.createElement('div');
+  el.className = 'quiz-card';
+  const optsHtml = item.opts.map((o,i)=>'<button class="btn btn-sm btn-ghost" data-i="' + i + '">' + o + '</button>').join('');
+  el.innerHTML = '<div class="quiz-q">' + item.q + '</div><div class="quiz-opts">' + optsHtml + '</div><div class="quiz-fb"></div>';
+  const fb = el.querySelector('.quiz-fb');
+  let locked = false;
+  el.querySelectorAll('.quiz-opts button').forEach(btn=>{
+    btn.onclick = ()=>{
+      if(locked) return;
+      const ok = Number(btn.dataset.i) === item.correct;
+      fb.textContent = (ok ? '✓ ' : '✗ Not quite: ') + item.fb;
+      fb.className = 'quiz-fb ' + (ok ? 'correct' : 'wrong');
+      if(ok){
+        locked = true;
+        btn.style.background = 'var(--teal)';
+        btn.style.color = '#fff';
+        btn.style.borderColor = 'var(--teal)';
+        score++; answered++;
+        scoreN.textContent = score + ' / ' + quizData.length;
+        if(score === quizData.length){ scoreT.textContent = 'All eight. Excellent detective work.'; }
+        else { scoreT.textContent = 'Keep going.'; }
+      }
+    };
+  });
+  quizWrap.appendChild(el);
+});
+
+/* ---------- vocab ---------- */
+const vocabWrap = document.getElementById('vocabList');
+vocabData.forEach(item=>{
+  const el = document.createElement('div');
+  el.className = 'vocab-card';
+  el.innerHTML = '<b>' + item.t + ':</b> ' + item.d;
+  vocabWrap.appendChild(el);
+});
+
+/* ---------- navigation ---------- */
+const steps = document.querySelectorAll('.step');
+const dotsWrap = document.getElementById('dots');
+let current = 0;
+steps.forEach((s,i)=>{
+  const d = document.createElement('button');
+  d.className = 'dot' + (i===0?' active':'');
+  d.setAttribute('aria-label', 'Go to step ' + (i+1));
+  d.onclick = ()=> goTo(i);
+  dotsWrap.appendChild(d);
+});
+document.getElementById('stepTotal').textContent = steps.length;
+
+function goTo(i){
+  if(i<0 || i>=steps.length) return;
+  steps[current].classList.remove('active');
+  dotsWrap.children[current].classList.remove('active');
+  if(i>current) dotsWrap.children[current].classList.add('done');
+  current = i;
+  steps[current].classList.add('active');
+  Array.from(dotsWrap.children).forEach((d,idx)=>{ d.classList.toggle('active', idx===current); });
+  document.getElementById('stepNow').textContent = current+1;
+  document.getElementById('prevBtn').disabled = current===0;
+  document.getElementById('nextBtn').textContent = current===steps.length-1 ? 'Finish 🎉' : 'Next →';
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+document.getElementById('prevBtn').onclick = ()=> goTo(current-1);
+document.getElementById('nextBtn').onclick = ()=> { if(current<steps.length-1) goTo(current+1); };
+document.addEventListener('keydown', (e)=>{
+  if(e.target && (e.target.tagName === 'BUTTON' || e.target.tagName === 'INPUT')) return;
+  if(e.key==='ArrowRight') goTo(current+1);
+  if(e.key==='ArrowLeft') goTo(current-1);
+});
+goTo(0);
+</script>
