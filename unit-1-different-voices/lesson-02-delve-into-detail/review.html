@@ -529,7 +529,7 @@ footer{text-align:center; color:var(--ink-soft); font-size:12.5px; margin-top:46
       <span class="step-time">8 min</span>
       <span class="step-tick">Done</span>
     </div>
-    <p class="do"><b>What to do:</b> This is the part your teacher will read most carefully. Take your time. Everything saves as you type.</p>
+    <p class="do"><b>What to do:</b> Two tasks. This is the part your teacher will read most carefully, so take your time. Everything saves as you type.</p>
 
     <div class="write" data-key="w_prologue">
       <label for="w_prologue">The big one. Write your own prologue, in <b>two parts</b>.
@@ -558,19 +558,11 @@ footer{text-align:center; color:var(--ink-soft); font-size:12.5px; margin-top:46
     </div>
 
     <div class="write" data-key="w_clues">
-      <label for="w_clues">Now give your clues away. Write your three clues, and what you wanted the reader to work out from each one.
-        <span class="sub">Write it like this:<br>Clue 1: I wrote... &nbsp;I wanted the reader to think...</span>
+      <label for="w_clues">Now give your clues away. Write your three clues and what you wanted the reader to work out from each one. Then say which clue you are proudest of, and why.
+        <span class="sub">Write it like this:<br>Clue 1: I wrote... &nbsp;I wanted the reader to think...<br><br>Give the last part a proper answer, not one line. Explaining your own choices is how you get better at making them.</span>
       </label>
-      <textarea id="w_clues" rows="7" placeholder="Clue 1: I wrote...&#10;I wanted the reader to think...&#10;&#10;Clue 2: I wrote...&#10;I wanted the reader to think...&#10;&#10;Clue 3: I wrote...&#10;I wanted the reader to think..."></textarea>
+      <textarea id="w_clues" rows="9" placeholder="Clue 1: I wrote...&#10;I wanted the reader to think...&#10;&#10;Clue 2: I wrote...&#10;I wanted the reader to think...&#10;&#10;Clue 3: I wrote...&#10;I wanted the reader to think...&#10;&#10;I am proudest of... because..."></textarea>
       <div class="count" data-count-for="w_clues"></div>
-    </div>
-
-    <div class="write" data-key="w_proud">
-      <label for="w_proud">Last question. Which of your three clues are you proudest of, and why?
-        <span class="sub">Give this a proper answer, not one line. Explaining your own choices is how you get better at making them.</span>
-      </label>
-      <textarea id="w_proud" rows="4" placeholder="I am proudest of..."></textarea>
-      <div class="count" data-count-for="w_proud"></div>
     </div>
 
     <div class="next"><a href="#s9">Last step: Send it to your teacher &#8595;</a></div>
@@ -1181,8 +1173,7 @@ updateProgress();
 const WRITTEN_LABELS = [
   ['w_detective', 'Step 4: who is Priya going to meet, with evidence'],
   ['w_prologue',  'Step 8: her own two-part prologue'],
-  ['w_clues',     'Step 8: her three clues explained'],
-  ['w_proud',     'Step 8: which clue she is proudest of, and why']
+  ['w_clues',     'Step 8: her three clues explained, and the one she is proudest of']
 ];
 const QUIZ_IDS = ['quiz1','quiz3','quiz5','quiz6','quiz8'];
 
