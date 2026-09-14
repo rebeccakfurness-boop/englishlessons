@@ -55,15 +55,16 @@ h1,h2,h3{font-family:'Nunito','Nunito Sans',system-ui,sans-serif;}
 
 .card{background:var(--card); border:1px solid var(--line); border-radius:16px; padding:18px 20px; box-shadow:var(--shadow);}
 
-/* video */
-.videowrap{background:var(--card); border:1px solid var(--line); border-radius:16px; overflow:hidden; box-shadow:var(--shadow);}
-.vframe{position:relative; width:100%; max-width:100%; aspect-ratio:16/9; background:var(--surface-dark);}
-.vframe iframe{position:absolute; inset:0; width:100%; height:100%; border:0;}
-.vpending{display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; height:100%; color:rgba(255,255,255,0.72); text-align:center; padding:24px;}
-.vpending .vicon{font-size:34px;}
-.vpending p{margin:0; font-size:14px; max-width:40ch; line-height:1.6;}
-.vfoot{display:flex; align-items:center; justify-content:space-between; gap:12px; padding:13px 18px; flex-wrap:wrap;}
-.vfoot span{font-size:13px; color:var(--ink-soft);}
+/* video watch card */
+.watch{display:flex; align-items:center; gap:20px; text-decoration:none; background:linear-gradient(135deg,#123C40,var(--surface-dark)); border-radius:18px; padding:22px 24px; box-shadow:var(--shadow); border:1px solid rgba(255,255,255,0.1); transition:transform .18s ease, box-shadow .18s ease;}
+.watch:hover{transform:translateY(-2px); box-shadow:0 12px 30px rgba(70,40,10,0.22);}
+.watch-play{width:62px; height:62px; border-radius:50%; background:var(--gold); display:flex; align-items:center; justify-content:center; flex-shrink:0;}
+.watch-play i{display:block; width:0; height:0; border-style:solid; border-width:13px 0 13px 21px; border-color:transparent transparent transparent #2A1B0C; margin-left:5px;}
+.watch-txt{min-width:0; display:block;}
+.watch-kick{display:block; font-size:10.5px; font-weight:800; letter-spacing:0.1em; text-transform:uppercase; color:var(--gold); margin-bottom:5px;}
+.watch-ttl{display:block; font-family:'Nunito',sans-serif; font-weight:800; font-size:19px; color:#fff; line-height:1.25; margin-bottom:5px;}
+.watch-sub{display:block; font-size:13px; color:rgba(255,255,255,0.72); line-height:1.55;}
+@media(max-width:520px){.watch{flex-direction:column; align-items:flex-start; gap:15px;}}
 
 .btn{font-family:'Nunito Sans',sans-serif; font-weight:700; font-size:13.5px; border:none; border-radius:10px; padding:10px 17px; cursor:pointer; text-decoration:none; display:inline-flex; align-items:center; gap:6px;}
 .btn-teal{background:var(--teal); color:#fff;}
@@ -151,7 +152,7 @@ footer{text-align:center; color:var(--ink-soft); font-size:12px; margin-top:44px
   <div class="hero-inner">
     <p class="eyebrow">Selong Bay School · Cambridge Primary English 6 · Lesson 2</p>
     <h1>Detective Practice</h1>
-    <p>Everything from today's lesson, to do on your own. Work down the page in order — the video first, then the practice, then the quiz. When you finish, open Worksheet 2.</p>
+    <p>Everything from today's lesson, to do on your own. Work down the page in order: the video first, then the practice, then the quiz. When you finish, open Worksheet 2.</p>
     <div class="steps-strip">
       <span>🎬 Watch</span><span>🔍 Practise</span><span>🎭 Mood</span><span>🏛️ Word origins</span><span>✅ Quiz</span><span>✍️ Worksheet</span>
     </div>
@@ -163,36 +164,38 @@ footer{text-align:center; color:var(--ink-soft); font-size:12px; margin-top:44px
   <!-- 1 VIDEO -->
   <section class="block">
     <div class="block-head"><div class="block-num">1</div><h2>Watch first</h2></div>
-    <p class="block-intro">A recap from last lesson: describing a scene using the five senses &mdash; what you can see, hear, smell, touch and taste. Watch it before anything else on this page.</p>
+    <p class="block-intro">A recap from last lesson: describing a scene using the five senses: what you can see, hear, smell, touch and taste. Watch it before anything else on this page.</p>
     <div class="card" style="background:var(--teal-light); border:none; margin-bottom:14px;">
-      <p style="margin:0; font-size:14px; color:var(--teal-dark); line-height:1.65;"><b>Why this, today?</b> Last lesson you used the five senses to <i>build</i> a scene. This lesson you did the opposite job &mdash; reading someone else&rsquo;s sensory details to work out what they really mean. Warm sand, a drum, the smell of the sea: those are the exact details a detective reads. Watch for how many senses the video uses, then look again at section 4 on this page and see which senses build each mood.</p>
+      <p style="margin:0; font-size:14px; color:var(--teal-dark); line-height:1.65;"><b>Why this, today?</b> Last lesson you used the five senses to <i>build</i> a scene. This lesson you did the opposite job: reading someone else&rsquo;s sensory details to work out what they really mean. Warm sand, a drum, the smell of the sea: those are the exact details a detective reads. Watch for how many senses the video uses, then look again at section 4 on this page and see which senses build each mood.</p>
     </div>
-    <div class="videowrap">
-      <div class="vframe" id="vframe"></div>
-      <div class="vfoot">
-        <span id="vnote">Watch the whole thing &mdash; it feeds section 4.</span>
-        <a class="btn btn-teal btn-sm" id="vlink" href="#" target="_blank" rel="noopener" hidden>Open the video ↗</a>
-      </div>
+    <a class="watch" id="watchCard" href="#" target="_blank" rel="noopener">
+      <span class="watch-play" aria-hidden="true"><i></i></span>
+      <span class="watch-txt">
+        <span class="watch-kick">Watch on YouTube</span>
+        <span class="watch-ttl" id="watchTitle">Descriptive Writing: Using the 5 Senses</span>
+        <span class="watch-sub" id="watchSub">Opens in a new tab. Watch the whole thing, then come back here: it feeds section 4.</span>
+      </span>
+    </a>
     </div>
   </section>
 
   <!-- 2 RECAP -->
   <section class="block">
     <div class="block-head"><div class="block-num">2</div><h2>Say it before you tap it</h2></div>
-    <p class="block-intro">Six ideas from the lesson. Try to explain each one out loud <em>first</em> — then tap to see whether you had it.</p>
+    <p class="block-intro">Six ideas from the lesson. Try to explain each one out loud <em>first</em>, then tap to see whether you had it.</p>
     <div class="tilegrid" id="tileGrid"></div>
   </section>
 
   <!-- 3 NEW PROLOGUE -->
   <section class="block">
     <div class="block-head"><div class="block-num">3</div><h2>A prologue you haven't seen</h2></div>
-    <p class="block-intro">Read this one twice — once quickly, once slowly. Then answer the four questions underneath. Each one asks you to choose the <b>best evidence</b>, not just any evidence.</p>
+    <p class="block-intro">Read this one twice: once quickly, once slowly. Then answer the four questions underneath. Each one asks you to choose the <b>best evidence</b>, not just any evidence.</p>
 
     <div class="prose">
       <p class="pgtitle">Prologue</p>
       <p class="stamp">The last week of term, three years ago.</p>
       <p>Nobody at Harbour Road School knew that Priya had already packed. Her bag sat under her bed with the zip half open, and on top of everything, folded twice, was the map.</p>
-      <p>She walked to school the long way that morning — past the fish market, past the blue gate, past the bench where she and Amina had eaten lunch every day for four years. She wanted to remember all of it properly.</p>
+      <p>She walked to school the long way that morning, past the fish market, past the blue gate, past the bench where she and Amina had eaten lunch every day for four years. She wanted to remember all of it properly.</p>
       <p>Amina was waiting at the gate, the way she always was.</p>
       <p>"You're late," Amina said.</p>
       <p>"I know," said Priya. And that was the last ordinary thing either of them said to each other for a very long time.</p>
@@ -233,17 +236,17 @@ footer{text-align:center; color:var(--ink-soft); font-size:12px; margin-top:44px
   <!-- 7 WRITE -->
   <section class="block">
     <div class="block-head"><div class="block-num">7</div><h2>Plant one clue</h2></div>
-    <p class="block-intro">A warm-up for the last question on your worksheet. Below is a completely flat sentence. Rewrite it so that a reader starts to <em>worry</em> — without using any worrying words. Plant something and let them work it out.</p>
+    <p class="block-intro">A warm-up for the last question on your worksheet. Below is a completely flat sentence. Rewrite it so that a reader starts to <em>worry</em>, without using any worrying words. Plant something and let them work it out.</p>
     <div class="writebox">
-      <label for="plantBox">Flat sentence: <span class="mono" style="color:var(--gold-dark); font-weight:400;">"She got on the bus."</span> — now make me suspicious:</label>
+      <label for="plantBox">Flat sentence: <span class="mono" style="color:var(--gold-dark); font-weight:400;">"She got on the bus."</span> Now make me suspicious:</label>
       <textarea id="plantBox" placeholder="She got on the bus with..."></textarea>
       <div class="writerow">
         <button class="btn btn-teal btn-sm" id="saveBtn">Save my answer</button>
         <button class="btn btn-ghost btn-sm" id="exampleBtn">Show me one way</button>
-        <span class="wstatus" id="wStatus">Saved in this browser only — copy it into your worksheet.</span>
+        <span class="wstatus" id="wStatus">Saved in this browser only. Copy it into your worksheet.</span>
       </div>
       <div class="card" id="exampleCard" hidden style="margin-top:13px; background:var(--plum-light); border:none;">
-        <p style="margin:0; font-size:14px; color:var(--plum-dark); line-height:1.65;"><i>"She got on the bus with both suitcases, and she did not look back at the house."</i><br><br>Nothing in that sentence is frightening. Two suitcases and one refusal to look back do all the work — the reader builds the worry themselves. That is inference, from the writer's side.</p>
+        <p style="margin:0; font-size:14px; color:var(--plum-dark); line-height:1.65;"><i>"She got on the bus with both suitcases, and she did not look back at the house."</i><br><br>Nothing in that sentence is frightening. Two suitcases and one refusal to look back do all the work: the reader builds the worry themselves. That is inference, from the writer's side.</p>
       </div>
     </div>
   </section>
@@ -251,7 +254,7 @@ footer{text-align:center; color:var(--ink-soft); font-size:12px; margin-top:44px
   <!-- 8 CHECKLIST -->
   <section class="block">
     <div class="block-head"><div class="block-num">8</div><h2>Before you open the worksheet</h2></div>
-    <p class="block-intro">Tick these off. If you can't tick one, scroll back up — the answer is on this page.</p>
+    <p class="block-intro">Tick these off. If you can't tick one, scroll back up: the answer is on this page.</p>
     <div class="card">
       <ul class="check">
         <li><input type="checkbox" id="c1"><label for="c1">I can explain what an <b>inference</b> is, and why it isn't a guess.</label></li>
@@ -275,52 +278,22 @@ footer{text-align:center; color:var(--ink-soft); font-size:12px; margin-top:44px
 
 <script>
 /* ============================================================
-   VIDEO — paste the lesson video link here and republish.
-   Works with a YouTube, Vimeo or Google Drive link.
+   VIDEO: paste the lesson video link here and republish.
+   The page links out rather than embedding, because the artifact
+   sandbox blocks third-party video frames.
    ============================================================ */
-const VIDEO_URL = "https://www.youtube.com/watch?v=ULPDb7xD0S4";   // Descriptive Writing: Using the 5 Senses
+const VIDEO_URL = "https://www.youtube.com/watch?v=ULPDb7xD0S4";
+const VIDEO_TITLE = "Descriptive Writing: Using the 5 Senses";
 
-/* Cross-links, filled in after publishing. */
-const LINKS = [];
-
-function embedFor(url){
-  try{
-    const u = new URL(url);
-    const h = u.hostname.replace(/^www\./,'');
-    if(h === 'youtu.be') return 'https://www.youtube.com/embed/' + u.pathname.slice(1);
-    if(h.endsWith('youtube.com')){
-      const v = u.searchParams.get('v');
-      if(v) return 'https://www.youtube.com/embed/' + v;
-      if(u.pathname.startsWith('/embed/')) return url;
-    }
-    if(h.endsWith('vimeo.com')) return 'https://player.vimeo.com/video/' + u.pathname.split('/').filter(Boolean)[0];
-    if(h.endsWith('drive.google.com')){
-      const m = u.pathname.match(/\/d\/([^/]+)/);
-      if(m) return 'https://drive.google.com/file/d/' + m[1] + '/preview';
-    }
-  }catch(e){ /* not a parseable URL */ }
-  return null;
-}
-const vframe = document.getElementById('vframe');
-const vlink = document.getElementById('vlink');
-const vnote = document.getElementById('vnote');
+const watchCard = document.getElementById('watchCard');
 if(VIDEO_URL){
-  const src = embedFor(VIDEO_URL);
-  if(src){
-    const f = document.createElement('iframe');
-    f.src = src;
-    f.title = 'Descriptive writing: using the five senses';
-    f.allow = 'accelerometer; clipboard-write; encrypted-media; picture-in-picture';
-    f.allowFullscreen = true;
-    vframe.appendChild(f);
-  } else {
-    vframe.innerHTML = '<div class="vpending"><div class="vicon">🎬</div><p>Tap the button below to open the video.</p></div>';
-  }
-  vlink.href = VIDEO_URL;
-  vlink.hidden = false;
+  watchCard.href = VIDEO_URL;
+  document.getElementById('watchTitle').textContent = VIDEO_TITLE;
 } else {
-  vframe.innerHTML = '<div class="vpending"><div class="vicon">🎬</div><p>The video for this lesson will appear here. If it isn’t here yet, carry on to section 2 and come back to it.</p></div>';
-  vnote.textContent = 'Video to be added.';
+  watchCard.removeAttribute('href');
+  watchCard.style.cursor = 'default';
+  document.getElementById('watchTitle').textContent = 'Video to be added';
+  document.getElementById('watchSub').textContent = 'If the video is not here yet, carry on to section 2 and come back to it.';
 }
 
 /* ---------------- recap tiles ---------------- */
@@ -328,8 +301,8 @@ const tiles = [
   {n:'Inference', q:'What is it, and how is it different from a guess?', c:'#005F65',
    b:'A clue from the text PLUS what you already know. A guess has nothing behind it; an inference always starts with something really written down.'},
   {n:'Evidence', q:'What has to go in every answer you write?', c:'#A65F06',
-   b:'A quotation — the exact words from the text, inside quotation marks. Without one, your answer is only an opinion.'},
-  {n:'Mood', q:'Whose feeling is it — the character’s or yours?', c:'#A6330F',
+   b:'A quotation: the exact words from the text, inside quotation marks. Without one, your answer is only an opinion.'},
+  {n:'Mood', q:'Whose feeling is it, the character’s or yours?', c:'#A6330F',
    b:'Yours. Mood is the feeling the writing creates in the reader, and the writer builds it deliberately, one word choice at a time.'},
   {n:'Foreshadowing', q:'Which direction does it point?', c:'#1E4664',
    b:'Forwards. It hints at something coming later in the story, which is what builds suspense. "Three summers before the lights went out" is foreshadowing.'},
@@ -353,19 +326,19 @@ const evData = [
   {q:'Which quotation best shows that Priya had already decided to leave?',
    opts:['"Amina was waiting at the gate"','"Her bag sat under her bed with the zip half open"','"You’re late," Amina said'],
    correct:1,
-   fb:'The packed bag is the proof. Nobody packs a bag and hides it under a bed by accident — and the map folded on top tells you she knows where she is going.'},
+   fb:'The packed bag is the proof. Nobody packs a bag and hides it under a bed by accident, and the map folded on top tells you she knows where she is going.'},
   {q:'Which quotation best shows that Priya and Amina were close friends?',
    opts:['"the bench where she and Amina had eaten lunch every day for four years"','"Amina was waiting at the gate"','"Nobody at Harbour Road School knew"'],
    correct:0,
-   fb:'Four years, every single day, in the same place. The second option shows friendship too, but the first one proves how long and how steady it was — always choose the strongest evidence.'},
+   fb:'Four years, every single day, in the same place. The second option shows friendship too, but the first one proves how long and how steady it was. Always choose the strongest evidence.'},
   {q:'"She wanted to remember all of it properly." What does this suggest?',
    opts:['She has a bad memory','She knows she is not coming back','She is late for school'],
    correct:1,
-   fb:'You only try to memorise a walk you take every day if you think it is the last time you will take it. The text never says she is leaving for good — you infer it.'},
+   fb:'You only try to memorise a walk you take every day if you think it is the last time you will take it. The text never says she is leaving for good: you infer it.'},
   {q:'Which line tells you the story is about to change completely?',
    opts:['"She walked to school the long way that morning"','"past the fish market, past the blue gate"','"that was the last ordinary thing either of them said to each other for a very long time"'],
    correct:2,
-   fb:'"The last ordinary thing" means everything after it was extraordinary. And "for a very long time" means they were separated. That is foreshadowing — and it is also an all-knowing narrator, because neither girl knew it yet.'}
+   fb:'"The last ordinary thing" means everything after it was extraordinary. And "for a very long time" means they were separated. That is foreshadowing, and it is also an all-knowing narrator, because neither girl knew it yet.'}
 ];
 const evWrap = document.getElementById('evList');
 evData.forEach(item=>{
@@ -390,13 +363,13 @@ evData.forEach(item=>{
 /* ---------------- mood rows ---------------- */
 const moodRows = [
   {q:'"Amina was waiting at the gate, the way she always was."', opts:['Comfort','Fear','Anger'], correct:0,
-   fb:'"The way she always was" is the important bit. Something that happens every single day feels safe and familiar — which makes the ending land harder.'},
+   fb:'"The way she always was" is the important bit. Something that happens every single day feels safe and familiar, which makes the ending land harder.'},
   {q:'"Amina was not at the gate. Nobody was."', opts:['Comfort','Unease','Excitement'], correct:1,
    fb:'Two short sentences, and the second is only three words. "Nobody was" answers a question you did not ask, and that is what makes it uncomfortable.'},
   {q:'"Amina was at the gate early, jumping from foot to foot, grinning."', opts:['Sorrow','Unease','Excitement'], correct:2,
-   fb:'Early, jumping, grinning. Three details, all of them fast and physical — the mood changes without a single word about how anyone feels.'},
+   fb:'Early, jumping, grinning. Three details, all of them fast and physical: the mood changes without a single word about how anyone feels.'},
   {q:'"Amina had waited at that gate every morning for four years. She would not wait there again."', opts:['Sorrow','Excitement','Comfort'], correct:0,
-   fb:'The first sentence builds something up and the second takes it away. That gap between them is where the sadness sits — and the narrator knows the future, so it is an all-knowing narrator too.'}
+   fb:'The first sentence builds something up and the second takes it away. That gap between them is where the sadness sits, and the narrator knows the future, so it is an all-knowing narrator too.'}
 ];
 const moodWrap = document.getElementById('moodList');
 moodRows.forEach(item=>{
@@ -454,9 +427,9 @@ const quizData = [
   {q:'What are the two ingredients of an inference?', opts:['A clue from the text + what you already know','A guess + a feeling','A quotation + a long sentence'], correct:0,
    fb:'A clue you can point at, plus what you already know about the world.'},
   {q:'Where does an epilogue come?', opts:['Before chapter one','After the story ends','In the middle'], correct:1,
-   fb:'epi (in addition) + logos (word) — the words added after the story is over.'},
+   fb:'epi (in addition) + logos (word): the words added after the story is over.'},
   {q:'"Neither of them noticed the woman on the steps." What technique is this?', opts:['Flashback','Dialogue','All-knowing narrator'], correct:2,
-   fb:'If neither character noticed her, only the narrator could have — so the narrator knows more than the characters do.'},
+   fb:'If neither character noticed her, only the narrator could have, so the narrator knows more than the characters do.'},
   {q:'What does mood mean in reading?', opts:['How the main character feels','The feeling the writing gives the reader','Whether a story is happy or sad at the end'], correct:1,
    fb:'Mood is about you, the reader. The writer builds it out of word choices.'},
   {q:'Which sentence contains foreshadowing?', opts:['"She had danced there since she could walk."','"Three summers before the lights went out."','"The sand was still warm."'], correct:1,
@@ -464,13 +437,13 @@ const quizData = [
   {q:'prologue is built from which two Greek words?', opts:['pro + logos','pre + logue','epi + logos'], correct:0,
    fb:'pro (before) + logos (word or speech).'},
   {q:'What does the prefix auto mean?', opts:['Fast','Self','Machine'], correct:1,
-   fb:'auto = self. Autobiography, automatic, autograph — all about doing something yourself.'},
+   fb:'auto = self. Autobiography, automatic, autograph: all about doing something yourself.'},
   {q:'Which word does NOT use logos meaning word or speech?', opts:['dialogue','monorail','epilogue'], correct:1,
    fb:'monorail is mono (one) + rail. It shares mono with monologue, but not logos.'},
   {q:'You write: "Priya is leaving for good." What must you add to make it a full answer?', opts:['A longer sentence','A quotation that proves it','Another idea'], correct:1,
-   fb:'Objective 6Ri.14 — support your answer with a quotation. For example: because "she wanted to remember all of it properly".'},
+   fb:'Objective 6Ri.14: support your answer with a quotation. For example: because "she wanted to remember all of it properly".'},
   {q:'A writer changes "took off her shoes" to "kicked off her shoes and ran, laughing". What has changed?', opts:['The event','The mood','The narrator'], correct:1,
-   fb:'The event is identical — she removes her shoes. Only the word choices changed, and with them the mood.'}
+   fb:'The event is identical: she removes her shoes. Only the word choices changed, and with them the mood.'}
 ];
 const quizWrap = document.getElementById('quizList');
 const sBig = document.getElementById('sBig'), sMsg = document.getElementById('sMsg'), sFill = document.getElementById('sFill');
@@ -497,11 +470,11 @@ quizData.forEach(item=>{
       if(answered < quizData.length){
         sMsg.textContent = answered + ' of ' + quizData.length + ' answered. Keep going.';
       } else if(score === quizData.length){
-        sMsg.textContent = 'Every single one. Outstanding detective work — go straight to the worksheet.';
+        sMsg.textContent = 'Every single one. Outstanding detective work. Go straight to the worksheet.';
       } else if(score >= 7){
         sMsg.textContent = 'Strong. Scroll back up and re-read the feedback on any you missed, then open the worksheet.';
       } else {
-        sMsg.textContent = 'Worth another look. Go back through sections 2 and 5, then try these again — the answers are all on this page.';
+        sMsg.textContent = 'Worth another look. Go back through sections 2 and 5, then try these again: the answers are all on this page.';
       }
     };
   });
@@ -521,7 +494,7 @@ document.getElementById('saveBtn').onclick = ()=>{
     localStorage.setItem(KEY, plantBox.value);
     wStatus.textContent = 'Saved. Remember to copy it into your worksheet.';
   }catch(e){
-    wStatus.textContent = 'Could not save here — copy your answer into the worksheet now.';
+    wStatus.textContent = 'Could not save here. Copy your answer into the worksheet now.';
   }
 };
 document.getElementById('exampleBtn').onclick = (e)=>{

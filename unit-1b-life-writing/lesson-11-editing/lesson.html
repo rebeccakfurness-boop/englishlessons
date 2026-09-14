@@ -359,7 +359,7 @@ p.lede{font-size:17px; color:var(--ink-soft); max-width:640px; line-height:1.55;
     <div class="prompt-card cutc"><div class="plbl">PASS 1 · CUT</div><p>Read it through hunting only for words doing no work. Every <i>very</i>, <i>really</i>, <i>quite</i> and <i>a lot</i>. Any sentence that repeats an idea you've already made. Cross them out. Don't replace them yet.</p></div>
     <div class="prompt-card sharpenc"><div class="plbl">PASS 2 · SHARPEN</div><p>Find every vague word and make it exact. How many people actually? What did it actually smell like? What did they actually say? Where you've <i>told</i> a feeling, try to <i>show</i> it instead.</p></div>
     <div class="prompt-card varyc"><div class="plbl">PASS 3 · VARY</div><p>Read it aloud. Where do three sentences run at the same length? Find your most important moment and give it a short, blunt sentence. Check you haven't started four sentences in a row with "I".</p></div>
-    <div class="prompt-card checkc"><div class="plbl">PASS 4 · CHECK</div><p>Only now. Spelling, punctuation, and one tense all the way through. Read the final sentence first and work backwards — it stops your brain skimming what it expects to see.</p></div>
+    <div class="prompt-card checkc"><div class="plbl">PASS 4 · CHECK</div><p>Only now. Spelling, punctuation, and one tense all the way through. Read the final sentence first and work backwards: it stops your brain skimming what it expects to see.</p></div>
     <p class="note">Reading backwards for the proofread is a genuine professional trick. Your eye stops autocorrecting the text when it can't follow the meaning.</p>
   </section>
 
@@ -387,7 +387,7 @@ p.lede{font-size:17px; color:var(--ink-soft); max-width:640px; line-height:1.55;
       </ul>
       <p style="margin:14px 0 0; font-size:13px; color:rgba(255,255,255,0.75);">Worksheet 11 is on Google Classroom, along with the review activity.</p>
     </div>
-    <p class="lede" style="margin-top:20px;">🎉 That's the full writing cycle now: plan, draft, edit, proofread. Next time we put it under exam conditions — reading an unseen passage and writing to a time limit.</p>
+    <p class="lede" style="margin-top:20px;">🎉 That's the full writing cycle now: plan, draft, edit, proofread. Next time we put it under exam conditions: reading an unseen passage and writing to a time limit.</p>
   </section>
 
 </div>
@@ -402,16 +402,16 @@ p.lede{font-size:17px; color:var(--ink-soft); max-width:640px; line-height:1.55;
 const warmupData = [
   {term:'Hook, Build, Turn, Land', sub:'What are the four moves, and what does each one do?', back:"Hook opens with tension or a vivid moment. Build accumulates detail. Turn shifts or complicates things. Land leaves a final impression, often echoing the Hook."},
   {term:'Show, don’t tell', sub:'What does this actually ask you to do?', back:"Give the reader the concrete detail and let them feel the emotion themselves, instead of naming the emotion for them. “My hands wouldn’t stay still” beats “I was nervous.”"},
-  {term:'Honest detail', sub:'Why does it beat a more dramatic invented one?', back:"Life writing makes a promise that this really happened. A true, specific detail is almost always more surprising than an invented one — and if a reader catches one invention, they stop trusting all of it."},
+  {term:'Honest detail', sub:'Why does it beat a more dramatic invented one?', back:"Life writing makes a promise that this really happened. A true, specific detail is almost always more surprising than an invented one, and if a reader catches one invention, they stop trusting all of it."},
   {term:'Active and passive voice', sub:'Why would you choose one over the other?', back:"Active puts the doer first and feels direct. Passive moves the doer out of the way, which is useful when the thing done to you matters more than who did it. The choice controls what feels important."},
-  {term:'Redundancy', sub:'A new word for today — have a guess.', back:"Words or sentences that repeat work already done. “He nodded his head in agreement” is redundant three times over: nodding is already done with the head, and already means agreement."}
+  {term:'Redundancy', sub:'A new word for today, have a guess.', back:"Words or sentences that repeat work already done. “He nodded his head in agreement” is redundant three times over: nodding is already done with the head, and already means agreement."}
 ];
 
 const lensData = [
   {term:'1. CUT', sub:'What isn’t earning its place?', back:"Delete filler words (very, really, quite, actually), repeated ideas, and any sentence that explains something the reader already understood. Cutting is the fastest way to improve a draft, and the hardest to make yourself do.", colour:'#A6330F'},
   {term:'2. SHARPEN', sub:'What is vague that could be exact?', back:"Swap general words for precise ones. “A lot of people” becomes “three hundred people.” “It smelled nice” becomes “it smelled of chlorine and floor polish.” This is also where you turn telling into showing.", colour:'#005F65'},
   {term:'3. VARY', sub:'Does it all sound the same?', back:"Read it aloud. If every sentence is the same length, the writing goes flat and the reader stops noticing anything. A short sentence straight after a long one is the simplest way there is to make a moment land.", colour:'#A65F06'},
-  {term:'4. CHECK', sub:'Is anything actually wrong?', back:"The proofread, and only now. Spelling, punctuation, tense consistency, homophones. This is the one lens that isn’t about making the writing better — it’s about making sure nothing is broken.", colour:'#1E4664'}
+  {term:'4. CHECK', sub:'Is anything actually wrong?', back:"The proofread, and only now. Spelling, punctuation, tense consistency, homophones. This is the one lens that isn’t about making the writing better: it’s about making sure nothing is broken.", colour:'#1E4664'}
 ];
 
 /* Model draft: segments. mark = lens or null. */
@@ -428,7 +428,7 @@ const draftSegs = [
 const editedSegs = [
   {id:1, lens:'sharpen', text:'I had been awake since four, listening to the rain on the roof and counting lengths in my head.'},
   {id:2, lens:'cut', text:'', gone:true},
-  {id:3, lens:'sharpen', text:' The pool at Mataram smelled of chlorine and floor polish, and the noise came off the tiled walls in waves — three hundred people, all of them louder than I wanted them to be.'},
+  {id:3, lens:'sharpen', text:' The pool at Mataram smelled of chlorine and floor polish, and the noise came off the tiled walls in waves: three hundred people, all of them louder than I wanted them to be.'},
   {id:4, lens:'sharpen', text:' Arif found me by the blocks and said nothing at all, which helped more than anything he could have said.'},
   {id:5, lens:'vary', text:' I came fifth. I also took four seconds off my own best time, and I remember looking up at the board and feeling something that was not quite disappointment.'},
   {id:6, lens:'check', text:' Afterwards I stood by the pool feeling different.'},
@@ -439,14 +439,14 @@ const annotations = {
   1: {lens:'sharpen', title:'Telling → showing',
       before:'I was really nervous on the day of the swimming competition.',
       after:'I had been awake since four, listening to the rain on the roof and counting lengths in my head.',
-      why:'The draft names the feeling and stops. The edit shows you the feeling and lets you name it yourself. Notice the word “nervous” never appears in the edited version — it doesn’t need to, because you can feel it.'},
+      why:'The draft names the feeling and stops. The edit shows you the feeling and lets you name it yourself. Notice the word “nervous” never appears in the edited version: it doesn’t need to, because you can feel it.'},
   2: {lens:'cut', title:'Pure repetition',
       before:'It was a very big deal and I was very worried about it.',
       after:'(deleted entirely)',
       why:'This sentence says nothing the previous sentence hasn’t already said, and uses “very” twice to say it. “Very” is nearly always a signal that a more precise word exists, or that the sentence isn’t earning its place at all. Cut it, and nothing is lost.'},
   3: {lens:'sharpen', title:'Vague → precise',
       before:'There were a lot of people there and it was really loud and there were lots of people watching and it was quite scary.',
-      after:'The pool at Mataram smelled of chlorine and floor polish, and the noise came off the tiled walls in waves — three hundred people, all of them louder than I wanted them to be.',
+      after:'The pool at Mataram smelled of chlorine and floor polish, and the noise came off the tiled walls in waves: three hundred people, all of them louder than I wanted them to be.',
       why:'“A lot of people” and “really loud” could describe literally anywhere. “Three hundred people” and “chlorine and floor polish” could only describe this place, on this day. One exact number and one real smell do more work than four vague adjectives.'},
   4: {lens:'sharpen', title:'The true detail beats the tidy one',
       before:'My friend Arif said I would be fine. He was being nice.',
@@ -455,15 +455,15 @@ const annotations = {
   5: {lens:'vary', title:'One long sentence → short, then long',
       before:'Then I swam my race and I did not win but I got a better time than I had ever got before which was good.',
       after:'I came fifth. I also took four seconds off my own best time, and I remember looking up at the board and feeling something that was not quite disappointment.',
-      why:'The draft carries the result, the time and the verdict all at the same flat volume, so none of it lands. Splitting it gives you a three-word sentence — “I came fifth.” — that hits, and then a longer sentence that opens out after it. Short after long is the simplest emphasis there is.'},
+      why:'The draft carries the result, the time and the verdict all at the same flat volume, so none of it lands. Splitting it gives you a three-word sentence (“I came fifth.”) that hits, and then a longer sentence that opens out after it. Short after long is the simplest emphasis there is.'},
   6: {lens:'check', title:'Two accuracy slips',
       before:'Afterwards I am standing by the pool and I feel diffrent.',
       after:'Afterwards I stood by the pool feeling different.',
-      why:'Two separate problems, both proofreading rather than editing. The whole piece is in the past tense and this sentence slips into the present (“I am standing”, “I feel”). And “diffrent” is simply misspelled. Neither one changes what the writing is doing — which is exactly why Check comes last, once the sentences have stopped moving around.'},
+      why:'Two separate problems, both proofreading rather than editing. The whole piece is in the past tense and this sentence slips into the present (“I am standing”, “I feel”). And “diffrent” is simply misspelled. Neither one changes what the writing is doing, which is exactly why Check comes last, once the sentences have stopped moving around.'},
   7: {lens:'cut', title:'Cut the moral, keep the truth',
       before:'Looking back now I think that it taught me that winning is not the only thing that matters in life and that is an important lesson.',
       after:'I still don’t know what to call it. I only know I went back the next week.',
-      why:'A Land that announces a neat moral sounds like something the writer thinks they are supposed to say, not something they mean. Cutting the moral and leaving the honest, unresolved version is far stronger — and one concrete action (going back the next week) shows the change instead of claiming it. It also echoes the Hook.'}
+      why:'A Land that announces a neat moral sounds like something the writer thinks they are supposed to say, not something they mean. Cutting the moral and leaving the honest, unresolved version is far stronger, and one concrete action (going back the next week) shows the change instead of claiming it. It also echoes the Hook.'}
 };
 
 const lensMeta = {
@@ -476,11 +476,11 @@ const lensMeta = {
 const sortData = [
   {name:'You have written "very cold" and "really cold" in the same paragraph.', correct:'Cut', reason:'Both phrases do the same job, and neither is precise. Cut one, then sharpen the other into an actual temperature or sensation.'},
   {name:'You wrote "there" where you meant "their".', correct:'Check', reason:'A homophone error. It doesn’t change what you were trying to say, so it belongs in the final proofread.'},
-  {name:'Your draft says "lots of people came" — you know it was closer to twenty.', correct:'Sharpen', reason:'You already have the precise version in your head. Use it. "Twenty" is more convincing than "lots".'},
+  {name:'Your draft says "lots of people came": you know it was closer to twenty.', correct:'Sharpen', reason:'You already have the precise version in your head. Use it. "Twenty" is more convincing than "lots".'},
   {name:'Your five sentences are 14, 15, 13, 16 and 14 words long.', correct:'Vary', reason:'Almost identical lengths make writing go flat. Break one of them into a three-word sentence and the whole paragraph wakes up.'},
   {name:'Sentence 2 and sentence 6 make exactly the same point.', correct:'Cut', reason:'Redundancy across a paragraph. Keep whichever version is stronger and delete the other outright.'},
   {name:'The piece starts in the past tense and slips into the present halfway down.', correct:'Check', reason:'Tense consistency is an accuracy problem, not an effectiveness one. Fix it in the final pass.'},
-  {name:'You wrote "the food was nice" about a meal you still remember ten years later.', correct:'Sharpen', reason:'"Nice" is the vaguest word in English. If you remember it ten years later, you remember something specific — write that instead.'},
+  {name:'You wrote "the food was nice" about a meal you still remember ten years later.', correct:'Sharpen', reason:'"Nice" is the vaguest word in English. If you remember it ten years later, you remember something specific: write that instead.'},
   {name:'Six sentences in a row all begin with "I".', correct:'Vary', reason:'A rhythm problem. Vary your sentence openings so the reader stops hearing the same beat and starts hearing what you’re saying.'}
 ];
 const sortOptions = ['Cut','Sharpen','Vary','Check'];
@@ -502,7 +502,7 @@ const roundData = [
       {text:'There were forty-one stalls, and the one at the end sold nothing but salt.', ok:true},
       {text:'The market was very big and very busy and there was a lot going on.', ok:false}
     ],
-    fb:'The second one. An exact number, plus one genuinely odd specific (a stall selling nothing but salt) that proves you were actually there. Notice the third option uses "very" twice and tells you nothing at all — that’s a straight Cut.'
+    fb:'The second one. An exact number, plus one genuinely odd specific (a stall selling nothing but salt) that proves you were actually there. Notice the third option uses "very" twice and tells you nothing at all: that’s a straight Cut.'
   },
   {
     task:'A Land, to close the piece.',
@@ -522,7 +522,7 @@ const quizData = [
   {q:'Every sentence in your paragraph is roughly the same length. Which lens?', opts:['Cut','Vary','Check'], correct:1, fb:'Vary. Identical lengths flatten the writing. A short sentence after a long one is the simplest way to make a moment land.'},
   {q:'True or false: a good edit always makes a piece longer.', opts:['True','False'], correct:1, fb:'false. The model edit today came out shorter than the draft. Editing is about making every word earn its place, not adding words.'},
   {q:'Your draft ends "it was an experience I will never forget." What is the problem?', opts:['It states a tidy conclusion instead of something honest and specific','It is too short','It is in the wrong tense'], correct:0, fb:'it sounds like something a writer thinks they are supposed to say. An honest, unresolved ending is far stronger.'},
-  {q:'Why does a short sentence straight after a long one work so well?', opts:['The change in rhythm creates emphasis','Short sentences are always better','It saves space'], correct:0, fb:'the contrast in rhythm is what does it. Neither length is better on its own — it is the change between them that makes the reader pay attention.'}
+  {q:'Why does a short sentence straight after a long one work so well?', opts:['The change in rhythm creates emphasis','Short sentences are always better','It saves space'], correct:0, fb:'the contrast in rhythm is what does it. Neither length is better on its own: it is the change between them that makes the reader pay attention.'}
 ];
 
 const vocabData = [
