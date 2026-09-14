@@ -1,0 +1,751 @@
+<title>Cut, Sharpen, Vary, Check</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&family=Nunito+Sans:wght@400;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap');
+
+:root{
+  --bg:#FDF7EE; --ink:#46280A; --ink-soft:#7A6450;
+  --teal:#007C83; --teal-dark:#005F65; --teal-light:#D7EDEC;
+  --coral:#D1481F; --coral-dark:#A6330F; --coral-light:#FBE3D8;
+  --gold:#FEA74A; --gold-dark:#A65F06; --gold-light:#FFF0DC;
+  --plum:#2C5F8A; --plum-dark:#1E4664; --plum-light:#E0EBF4;
+  --card:#FFFFFF; --line:#EADFCD;
+  --shadow: 0 8px 24px rgba(70,40,10,0.09);
+  --scrim: rgba(253,247,238,0.93);
+  --surface-dark:#2A1B0C;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#16110B; --ink:#F6EEE2; --ink-soft:#BBA890;
+    --teal:#2FA7AE; --teal-dark:#8FE3E6; --teal-light:#0E2E30;
+    --coral:#E2572B; --coral-dark:#FF9E77; --coral-light:#3A1F12;
+    --gold:#FEA74A; --gold-dark:#FFD09B; --gold-light:#3B2711;
+    --plum:#4E86B8; --plum-dark:#9CC6E6; --plum-light:#182B3A;
+    --card:#211A12; --line:#382B1D;
+    --shadow: 0 8px 24px rgba(0,0,0,0.45);
+    --scrim: rgba(22,17,11,0.9);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#16110B; --ink:#F6EEE2; --ink-soft:#BBA890;
+  --teal:#2FA7AE; --teal-dark:#8FE3E6; --teal-light:#0E2E30;
+  --coral:#E2572B; --coral-dark:#FF9E77; --coral-light:#3A1F12;
+  --gold:#FEA74A; --gold-dark:#FFD09B; --gold-light:#3B2711;
+  --plum:#4E86B8; --plum-dark:#9CC6E6; --plum-light:#182B3A;
+  --card:#211A12; --line:#382B1D;
+  --shadow: 0 8px 24px rgba(0,0,0,0.45);
+  --scrim: rgba(22,17,11,0.9);
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{background:var(--bg); color:var(--ink); font-family:'Nunito Sans','Segoe UI',system-ui,sans-serif; min-height:100vh; overflow-x:hidden;}
+h1,h2,h3{font-family:'Nunito','Nunito Sans',system-ui,sans-serif;}
+.mono{font-family:'IBM Plex Mono',monospace;}
+
+.app{max-width:920px;margin:0 auto;padding:0 20px 40px;}
+.topbar{position:sticky; top:0; z-index:50; background:var(--scrim); backdrop-filter:blur(8px); border-bottom:1px solid var(--line); padding:14px 20px 10px;}
+.topbar-inner{max-width:920px;margin:0 auto;}
+.brandrow{display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;}
+.brand{display:flex; align-items:center; gap:8px;}
+.brand-mark{width:26px;height:26px;border-radius:8px; background:linear-gradient(135deg,var(--teal),var(--coral)); flex-shrink:0;}
+.brand-text{font-size:12px; letter-spacing:0.06em; text-transform:uppercase; color:var(--ink-soft); font-weight:600;}
+.reslinks{display:flex; gap:6px; justify-content:center; flex-wrap:wrap; margin-top:10px;}
+.reslinks a{padding:6px 12px; border-radius:999px; background:var(--card); border:1px solid var(--line); color:var(--ink-soft); font-size:11.5px; font-weight:700; text-decoration:none; white-space:nowrap;}
+.reslinks a:hover{border-color:var(--teal); color:var(--teal-dark);}
+@media(max-width:640px){.reslinks{display:none;}}
+.dots{display:flex; gap:6px; justify-content:center; flex-wrap:wrap;}
+.dot{width:22px; height:5px; border-radius:3px; background:var(--line); border:none; cursor:pointer; padding:0; transition:all .25s ease;}
+.dot.active{background:var(--teal); width:34px;}
+.dot.done{background:var(--gold);}
+
+.stage{padding-top:28px; min-height:62vh;}
+.step{display:none; animation:fadein .35s ease;}
+.step.active{display:block;}
+@keyframes fadein{from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:translateY(0);}}
+
+.kicker{display:inline-flex; align-items:center; gap:8px; font-size:12px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--teal-dark); background:var(--teal-light); padding:5px 12px; border-radius:20px; margin-bottom:14px;}
+h1.title{font-size:clamp(28px,5vw,42px); line-height:1.08; margin:0 0 12px; letter-spacing:-0.01em; text-wrap:balance;}
+p.lede{font-size:17px; color:var(--ink-soft); max-width:640px; line-height:1.55; margin:0 0 24px;}
+
+.grid{display:grid; gap:14px;}
+.grid-2{grid-template-columns:1fr 1fr;}
+.grid-3{grid-template-columns:repeat(3,1fr);}
+@media(max-width:640px){.grid-2,.grid-3{grid-template-columns:1fr;}}
+
+.card{background:var(--card); border:1px solid var(--line); border-radius:16px; padding:18px 20px; box-shadow:var(--shadow);}
+
+.rule-list{display:flex; flex-direction:column; gap:10px; margin-top:6px;}
+.rule-item{display:flex; align-items:flex-start; gap:14px; background:var(--card); border:1px solid var(--line); border-radius:14px; padding:14px 18px; box-shadow:var(--shadow);}
+.rule-num{width:26px; height:26px; border-radius:50%; background:var(--surface-dark); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:13px; flex-shrink:0;}
+.rule-item p{margin:0; font-size:14px; line-height:1.55; color:var(--ink);}
+.rule-item b{font-family:'Nunito','Nunito Sans',system-ui,sans-serif;}
+
+.flip{perspective:1200px; height:178px; cursor:pointer;}
+.flip-inner{position:relative; width:100%; height:100%; transition:transform .5s cubic-bezier(.2,.8,.2,1); transform-style:preserve-3d;}
+.flip.flipped .flip-inner{transform:rotateY(180deg);}
+.flip-face{position:absolute; inset:0; backface-visibility:hidden; border-radius:16px; padding:16px 18px; display:flex; flex-direction:column; justify-content:center; border:1px solid var(--line); box-shadow:var(--shadow);}
+.flip-front{background:var(--card);}
+.flip-back{transform:rotateY(180deg); color:#fff;}
+.flip-front .flip-term{font-family:'Nunito','Nunito Sans',system-ui,sans-serif; font-weight:700; font-size:18px; margin-bottom:4px; line-height:1.4;}
+.flip-front .flip-sub{font-size:12.5px; color:var(--ink-soft); line-height:1.45;}
+.flip-front .flip-hint{font-size:12px; color:var(--ink-soft); margin-top:8px;}
+.flip-back p{margin:0; font-size:13px; line-height:1.5; white-space:pre-line;}
+
+.btn{font-family:'Nunito Sans','Segoe UI',system-ui,sans-serif; font-weight:600; font-size:14px; border:none; border-radius:10px; padding:10px 18px; cursor:pointer; transition:transform .15s ease, box-shadow .15s ease;}
+.btn:hover{transform:translateY(-1px);}
+.btn-primary{background:var(--teal); color:#fff;}
+.btn-primary:hover{box-shadow:0 6px 16px rgba(0,124,131,0.4);}
+.btn-coral{background:var(--coral); color:#fff;}
+.btn-ghost{background:transparent; color:var(--ink-soft); border:1px solid var(--line);}
+.btn-ghost:hover{border-color:var(--teal);}
+.btn:disabled{opacity:0.35; cursor:not-allowed; transform:none; box-shadow:none;}
+.btn-sm{padding:7px 12px; font-size:12.5px; border-radius:8px;}
+[tabindex]:focus-visible, button:focus-visible, a:focus-visible{outline:2px solid var(--teal); outline-offset:2px; border-radius:8px;}
+
+/* --- two-column contrast (editing vs proofreading) --- */
+.vs{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+@media(max-width:640px){.vs{grid-template-columns:1fr;}}
+.vs-box{border-radius:16px; padding:18px 20px; box-shadow:var(--shadow);}
+.vs-box .vlbl{font-family:'Nunito','Nunito Sans',system-ui,sans-serif; font-weight:700; font-size:11.5px; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:8px;}
+.vs-box h3{margin:0 0 8px; font-size:17px;}
+.vs-box p{margin:0 0 10px; font-size:13.5px; line-height:1.55;}
+.vs-box ul{margin:0; padding-left:17px; font-size:13px; line-height:1.75;}
+.vs-box.edit{background:var(--teal-light); border:1px solid var(--teal); color:var(--teal-dark);}
+.vs-box.edit .vlbl{color:var(--teal-dark);}
+.vs-box.proof{background:var(--plum-light); border:1px solid var(--plum); color:var(--plum-dark);}
+.vs-box.proof .vlbl{color:var(--plum-dark);}
+
+/* --- lens legend --- */
+.legend{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px;}
+.lens-chip{display:inline-flex; align-items:center; gap:7px; font-size:12px; font-weight:700; padding:6px 12px; border-radius:999px; border:1.5px solid; background:var(--card);}
+.lens-dot{width:9px; height:9px; border-radius:50%; flex-shrink:0;}
+.lens-cut{color:var(--coral-dark); border-color:var(--coral);}
+.lens-cut .lens-dot{background:var(--coral);}
+.lens-sharpen{color:var(--teal-dark); border-color:var(--teal);}
+.lens-sharpen .lens-dot{background:var(--teal);}
+.lens-vary{color:var(--gold-dark); border-color:var(--gold);}
+.lens-vary .lens-dot{background:var(--gold);}
+.lens-check{color:var(--plum-dark); border-color:var(--plum);}
+.lens-check .lens-dot{background:var(--plum);}
+
+/* --- before / after draft viewer --- */
+.toggle-row{display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap; align-items:center;}
+.tgl{font-family:'Nunito Sans','Segoe UI',system-ui,sans-serif; font-weight:700; font-size:13px; border:1.5px solid var(--line); background:var(--card); color:var(--ink-soft); border-radius:10px; padding:8px 16px; cursor:pointer;}
+.tgl.on{background:var(--surface-dark); border-color:var(--surface-dark); color:#fff;}
+.wordcount{font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--ink-soft); margin-left:auto;}
+@media(max-width:640px){.wordcount{margin-left:0; width:100%;}}
+
+.draftbox{background:var(--card); border:1px solid var(--line); border-left:4px solid var(--teal); border-radius:0 14px 14px 0; padding:18px 22px; font-size:15px; line-height:2.1; box-shadow:var(--shadow); max-width:64ch;}
+.draftbox.is-draft{border-left-color:var(--coral);}
+.seg{border-radius:4px; padding:1px 2px;}
+.seg.clickable{cursor:pointer; border-bottom:2px solid; padding-bottom:1px;}
+.seg.clickable:hover{background:var(--gold-light);}
+.seg.cut{border-color:var(--coral); background:rgba(209,72,31,0.17);}
+.seg.sharpen{border-color:var(--teal); background:rgba(0,124,131,0.16);}
+.seg.vary{border-color:var(--gold); background:rgba(254,167,74,0.28);}
+.seg.check{border-color:var(--plum); background:rgba(44,95,138,0.16);}
+.seg.sel{outline:2px solid var(--ink); outline-offset:1px;}
+.seg.gone{opacity:0.38; text-decoration:line-through;}
+
+.annot{margin-top:16px; background:var(--surface-dark); color:#fff; border-radius:16px; padding:20px 22px; min-height:96px;}
+.annot .ph{color:rgba(255,255,255,0.5); font-style:italic; font-size:14px;}
+.annot .atag{display:inline-block; font-family:'Nunito','Nunito Sans',system-ui,sans-serif; font-weight:700; font-size:11px; letter-spacing:0.07em; text-transform:uppercase; padding:4px 11px; border-radius:999px; margin-bottom:12px; color:#2A1B0C;}
+.annot .apair{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px;}
+@media(max-width:640px){.annot .apair{grid-template-columns:1fr;}}
+.annot .aside{background:rgba(255,255,255,0.07); border-radius:10px; padding:11px 13px;}
+.annot .aside .slbl{font-size:10.5px; text-transform:uppercase; letter-spacing:0.07em; color:rgba(255,255,255,0.55); margin-bottom:5px; font-weight:700;}
+.annot .aside p{margin:0; font-family:'IBM Plex Mono',monospace; font-size:12.5px; line-height:1.65; color:#fff;}
+.annot .awhy{margin:0; font-size:14px; line-height:1.6; color:rgba(255,255,255,0.93);}
+
+/* --- sort --- */
+.sort-item{display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex-wrap:wrap; background:var(--card); border:1px solid var(--line); border-radius:14px; padding:14px 16px; margin-bottom:10px; box-shadow:var(--shadow);}
+.sort-name{font-weight:600; font-size:14px; max-width:400px; font-family:'IBM Plex Mono',monospace; line-height:1.5;}
+.sort-options{display:flex; gap:6px; flex-wrap:wrap;}
+.opt-btn{font-size:12px; font-weight:700; border-radius:8px; border:1.5px solid var(--line); background:var(--card); padding:6px 10px; cursor:pointer; color:var(--ink-soft);}
+.opt-btn.correct{background:var(--teal); border-color:var(--teal); color:#fff;}
+.opt-btn.wrong{background:var(--coral-light); border-color:var(--coral); color:var(--coral-dark);}
+.sort-reason{font-size:12.5px; color:var(--ink-soft); margin-top:8px; display:none; width:100%; line-height:1.55;}
+.sort-item.answered .sort-reason{display:block;}
+
+/* --- upgrade lab --- */
+.round{background:var(--card); border:1px solid var(--line); border-radius:16px; padding:18px 20px; margin-bottom:14px; box-shadow:var(--shadow);}
+.round-head{display:flex; align-items:center; gap:10px; margin-bottom:4px; flex-wrap:wrap;}
+.round-num{width:26px; height:26px; border-radius:50%; background:var(--surface-dark); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:12px; flex-shrink:0;}
+.round-head h3{margin:0; font-size:16px;}
+.round-task{font-size:13px; color:var(--ink-soft); margin:0 0 12px; line-height:1.5;}
+.round-opts{display:flex; flex-direction:column; gap:8px;}
+.round-opt{text-align:left; font-family:'IBM Plex Mono',monospace; font-size:13px; line-height:1.55; border:1.5px solid var(--line); background:var(--card); border-radius:10px; padding:11px 14px; cursor:pointer; color:var(--ink);}
+.round-opt:hover{border-color:var(--teal);}
+.round-opt.good{border-color:var(--teal); background:var(--teal-light); color:var(--teal-dark);}
+.round-opt.bad{border-color:var(--coral); background:var(--coral-light); color:var(--coral-dark);}
+.round-fb{font-size:13px; margin-top:11px; display:none; padding:10px 12px; border-radius:10px; background:var(--gold-light); color:var(--gold-dark); line-height:1.55;}
+.round.answered .round-fb{display:block;}
+
+/* --- prompt cards --- */
+.prompt-card{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:16px 18px; margin-bottom:12px; box-shadow:var(--shadow); border-left:4px solid var(--teal);}
+.prompt-card .plbl{font-family:'Nunito','Nunito Sans',system-ui,sans-serif; font-weight:700; font-size:13px; margin-bottom:6px;}
+.prompt-card p{margin:0; font-size:14px; color:var(--ink); line-height:1.55;}
+.prompt-card.cutc{border-left-color:var(--coral);} .prompt-card.cutc .plbl{color:var(--coral-dark);}
+.prompt-card.sharpenc{border-left-color:var(--teal);} .prompt-card.sharpenc .plbl{color:var(--teal-dark);}
+.prompt-card.varyc{border-left-color:var(--gold);} .prompt-card.varyc .plbl{color:var(--gold-dark);}
+.prompt-card.checkc{border-left-color:var(--plum);} .prompt-card.checkc .plbl{color:var(--plum-dark);}
+
+/* --- quiz --- */
+.quiz-card{background:var(--card); border:1px solid var(--line); border-radius:16px; padding:18px; margin-bottom:14px; box-shadow:var(--shadow);}
+.quiz-q{font-weight:600; font-size:14.5px; margin-bottom:10px; line-height:1.5;}
+.quiz-opts{display:flex; gap:8px; flex-wrap:wrap;}
+.quiz-fb{font-size:13px; margin-top:10px; display:none; padding:8px 10px; border-radius:8px; line-height:1.55;}
+.quiz-fb.correct{background:var(--teal-light); color:var(--teal-dark); display:block;}
+.quiz-fb.wrong{background:var(--coral-light); color:var(--coral-dark); display:block;}
+
+.vocab-card{background:var(--card); border-left:4px solid var(--teal); border-radius:10px; padding:12px 16px; margin-bottom:10px; box-shadow:var(--shadow); font-size:14px; line-height:1.55;}
+.vocab-card b{font-family:'Nunito','Nunito Sans',system-ui,sans-serif;}
+.hw-list{list-style:none; padding:0; margin:0;}
+.hw-list li{padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.15); font-size:14.5px; display:flex; gap:10px; align-items:center;}
+.hw-list li:last-child{border-bottom:none;}
+.hw-box{width:16px; height:16px; border-radius:4px; border:2px solid var(--gold); flex-shrink:0;}
+
+.navbar{position:sticky; bottom:0; background:var(--scrim); backdrop-filter:blur(8px); border-top:1px solid var(--line); padding:14px 20px; display:flex; justify-content:space-between; align-items:center; margin-top:26px; border-radius:16px 16px 0 0;}
+.step-count{font-size:12px; color:var(--ink-soft); font-family:'IBM Plex Mono',monospace;}
+.note{font-size:12.5px; color:var(--ink-soft); font-style:italic; margin-top:10px; line-height:1.55;}
+.objref{font-size:11px; color:var(--ink-soft); font-family:'IBM Plex Mono',monospace; background:var(--card); border:1px solid var(--line); padding:3px 9px; border-radius:999px; display:inline-block; margin-bottom:10px;}
+
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; scroll-behavior:auto !important;}
+}
+</style>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brandrow">
+      <div class="brand">
+        <div class="brand-mark"></div>
+        <div class="brand-text">Selong Bay School · Cambridge Lower Secondary English</div>
+      </div>
+      <div class="step-count mono"><span id="stepNow">1</span> / <span id="stepTotal">10</span></div>
+    </div>
+    <div class="dots" id="dots"></div>
+    <div class="reslinks">
+      <a href="https://claude.ai/code/artifact/b234a7c6-8906-4239-b64c-0fa1eef5f7e8" target="_blank" rel="noopener">↩ Lesson 10</a>
+    </div>
+  </div>
+</div>
+
+<div class="app">
+<div class="stage">
+
+  <!-- STEP 0 -->
+  <section class="step active" data-step="0">
+    <span class="objref">Ref: 8Wp.04</span>
+    <span class="kicker">Lesson 11 of Unit 1B</span>
+    <h1 class="title">Cut, Sharpen, Vary, Check</h1>
+    <p class="lede">Last lesson you planned and drafted the opening of your own true story. Today you do the thing that actually separates decent writing from good writing: you go back and make it better. Not by adding more, but by making every word earn its place.</p>
+
+    <div class="card" style="background:var(--teal-light); border:none; margin-bottom:14px;">
+      <div style="font-family:'Nunito','Nunito Sans',system-ui,sans-serif; font-weight:700; font-size:12px; text-transform:uppercase; letter-spacing:0.06em; color:var(--teal-dark); margin-bottom:6px;">Why this matters</div>
+      <p style="margin:0; font-size:14px; color:var(--teal-dark); line-height:1.55;">Cambridge objective 8Wp.04 asks you to <i>evaluate and edit to improve the accuracy and effectiveness of language, grammar and structure</i>. Notice the two halves of that: <b>effectiveness</b> and <b>accuracy</b>. They are different jobs, and today you learn to do them in the right order.</p>
+    </div>
+
+    <div class="card" style="background:var(--surface-dark); color:#fff; border:none;">
+      <div class="kicker" style="background:rgba(255,255,255,0.12); color:var(--gold); margin-bottom:8px;">🔗 Carrying over from Lesson 10</div>
+      <p style="margin:0 0 12px; font-size:14px; color:#fff; line-height:1.55;">You have a first draft with a Hook, a Build, a Turn and a Land. Nobody's first draft is their best work, and it isn't supposed to be. That's what a draft is <i>for</i>.</p>
+      <a href="https://claude.ai/code/artifact/b234a7c6-8906-4239-b64c-0fa1eef5f7e8" target="_blank" rel="noopener" style="text-decoration:none;"><button class="btn btn-ghost" style="background:rgba(255,255,255,0.14); color:#fff; border-color:rgba(255,255,255,0.35);">↩ Revisit Lesson 10</button></a>
+    </div>
+  </section>
+
+  <!-- STEP 1 -->
+  <section class="step" data-step="1">
+    <span class="kicker">Warm-up</span>
+    <h1 class="title">Recall the Toolkit</h1>
+    <p class="lede">Five things you already know, all of which you're about to use. Say your answer out loud before you tap.</p>
+    <div class="grid grid-2" id="warmupFlips"></div>
+  </section>
+
+  <!-- STEP 2 -->
+  <section class="step" data-step="2">
+    <span class="kicker">Teach · The big distinction</span>
+    <h1 class="title">Editing Is Not Proofreading</h1>
+    <p class="lede">Most people use these two words to mean the same thing. They don't, and confusing them is the single most common reason a redraft doesn't improve anything.</p>
+
+    <div class="vs">
+      <div class="vs-box edit">
+        <div class="vlbl">Job one</div>
+        <h3>Editing = effectiveness</h3>
+        <p>Does this writing <i>work</i>? Does it land?</p>
+        <ul>
+          <li>Cutting what isn't needed</li>
+          <li>Replacing vague words with precise ones</li>
+          <li>Changing sentence lengths</li>
+          <li>Moving or deleting whole sentences</li>
+        </ul>
+      </div>
+      <div class="vs-box proof">
+        <div class="vlbl">Job two</div>
+        <h3>Proofreading = accuracy</h3>
+        <p>Is anything actually <i>wrong</i>?</p>
+        <ul>
+          <li>Spelling</li>
+          <li>Punctuation</li>
+          <li>Tense consistency</li>
+          <li>Homophones (there / their / they're)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card" style="background:var(--gold-light); border:none; margin-top:16px;">
+      <p style="margin:0; font-size:14.5px; color:var(--gold-dark); line-height:1.6;"><b>The order matters.</b> Always edit first, proofread last. There is no point perfecting the punctuation of a sentence you are about to delete.</p>
+    </div>
+  </section>
+
+  <!-- STEP 3 -->
+  <section class="step" data-step="3">
+    <span class="kicker">Teach · The method</span>
+    <h1 class="title">The Four Lenses</h1>
+    <p class="lede">Rather than reading your draft once and vaguely hoping to spot problems, read it four times, looking for one thing each time. Tap each lens to see what it means.</p>
+    <div class="grid grid-2" id="lensFlips"></div>
+    <p class="note">The first three lenses are editing. The fourth is proofreading. That's why Check comes last.</p>
+  </section>
+
+  <!-- STEP 4 -->
+  <section class="step" data-step="4">
+    <span class="kicker">Model · The centrepiece</span>
+    <h1 class="title">One Draft, Four Lenses</h1>
+    <p class="lede">Here is a real-looking first draft of a life-writing opening, and the same piece after editing. Switch between them, then tap any highlighted stretch to see exactly what changed and why.</p>
+
+    <div class="legend">
+      <span class="lens-chip lens-cut"><span class="lens-dot"></span>Cut</span>
+      <span class="lens-chip lens-sharpen"><span class="lens-dot"></span>Sharpen</span>
+      <span class="lens-chip lens-vary"><span class="lens-dot"></span>Vary</span>
+      <span class="lens-chip lens-check"><span class="lens-dot"></span>Check</span>
+    </div>
+
+    <div class="toggle-row">
+      <button class="tgl on" id="tglDraft">First draft</button>
+      <button class="tgl" id="tglEdited">After editing</button>
+      <span class="wordcount" id="wordCount">110 words</span>
+    </div>
+
+    <div class="draftbox is-draft" id="draftBox"></div>
+    <div class="annot" id="annot"><span class="ph">Tap any highlighted stretch above to see what changed, and which lens caught it.</span></div>
+    <p class="note">Original draft and edit written for this lesson. Note the word count: the edited version is <i>shorter</i> than the draft. Editing is not the same as adding.</p>
+  </section>
+
+  <!-- STEP 5 -->
+  <section class="step" data-step="5">
+    <span class="kicker">Practice · Diagnose it</span>
+    <h1 class="title">Which Lens Catches This?</h1>
+    <p class="lede">Eight problems from other students' drafts. For each one, decide which of the four lenses would catch it.</p>
+    <div class="legend">
+      <span class="lens-chip lens-cut"><span class="lens-dot"></span>Cut</span>
+      <span class="lens-chip lens-sharpen"><span class="lens-dot"></span>Sharpen</span>
+      <span class="lens-chip lens-vary"><span class="lens-dot"></span>Vary</span>
+      <span class="lens-chip lens-check"><span class="lens-dot"></span>Check</span>
+    </div>
+    <div id="sortList"></div>
+  </section>
+
+  <!-- STEP 6 -->
+  <section class="step" data-step="6">
+    <span class="kicker">Have a go · The upgrade lab</span>
+    <h1 class="title">Pick the Stronger Version</h1>
+    <p class="lede">Three rounds, three versions each. Only one is genuinely stronger. Say <i>why</i> before you tap, then check.</p>
+    <div id="roundList"></div>
+  </section>
+
+  <!-- STEP 7 -->
+  <section class="step" data-step="7">
+    <span class="kicker">Now your turn</span>
+    <h1 class="title">Four Passes Over Your Own Draft</h1>
+    <p class="lede">Get your Lesson 10 draft in front of you. We'll go through it together, one lens at a time, and you mark your changes straight onto Worksheet 11 as we go.</p>
+    <div class="prompt-card cutc"><div class="plbl">PASS 1 · CUT</div><p>Read it through hunting only for words doing no work. Every <i>very</i>, <i>really</i>, <i>quite</i> and <i>a lot</i>. Any sentence that repeats an idea you've already made. Cross them out. Don't replace them yet.</p></div>
+    <div class="prompt-card sharpenc"><div class="plbl">PASS 2 · SHARPEN</div><p>Find every vague word and make it exact. How many people actually? What did it actually smell like? What did they actually say? Where you've <i>told</i> a feeling, try to <i>show</i> it instead.</p></div>
+    <div class="prompt-card varyc"><div class="plbl">PASS 3 · VARY</div><p>Read it aloud. Where do three sentences run at the same length? Find your most important moment and give it a short, blunt sentence. Check you haven't started four sentences in a row with "I".</p></div>
+    <div class="prompt-card checkc"><div class="plbl">PASS 4 · CHECK</div><p>Only now. Spelling, punctuation, and one tense all the way through. Read the final sentence first and work backwards — it stops your brain skimming what it expects to see.</p></div>
+    <p class="note">Reading backwards for the proofread is a genuine professional trick. Your eye stops autocorrecting the text when it can't follow the meaning.</p>
+  </section>
+
+  <!-- STEP 8 -->
+  <section class="step" data-step="8">
+    <span class="kicker">Quick check</span>
+    <h1 class="title">Seven Quick Questions</h1>
+    <p class="lede">Let's see what stuck before you edit at home.</p>
+    <div id="quizList"></div>
+  </section>
+
+  <!-- STEP 9 -->
+  <section class="step" data-step="9">
+    <span class="kicker">Recap</span>
+    <h1 class="title">Nicely Done</h1>
+    <p class="lede">Here's the vocabulary from today.</p>
+    <div id="vocabList"></div>
+    <div class="card" style="background:var(--surface-dark); color:#fff; border:none; margin-top:20px;">
+      <div class="kicker" style="background:rgba(255,255,255,0.12); color:var(--gold); margin-bottom:8px;">🏠 Homework: Worksheet 11</div>
+      <ul class="hw-list">
+        <li><div class="hw-box"></div>Diagnose eight problems in a supplied draft</li>
+        <li><div class="hw-box"></div>Rewrite three weak sentences using a named lens</li>
+        <li><div class="hw-box"></div>Run all four passes over your own Lesson 10 draft</li>
+        <li><div class="hw-box"></div>Write down the single change that improved it most, and why</li>
+      </ul>
+      <p style="margin:14px 0 0; font-size:13px; color:rgba(255,255,255,0.75);">Worksheet 11 is on Google Classroom, along with the review activity.</p>
+    </div>
+    <p class="lede" style="margin-top:20px;">🎉 That's the full writing cycle now: plan, draft, edit, proofread. Next time we put it under exam conditions — reading an unseen passage and writing to a time limit.</p>
+  </section>
+
+</div>
+
+<div class="navbar">
+  <button class="btn btn-ghost" id="prevBtn">← Back</button>
+  <button class="btn btn-primary" id="nextBtn">Next →</button>
+</div>
+</div>
+
+<script>
+const warmupData = [
+  {term:'Hook, Build, Turn, Land', sub:'What are the four moves, and what does each one do?', back:"Hook opens with tension or a vivid moment. Build accumulates detail. Turn shifts or complicates things. Land leaves a final impression, often echoing the Hook."},
+  {term:'Show, don’t tell', sub:'What does this actually ask you to do?', back:"Give the reader the concrete detail and let them feel the emotion themselves, instead of naming the emotion for them. “My hands wouldn’t stay still” beats “I was nervous.”"},
+  {term:'Honest detail', sub:'Why does it beat a more dramatic invented one?', back:"Life writing makes a promise that this really happened. A true, specific detail is almost always more surprising than an invented one — and if a reader catches one invention, they stop trusting all of it."},
+  {term:'Active and passive voice', sub:'Why would you choose one over the other?', back:"Active puts the doer first and feels direct. Passive moves the doer out of the way, which is useful when the thing done to you matters more than who did it. The choice controls what feels important."},
+  {term:'Redundancy', sub:'A new word for today — have a guess.', back:"Words or sentences that repeat work already done. “He nodded his head in agreement” is redundant three times over: nodding is already done with the head, and already means agreement."}
+];
+
+const lensData = [
+  {term:'1. CUT', sub:'What isn’t earning its place?', back:"Delete filler words (very, really, quite, actually), repeated ideas, and any sentence that explains something the reader already understood. Cutting is the fastest way to improve a draft, and the hardest to make yourself do.", colour:'#A6330F'},
+  {term:'2. SHARPEN', sub:'What is vague that could be exact?', back:"Swap general words for precise ones. “A lot of people” becomes “three hundred people.” “It smelled nice” becomes “it smelled of chlorine and floor polish.” This is also where you turn telling into showing.", colour:'#005F65'},
+  {term:'3. VARY', sub:'Does it all sound the same?', back:"Read it aloud. If every sentence is the same length, the writing goes flat and the reader stops noticing anything. A short sentence straight after a long one is the simplest way there is to make a moment land.", colour:'#A65F06'},
+  {term:'4. CHECK', sub:'Is anything actually wrong?', back:"The proofread, and only now. Spelling, punctuation, tense consistency, homophones. This is the one lens that isn’t about making the writing better — it’s about making sure nothing is broken.", colour:'#1E4664'}
+];
+
+/* Model draft: segments. mark = lens or null. */
+const draftSegs = [
+  {id:1, lens:'sharpen', text:'I was really nervous on the day of the swimming competition.'},
+  {id:2, lens:'cut', text:' It was a very big deal and I was very worried about it.'},
+  {id:3, lens:'sharpen', text:' There were a lot of people there and it was really loud and there were lots of people watching and it was quite scary.'},
+  {id:4, lens:'sharpen', text:' My friend Arif said I would be fine. He was being nice.'},
+  {id:5, lens:'vary', text:' Then I swam my race and I did not win but I got a better time than I had ever got before which was good.'},
+  {id:6, lens:'check', text:' Afterwards I am standing by the pool and I feel diffrent.'},
+  {id:7, lens:'cut', text:' Looking back now I think that it taught me that winning is not the only thing that matters in life and that is an important lesson.'}
+];
+
+const editedSegs = [
+  {id:1, lens:'sharpen', text:'I had been awake since four, listening to the rain on the roof and counting lengths in my head.'},
+  {id:2, lens:'cut', text:'', gone:true},
+  {id:3, lens:'sharpen', text:' The pool at Mataram smelled of chlorine and floor polish, and the noise came off the tiled walls in waves — three hundred people, all of them louder than I wanted them to be.'},
+  {id:4, lens:'sharpen', text:' Arif found me by the blocks and said nothing at all, which helped more than anything he could have said.'},
+  {id:5, lens:'vary', text:' I came fifth. I also took four seconds off my own best time, and I remember looking up at the board and feeling something that was not quite disappointment.'},
+  {id:6, lens:'check', text:' Afterwards I stood by the pool feeling different.'},
+  {id:7, lens:'cut', text:' I still don’t know what to call it. I only know I went back the next week.'}
+];
+
+const annotations = {
+  1: {lens:'sharpen', title:'Telling → showing',
+      before:'I was really nervous on the day of the swimming competition.',
+      after:'I had been awake since four, listening to the rain on the roof and counting lengths in my head.',
+      why:'The draft names the feeling and stops. The edit shows you the feeling and lets you name it yourself. Notice the word “nervous” never appears in the edited version — it doesn’t need to, because you can feel it.'},
+  2: {lens:'cut', title:'Pure repetition',
+      before:'It was a very big deal and I was very worried about it.',
+      after:'(deleted entirely)',
+      why:'This sentence says nothing the previous sentence hasn’t already said, and uses “very” twice to say it. “Very” is nearly always a signal that a more precise word exists, or that the sentence isn’t earning its place at all. Cut it, and nothing is lost.'},
+  3: {lens:'sharpen', title:'Vague → precise',
+      before:'There were a lot of people there and it was really loud and there were lots of people watching and it was quite scary.',
+      after:'The pool at Mataram smelled of chlorine and floor polish, and the noise came off the tiled walls in waves — three hundred people, all of them louder than I wanted them to be.',
+      why:'“A lot of people” and “really loud” could describe literally anywhere. “Three hundred people” and “chlorine and floor polish” could only describe this place, on this day. One exact number and one real smell do more work than four vague adjectives.'},
+  4: {lens:'sharpen', title:'The true detail beats the tidy one',
+      before:'My friend Arif said I would be fine. He was being nice.',
+      after:'Arif found me by the blocks and said nothing at all, which helped more than anything he could have said.',
+      why:'The draft reports a predictable kindness, then explains it in case you missed it. The edited version gives the truer, stranger thing that actually happened, and trusts you to understand why it helped. Honest detail is almost always more interesting than convenient detail.'},
+  5: {lens:'vary', title:'One long sentence → short, then long',
+      before:'Then I swam my race and I did not win but I got a better time than I had ever got before which was good.',
+      after:'I came fifth. I also took four seconds off my own best time, and I remember looking up at the board and feeling something that was not quite disappointment.',
+      why:'The draft carries the result, the time and the verdict all at the same flat volume, so none of it lands. Splitting it gives you a three-word sentence — “I came fifth.” — that hits, and then a longer sentence that opens out after it. Short after long is the simplest emphasis there is.'},
+  6: {lens:'check', title:'Two accuracy slips',
+      before:'Afterwards I am standing by the pool and I feel diffrent.',
+      after:'Afterwards I stood by the pool feeling different.',
+      why:'Two separate problems, both proofreading rather than editing. The whole piece is in the past tense and this sentence slips into the present (“I am standing”, “I feel”). And “diffrent” is simply misspelled. Neither one changes what the writing is doing — which is exactly why Check comes last, once the sentences have stopped moving around.'},
+  7: {lens:'cut', title:'Cut the moral, keep the truth',
+      before:'Looking back now I think that it taught me that winning is not the only thing that matters in life and that is an important lesson.',
+      after:'I still don’t know what to call it. I only know I went back the next week.',
+      why:'A Land that announces a neat moral sounds like something the writer thinks they are supposed to say, not something they mean. Cutting the moral and leaving the honest, unresolved version is far stronger — and one concrete action (going back the next week) shows the change instead of claiming it. It also echoes the Hook.'}
+};
+
+const lensMeta = {
+  cut:    {label:'Cut',     colour:'#D1481F'},
+  sharpen:{label:'Sharpen', colour:'#007C83'},
+  vary:   {label:'Vary',    colour:'#FEA74A'},
+  check:  {label:'Check',   colour:'#2C5F8A'}
+};
+
+const sortData = [
+  {name:'You have written "very cold" and "really cold" in the same paragraph.', correct:'Cut', reason:'Both phrases do the same job, and neither is precise. Cut one, then sharpen the other into an actual temperature or sensation.'},
+  {name:'You wrote "there" where you meant "their".', correct:'Check', reason:'A homophone error. It doesn’t change what you were trying to say, so it belongs in the final proofread.'},
+  {name:'Your draft says "lots of people came" — you know it was closer to twenty.', correct:'Sharpen', reason:'You already have the precise version in your head. Use it. "Twenty" is more convincing than "lots".'},
+  {name:'Your five sentences are 14, 15, 13, 16 and 14 words long.', correct:'Vary', reason:'Almost identical lengths make writing go flat. Break one of them into a three-word sentence and the whole paragraph wakes up.'},
+  {name:'Sentence 2 and sentence 6 make exactly the same point.', correct:'Cut', reason:'Redundancy across a paragraph. Keep whichever version is stronger and delete the other outright.'},
+  {name:'The piece starts in the past tense and slips into the present halfway down.', correct:'Check', reason:'Tense consistency is an accuracy problem, not an effectiveness one. Fix it in the final pass.'},
+  {name:'You wrote "the food was nice" about a meal you still remember ten years later.', correct:'Sharpen', reason:'"Nice" is the vaguest word in English. If you remember it ten years later, you remember something specific — write that instead.'},
+  {name:'Six sentences in a row all begin with "I".', correct:'Vary', reason:'A rhythm problem. Vary your sentence openings so the reader stops hearing the same beat and starts hearing what you’re saying.'}
+];
+const sortOptions = ['Cut','Sharpen','Vary','Check'];
+
+const roundData = [
+  {
+    task:'A Hook, for a piece about a weekly trip to the market with a grandmother.',
+    opts:[
+      {text:'It was a really exciting day when we went to the market.', ok:false},
+      {text:'I have never seen so many colours in one place before.', ok:false},
+      {text:'My grandmother could tell a good mango from six feet away, and she never once explained how.', ok:true}
+    ],
+    fb:'The third one. It has a real named person, one precise and slightly strange detail, and it leaves a question hanging that makes you want the next sentence. The first tells you the feeling instead of showing it; the second could be about anywhere.'
+  },
+  {
+    task:'A Build detail, from the middle of the same piece.',
+    opts:[
+      {text:'There was lots of food everywhere and it smelled really nice.', ok:false},
+      {text:'There were forty-one stalls, and the one at the end sold nothing but salt.', ok:true},
+      {text:'The market was very big and very busy and there was a lot going on.', ok:false}
+    ],
+    fb:'The second one. An exact number, plus one genuinely odd specific (a stall selling nothing but salt) that proves you were actually there. Notice the third option uses "very" twice and tells you nothing at all — that’s a straight Cut.'
+  },
+  {
+    task:'A Land, to close the piece.',
+    opts:[
+      {text:'It was an amazing experience that I will never forget.', ok:false},
+      {text:'In conclusion, markets are an important part of Indonesian culture.', ok:false},
+      {text:'I still can’t pick a mango properly. I buy them anyway, and I always take too long.', ok:true}
+    ],
+    fb:'The third one. Honest, unresolved, and it echoes the Hook without repeating it. The first reaches for a phrase that sounds like an ending; the second slips into essay voice, which isn’t life writing at all.'
+  }
+];
+
+const quizData = [
+  {q:'What is the difference between editing and proofreading?', opts:['Editing improves effectiveness, proofreading corrects accuracy','They are two words for the same thing','Proofreading comes first, then editing'], correct:0, fb:'editing changes how well the writing works; proofreading fixes what is actually wrong. Effectiveness first, accuracy last.'},
+  {q:'Which of the four lenses do you use last?', opts:['Cut','Sharpen','Vary','Check'], correct:3, fb:'Check. There is no point perfecting the spelling of a sentence you are about to delete.'},
+  {q:'You have used "very" three times in one paragraph. Which lens catches it?', opts:['Cut','Vary','Check'], correct:0, fb:'Cut. "Very" is nearly always a sign that a more precise word exists, or that the sentence isn’t earning its place.'},
+  {q:'Every sentence in your paragraph is roughly the same length. Which lens?', opts:['Cut','Vary','Check'], correct:1, fb:'Vary. Identical lengths flatten the writing. A short sentence after a long one is the simplest way to make a moment land.'},
+  {q:'True or false: a good edit always makes a piece longer.', opts:['True','False'], correct:1, fb:'false. The model edit today came out shorter than the draft. Editing is about making every word earn its place, not adding words.'},
+  {q:'Your draft ends "it was an experience I will never forget." What is the problem?', opts:['It states a tidy conclusion instead of something honest and specific','It is too short','It is in the wrong tense'], correct:0, fb:'it sounds like something a writer thinks they are supposed to say. An honest, unresolved ending is far stronger.'},
+  {q:'Why does a short sentence straight after a long one work so well?', opts:['The change in rhythm creates emphasis','Short sentences are always better','It saves space'], correct:0, fb:'the contrast in rhythm is what does it. Neither length is better on its own — it is the change between them that makes the reader pay attention.'}
+];
+
+const vocabData = [
+  {t:'Editing', d:'Reworking a draft to improve how well it <i>works</i>: cutting, sharpening and varying. Always done before proofreading.'},
+  {t:'Proofreading', d:'The final check for things that are actually <i>wrong</i>: spelling, punctuation, tense consistency, homophones.'},
+  {t:'Redundancy', d:'Words or sentences repeating work that has already been done. The first thing to look for when you cut.'},
+  {t:'Sentence variety', d:'Deliberately mixing sentence lengths and openings so the writing has rhythm, and so important moments stand out.'},
+  {t:'Filler words', d:'Words like <i>very</i>, <i>really</i>, <i>quite</i> and <i>actually</i> that take up space without adding meaning.'}
+];
+
+function makeKeyClickable(el){
+  el.tabIndex = 0;
+  el.setAttribute('role','button');
+  el.addEventListener('keydown', (e)=>{ if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); el.click(); } });
+}
+
+/* ---- warm-up flips ---- */
+const warmupWrap = document.getElementById('warmupFlips');
+warmupData.forEach((item,i)=>{
+  const el = document.createElement('div');
+  el.className = 'flip';
+  el.innerHTML = '<div class="flip-inner">'
+    + '<div class="flip-face flip-front"><div class="flip-term">' + item.term + '</div><div class="flip-sub">' + item.sub + '</div><div class="flip-hint">Tap to reveal ↻</div></div>'
+    + '<div class="flip-face flip-back" style="background:' + ['#007C83','#A65F06','#A6330F','#1E4664','#005F65'][i] + ';"><p>' + item.back + '</p></div>'
+    + '</div>';
+  el.onclick = ()=> el.classList.toggle('flipped');
+  makeKeyClickable(el);
+  warmupWrap.appendChild(el);
+});
+
+/* ---- lens flips ---- */
+const lensWrap = document.getElementById('lensFlips');
+lensData.forEach((item)=>{
+  const el = document.createElement('div');
+  el.className = 'flip';
+  el.innerHTML = '<div class="flip-inner">'
+    + '<div class="flip-face flip-front"><div class="flip-term">' + item.term + '</div><div class="flip-sub">' + item.sub + '</div><div class="flip-hint">Tap to reveal ↻</div></div>'
+    + '<div class="flip-face flip-back" style="background:' + item.colour + ';"><p>' + item.back + '</p></div>'
+    + '</div>';
+  el.onclick = ()=> el.classList.toggle('flipped');
+  makeKeyClickable(el);
+  lensWrap.appendChild(el);
+});
+
+/* ---- before / after viewer ---- */
+const draftBox = document.getElementById('draftBox');
+const annotBox = document.getElementById('annot');
+const wordCountEl = document.getElementById('wordCount');
+let showingDraft = true;
+let selectedId = null;
+
+function countWords(segs){
+  return segs.map(s=>s.text).join(' ').trim().split(/\s+/).filter(Boolean).length;
+}
+
+function renderDraft(){
+  const segs = showingDraft ? draftSegs : editedSegs;
+  draftBox.classList.toggle('is-draft', showingDraft);
+  draftBox.innerHTML = '';
+  segs.forEach(seg=>{
+    if(!seg.text && seg.gone){
+      const span = document.createElement('span');
+      span.className = 'seg clickable ' + seg.lens + ' gone';
+      span.textContent = ' [sentence deleted] ';
+      span.dataset.id = seg.id;
+      draftBox.appendChild(span);
+      return;
+    }
+    const span = document.createElement('span');
+    span.className = 'seg clickable ' + seg.lens;
+    span.textContent = seg.text;
+    span.dataset.id = seg.id;
+    draftBox.appendChild(span);
+  });
+  draftBox.querySelectorAll('.seg.clickable').forEach(span=>{
+    span.tabIndex = 0;
+    span.setAttribute('role','button');
+    const open = ()=> showAnnot(Number(span.dataset.id));
+    span.onclick = open;
+    span.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); open(); } });
+  });
+  wordCountEl.textContent = countWords(segs) + ' words';
+  if(selectedId !== null) markSelected();
+}
+
+function markSelected(){
+  draftBox.querySelectorAll('.seg').forEach(s=>{
+    s.classList.toggle('sel', Number(s.dataset.id) === selectedId);
+  });
+}
+
+function showAnnot(id){
+  selectedId = id;
+  markSelected();
+  const a = annotations[id];
+  const meta = lensMeta[a.lens];
+  annotBox.innerHTML =
+      '<span class="atag" style="background:' + meta.colour + ';">' + meta.label + ' · ' + a.title + '</span>'
+    + '<div class="apair">'
+    +   '<div class="aside"><div class="slbl">First draft</div><p>' + a.before + '</p></div>'
+    +   '<div class="aside"><div class="slbl">After editing</div><p>' + a.after + '</p></div>'
+    + '</div>'
+    + '<p class="awhy">' + a.why + '</p>';
+}
+
+document.getElementById('tglDraft').onclick = ()=>{
+  showingDraft = true;
+  document.getElementById('tglDraft').classList.add('on');
+  document.getElementById('tglEdited').classList.remove('on');
+  renderDraft();
+};
+document.getElementById('tglEdited').onclick = ()=>{
+  showingDraft = false;
+  document.getElementById('tglEdited').classList.add('on');
+  document.getElementById('tglDraft').classList.remove('on');
+  renderDraft();
+};
+renderDraft();
+
+/* ---- sort ---- */
+const sortWrap = document.getElementById('sortList');
+sortData.forEach(item=>{
+  const row = document.createElement('div');
+  row.className = 'sort-item';
+  const optsHtml = sortOptions.map(o=>'<button class="opt-btn" data-val="' + o + '">' + o + '</button>').join('');
+  row.innerHTML = '<div style="flex:1;"><div class="sort-name">' + item.name + '</div><div class="sort-reason">' + item.reason + '</div></div><div class="sort-options">' + optsHtml + '</div>';
+  row.querySelectorAll('.opt-btn').forEach(btn=>{
+    btn.onclick = ()=>{
+      if(row.classList.contains('answered')) return;
+      row.classList.add('answered');
+      row.querySelectorAll('.opt-btn').forEach(b=>{
+        if(b.dataset.val === item.correct) b.classList.add('correct');
+        else if(b === btn) b.classList.add('wrong');
+      });
+    };
+  });
+  sortWrap.appendChild(row);
+});
+
+/* ---- upgrade lab ---- */
+const roundWrap = document.getElementById('roundList');
+roundData.forEach((item,i)=>{
+  const el = document.createElement('div');
+  el.className = 'round';
+  const optsHtml = item.opts.map((o,j)=>'<button class="round-opt" data-j="' + j + '">' + o.text + '</button>').join('');
+  el.innerHTML = '<div class="round-head"><div class="round-num">' + (i+1) + '</div><h3>Round ' + (i+1) + '</h3></div>'
+    + '<p class="round-task">' + item.task + '</p>'
+    + '<div class="round-opts">' + optsHtml + '</div>'
+    + '<div class="round-fb">' + item.fb + '</div>';
+  el.querySelectorAll('.round-opt').forEach(btn=>{
+    btn.onclick = ()=>{
+      if(el.classList.contains('answered')) return;
+      el.classList.add('answered');
+      el.querySelectorAll('.round-opt').forEach((b,j)=>{
+        if(item.opts[j].ok) b.classList.add('good');
+        else if(b === btn) b.classList.add('bad');
+      });
+    };
+  });
+  roundWrap.appendChild(el);
+});
+
+/* ---- quiz ---- */
+const quizWrap = document.getElementById('quizList');
+quizData.forEach(item=>{
+  const el = document.createElement('div');
+  el.className = 'quiz-card';
+  const optsHtml = item.opts.map((o,i)=>'<button class="btn btn-sm btn-ghost" data-i="' + i + '">' + o + '</button>').join('');
+  el.innerHTML = '<div class="quiz-q">' + item.q + '</div><div class="quiz-opts">' + optsHtml + '</div><div class="quiz-fb"></div>';
+  const fb = el.querySelector('.quiz-fb');
+  el.querySelectorAll('.quiz-opts button').forEach(btn=>{
+    btn.onclick = ()=>{
+      if(fb.classList.contains('correct')) return;
+      const ok = Number(btn.dataset.i) === item.correct;
+      fb.textContent = (ok ? '✓ ' : '✗ Not quite: ') + item.fb;
+      fb.className = 'quiz-fb ' + (ok ? 'correct' : 'wrong');
+      if(ok){ btn.style.background='var(--teal)'; btn.style.color='#fff'; }
+    };
+  });
+  quizWrap.appendChild(el);
+});
+
+/* ---- vocab ---- */
+const vocabWrap = document.getElementById('vocabList');
+vocabData.forEach(item=>{
+  const el = document.createElement('div');
+  el.className = 'vocab-card';
+  el.innerHTML = '<b>' + item.t + ':</b> ' + item.d;
+  vocabWrap.appendChild(el);
+});
+
+/* ---- navigation ---- */
+const steps = document.querySelectorAll('.step');
+const dotsWrap = document.getElementById('dots');
+let current = 0;
+steps.forEach((s,i)=>{
+  const d = document.createElement('button');
+  d.className = 'dot' + (i===0?' active':'');
+  d.setAttribute('aria-label', 'Go to step ' + (i+1));
+  d.onclick = ()=> goTo(i);
+  dotsWrap.appendChild(d);
+});
+document.getElementById('stepTotal').textContent = steps.length;
+
+function goTo(i){
+  if(i<0 || i>=steps.length) return;
+  steps[current].classList.remove('active');
+  dotsWrap.children[current].classList.remove('active');
+  if(i>current) dotsWrap.children[current].classList.add('done');
+  current = i;
+  steps[current].classList.add('active');
+  Array.from(dotsWrap.children).forEach((d,idx)=>{ d.classList.toggle('active', idx===current); });
+  document.getElementById('stepNow').textContent = current+1;
+  document.getElementById('prevBtn').disabled = current===0;
+  document.getElementById('nextBtn').textContent = current===steps.length-1 ? 'Finish 🎉' : 'Next →';
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+document.getElementById('prevBtn').onclick = ()=> goTo(current-1);
+document.getElementById('nextBtn').onclick = ()=> { if(current<steps.length-1) goTo(current+1); };
+document.addEventListener('keydown', (e)=>{
+  if(e.target && (e.target.tagName === 'BUTTON' || e.target.tagName === 'INPUT')) return;
+  if(e.key==='ArrowRight') goTo(current+1);
+  if(e.key==='ArrowLeft') goTo(current-1);
+});
+goTo(0);
+</script>

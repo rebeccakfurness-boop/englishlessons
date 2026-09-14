@@ -1,0 +1,376 @@
+<title>Cut, Sharpen, Vary, Check Teaching Script</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&family=Nunito+Sans:wght@400;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap');
+
+:root{
+  --bg:#FDF7EE; --ink:#46280A; --ink-soft:#7A6450;
+  --teal:#007C83; --teal-dark:#005F65; --teal-light:#D7EDEC;
+  --coral:#D1481F; --coral-dark:#A6330F; --coral-light:#FBE3D8;
+  --gold:#FEA74A; --gold-dark:#A65F06; --gold-light:#FFF0DC;
+  --plum:#2C5F8A; --plum-dark:#1E4664; --plum-light:#E0EBF4;
+  --card:#FFFFFF; --line:#EADFCD;
+  --shadow: 0 8px 24px rgba(70,40,10,0.09);
+  --surface-dark:#2A1B0C;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#16110B; --ink:#F6EEE2; --ink-soft:#BBA890;
+    --teal:#2FA7AE; --teal-dark:#8FE3E6; --teal-light:#0E2E30;
+    --coral:#E2572B; --coral-dark:#FF9E77; --coral-light:#3A1F12;
+    --gold:#FEA74A; --gold-dark:#FFD09B; --gold-light:#3B2711;
+    --plum:#4E86B8; --plum-dark:#9CC6E6; --plum-light:#182B3A;
+    --card:#211A12; --line:#382B1D;
+    --shadow: 0 8px 24px rgba(0,0,0,0.45);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#16110B; --ink:#F6EEE2; --ink-soft:#BBA890;
+  --teal:#2FA7AE; --teal-dark:#8FE3E6; --teal-light:#0E2E30;
+  --coral:#E2572B; --coral-dark:#FF9E77; --coral-light:#3A1F12;
+  --gold:#FEA74A; --gold-dark:#FFD09B; --gold-light:#3B2711;
+  --plum:#4E86B8; --plum-dark:#9CC6E6; --plum-light:#182B3A;
+  --card:#211A12; --line:#382B1D;
+  --shadow: 0 8px 24px rgba(0,0,0,0.45);
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{background:var(--bg); color:var(--ink); font-family:'Nunito Sans','Segoe UI',system-ui,sans-serif; line-height:1.6;}
+h1,h2,h3{font-family:'Nunito','Nunito Sans',system-ui,sans-serif;}
+.mono{font-family:'IBM Plex Mono',monospace;}
+
+.app{max-width:800px; margin:0 auto; padding:0 20px 70px;}
+
+.topbar{background:linear-gradient(135deg,#2A1B0C,#4A3016); color:#fff; padding:26px 20px 22px;}
+.topbar-inner{max-width:800px; margin:0 auto;}
+.tabs{display:flex; gap:8px; flex-wrap:wrap; margin-top:16px;}
+.tabs a{padding:7px 14px; border-radius:999px; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.25); color:#fff; font-size:12.5px; font-weight:700; text-decoration:none;}
+.tabs a.active{background:var(--gold); border-color:var(--gold); color:#46280A;}
+.tabs a:hover{background:rgba(255,255,255,0.22);}
+.kicker{display:inline-flex; align-items:center; gap:8px; font-size:12px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--gold); margin:14px 0 8px;}
+h1.title{font-size:clamp(26px,4vw,36px); margin:0 0 6px; letter-spacing:-0.01em; text-wrap:balance;}
+.sub{color:rgba(255,255,255,0.82); font-size:14px; margin:0; max-width:600px;}
+
+.section{margin:26px 0;}
+.section h2{font-size:20px; color:var(--ink); margin:0 0 10px;}
+.section p{font-size:14.5px; color:var(--ink); margin:0 0 12px;}
+
+.timing{display:inline-block; background:var(--teal-light); color:var(--teal-dark); font-weight:700; font-size:12px; padding:3px 11px; border-radius:999px; margin-right:8px; font-family:'IBM Plex Mono',monospace;}
+
+.callout{border-left:4px solid var(--gold); background:var(--gold-light); border-radius:0 12px 12px 0; padding:14px 18px; margin:14px 0; font-size:13.5px; color:var(--gold-dark);}
+.callout strong:first-child{display:block; text-transform:uppercase; font-size:10.5px; letter-spacing:0.06em; margin-bottom:4px; font-family:'Nunito','Nunito Sans',sans-serif;}
+.callout.tip{border-color:var(--teal); background:var(--teal-light); color:var(--teal-dark);}
+.callout.watch{border-color:var(--coral); background:var(--coral-light); color:var(--coral-dark);}
+
+.say-block{background:var(--plum-light); border:1px dashed var(--plum); border-radius:12px; padding:14px 18px; margin:12px 0; font-size:14.5px; color:var(--ink);}
+.say-block .who{font-weight:700; color:var(--plum-dark); font-size:11px; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:6px; font-family:'Nunito','Nunito Sans',sans-serif;}
+
+.stage-card{background:var(--card); border:1px solid var(--line); border-radius:16px; padding:22px 24px; margin-bottom:18px; box-shadow:var(--shadow);}
+.stage-head{display:flex; align-items:center; gap:10px; margin-bottom:6px; flex-wrap:wrap;}
+.stage-num{width:28px; height:28px; border-radius:50%; background:var(--surface-dark); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:13px; flex-shrink:0;}
+.stage-head h2{margin:0; font-size:18px;}
+
+.tablewrap{overflow-x:auto;}
+table.simple{width:100%; border-collapse:collapse; margin:14px 0; font-size:13.5px;}
+table.simple th, table.simple td{border:1px solid var(--line); padding:9px 11px; text-align:left; vertical-align:top;}
+table.simple th{background:var(--teal-light); color:var(--teal-dark); font-size:11.5px; text-transform:uppercase; letter-spacing:0.04em;}
+
+.toc{background:var(--card); border:1px solid var(--line); border-radius:16px; padding:18px 22px; box-shadow:var(--shadow); margin:20px 0;}
+.toc h3{margin:0 0 10px; font-size:14px; text-transform:uppercase; letter-spacing:0.05em; color:var(--ink-soft);}
+.toc ol{margin:0; padding-left:20px; columns:2; column-gap:24px;}
+.toc li{font-size:13px; margin-bottom:6px; break-inside:avoid;}
+.toc a{color:var(--teal-dark); text-decoration:none; font-weight:600;}
+.toc a:hover{text-decoration:underline;}
+@media(max-width:560px){.toc ol{columns:1;}}
+
+.objbox{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:16px 20px; margin:16px 0; box-shadow:var(--shadow); font-size:14px;}
+.objbox b{font-family:'Nunito','Nunito Sans',sans-serif;}
+
+.lensrow{display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin:14px 0;}
+@media(max-width:640px){.lensrow{grid-template-columns:1fr 1fr;}}
+.lenscard{border-radius:12px; padding:12px 14px; color:#fff;}
+.lenscard .ln{font-family:'Nunito','Nunito Sans',sans-serif; font-weight:800; font-size:14px; margin-bottom:3px;}
+.lenscard p{margin:0; font-size:12px; line-height:1.45; color:rgba(255,255,255,0.92);}
+
+.actions{display:flex; gap:10px; margin:30px 0 10px; flex-wrap:wrap;}
+.btn{font-family:'Nunito Sans',sans-serif; font-weight:700; font-size:13.5px; border:none; border-radius:10px; padding:10px 18px; cursor:pointer; text-decoration:none; display:inline-flex; align-items:center; gap:6px;}
+.btn-coral{background:var(--coral); color:#fff;}
+.btn-ghost{background:var(--card); color:var(--ink); border:1px solid var(--line);}
+
+[tabindex]:focus-visible, button:focus-visible, a:focus-visible{outline:2px solid var(--teal); outline-offset:2px; border-radius:8px;}
+
+footer{text-align:center; color:var(--ink-soft); font-size:12px; margin-top:40px;}
+
+@media (prefers-reduced-motion: reduce){ *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;} }
+@media print{
+  .no-print{display:none !important;}
+  .topbar{background:#2A1B0C !important; -webkit-print-color-adjust:exact; print-color-adjust:exact;}
+  body{background:#fff; --card:#fff; --bg:#fff;}
+  .stage-card{box-shadow:none; border:1px solid #ccc; break-inside:avoid;}
+}
+</style>
+
+<div class="topbar no-print">
+  <div class="topbar-inner">
+    <div class="kicker">🗣️ Teaching Script</div>
+    <h1 class="title">Cut, Sharpen, Vary, Check</h1>
+    <p class="sub">Lesson 11 · Cambridge Lower Secondary English, Unit 1B · Written for a tutor teaching this for the first time</p>
+    <div class="tabs">
+      <a href="https://claude.ai/code/artifact/b234a7c6-8906-4239-b64c-0fa1eef5f7e8" target="_blank" rel="noopener">↩ Lesson 10</a>
+      <a href="https://claude.ai/code/artifact/5a2354b4-6d7b-4c61-bf76-994fdc8ba516" target="_blank" rel="noopener">🕹️ Interactive lesson</a>
+      <a href="#" class="active">🗣️ Script</a>
+    </div>
+  </div>
+</div>
+
+<div class="app">
+
+  <div class="section">
+    <h2>Before you start</h2>
+    <p>Tom arrives at this lesson holding something he has never had before in this unit: a finished first draft of his own. Lesson 10 got him to plan and write it. This lesson is about the part almost every student skips — going back in and making it better. He will resist cutting his own sentences. That resistance <em>is</em> the lesson.</p>
+
+    <div class="objbox">
+      <b>Real curriculum reference:</b> this lesson targets Cambridge objective <b>8Wp.04</b> — <i>"evaluate and edit to improve the accuracy and effectiveness of language, grammar and structure of a range of different texts."</i> Read that objective carefully: it names two separate things, <b>accuracy</b> and <b>effectiveness</b>. The whole lesson is built on keeping those two jobs apart and doing them in the right order.
+    </div>
+
+    <div class="callout tip">
+      <strong>The one idea this whole lesson hangs on</strong>
+      Editing and proofreading are not the same job. Editing asks "does this <em>work</em>?" — proofreading asks "is anything <em>wrong</em>?" Students conflate them, so they "redraft" by fixing three spellings and changing nothing that matters. If Tom leaves today understanding that distinction and nothing else, the lesson has succeeded.
+    </div>
+
+    <div class="callout watch">
+      <strong>He must have his Lesson 10 draft with him</strong>
+      Stage 7 is unteachable without it. Check at the very start of the call, before Stage 0. If he hasn't got it, use the model draft in Stage 4 as his working text for Stage 7 instead, and set the real edit as homework.
+    </div>
+
+    <div class="lensrow">
+      <div class="lenscard" style="background:#A6330F;"><div class="ln">CUT</div><p>What isn't earning its place?</p></div>
+      <div class="lenscard" style="background:#005F65;"><div class="ln">SHARPEN</div><p>What's vague that could be exact?</p></div>
+      <div class="lenscard" style="background:#A65F06;"><div class="ln">VARY</div><p>Does it all sound the same?</p></div>
+      <div class="lenscard" style="background:#1E4664;"><div class="ln">CHECK</div><p>Is anything actually wrong?</p></div>
+    </div>
+  </div>
+
+  <div class="toc no-print">
+    <h3>Stages (matches the interactive lesson 1:1)</h3>
+    <ol>
+      <li><a href="#s0">0 · What &amp; why</a></li>
+      <li><a href="#s1">1 · Warm-up: recall the toolkit</a></li>
+      <li><a href="#s2">2 · Editing is not proofreading</a></li>
+      <li><a href="#s3">3 · The four lenses</a></li>
+      <li><a href="#s4">4 · Model: one draft, four lenses</a></li>
+      <li><a href="#s5">5 · Which lens catches this?</a></li>
+      <li><a href="#s6">6 · The upgrade lab</a></li>
+      <li><a href="#s7">7 · Four passes over his own draft</a></li>
+      <li><a href="#s8">8 · Quick check</a></li>
+      <li><a href="#s9">9 · Recap &amp; homework</a></li>
+    </ol>
+  </div>
+
+  <!-- STAGE 0 -->
+  <div class="stage-card" id="s0">
+    <div class="stage-head"><div class="stage-num">0</div><h2>What &amp; Why</h2></div>
+    <p><span class="timing">0–3 min</span>Set up the shift from producing writing to improving it. Be direct that first drafts are supposed to be imperfect — this defuses any defensiveness before you ask him to cut his own work.</p>
+    <div class="say-block">
+      <div class="who">Say this</div>
+      "Last lesson you planned and drafted your opening. Today you do the thing that actually separates decent writing from good writing: you go back and make it better. Not by adding more — by making every word earn its place."
+    </div>
+    <div class="say-block">
+      <div class="who">Say this</div>
+      "Nobody's first draft is their best work, and it isn't supposed to be. That's what a draft is <em>for</em>. Professional writers spend more time editing than drafting."
+    </div>
+  </div>
+
+  <!-- STAGE 1 -->
+  <div class="stage-card" id="s1">
+    <div class="stage-head"><div class="stage-num">1</div><h2>Warm-up: Recall the Toolkit</h2></div>
+    <p><span class="timing">3–7 min</span>Five flip cards. Four are revision (the four moves, show-don't-tell, honest detail, active/passive). The fifth, <b>redundancy</b>, is new vocabulary he is meant to guess at — let him try before flipping it.</p>
+    <div class="say-block">
+      <div class="who">Say this</div>
+      "Five things you already know, all of which you're about to use. Say your answer out loud before you tap."
+    </div>
+    <div class="callout tip">
+      <strong>Keep this brisk</strong>
+      This is recall, not re-teaching. If an answer is shaky, flip the card, restate it in one sentence and move on — the real teaching starts at Stage 2. If you overrun here you will eat into Stage 7, which is where the value is.
+    </div>
+  </div>
+
+  <!-- STAGE 2 -->
+  <div class="stage-card" id="s2">
+    <div class="stage-head"><div class="stage-num">2</div><h2>Teach: Editing Is Not Proofreading</h2></div>
+    <p><span class="timing">7–11 min</span>Two side-by-side boxes. This is the conceptual heart of the lesson and everything downstream depends on it landing.</p>
+    <div class="say-block">
+      <div class="who">Say this</div>
+      "Most people use these two words to mean the same thing. They don't. Editing asks: does this writing <em>work</em>? Proofreading asks: is anything actually <em>wrong</em>? Different questions, different jobs."
+    </div>
+    <div class="say-block">
+      <div class="who">Ask him</div>
+      "When you've 'checked over' a piece of writing in the past, which of these two were you actually doing?"
+    </div>
+    <p>Almost every student answers "proofreading" — and realising that is the point. Let him say it himself rather than telling him.</p>
+    <div class="say-block">
+      <div class="who">Say this</div>
+      "Always edit first, proofread last. There is no point perfecting the punctuation of a sentence you're about to delete."
+    </div>
+  </div>
+
+  <!-- STAGE 3 -->
+  <div class="stage-card" id="s3">
+    <div class="stage-head"><div class="stage-num">3</div><h2>Teach: The Four Lenses</h2></div>
+    <p><span class="timing">11–16 min</span>Four flip cards introducing the method: read the draft four separate times, hunting one thing each time.</p>
+    <div class="say-block">
+      <div class="who">Say this</div>
+      "Instead of reading your draft once and vaguely hoping to spot problems, you read it four times, looking for one thing each time. It sounds slower. It's actually much faster, because you're only ever asking yourself one question."
+    </div>
+    <div class="tablewrap">
+      <table class="simple">
+        <tr><th>Lens</th><th>The point to land</th></tr>
+        <tr><td><b>Cut</b></td><td>The fastest improvement available, and the one students resist hardest. Filler words, repeated ideas, sentences that explain what the reader already got.</td></tr>
+        <tr><td><b>Sharpen</b></td><td>Vague → exact. This is also where "show, don't tell" from Lesson 6 gets applied as a concrete editing move rather than an abstract principle.</td></tr>
+        <tr><td><b>Vary</b></td><td>Sentence length and openings. Must be done by reading <em>aloud</em> — you cannot hear rhythm silently.</td></tr>
+        <tr><td><b>Check</b></td><td>The proofread. The only lens that isn't about making the writing better, just about making sure nothing is broken.</td></tr>
+      </table>
+    </div>
+    <div class="callout">
+      <strong>Make the order explicit</strong>
+      Say out loud: "The first three are editing. The fourth is proofreading. That's why Check comes last." Tie it straight back to Stage 2 so the structure of the method visibly follows from the distinction he just learned.
+    </div>
+  </div>
+
+  <!-- STAGE 4 -->
+  <div class="stage-card" id="s4">
+    <div class="stage-head"><div class="stage-num">4</div><h2>Model: One Draft, Four Lenses</h2></div>
+    <p><span class="timing">16–23 min</span>The centrepiece. A deliberately weak first draft and its edited version, with a toggle between them and seven tappable changes. Give this stage the time it deserves.</p>
+    <div class="callout tip">
+      <strong>How to run this stage</strong>
+      Read the first draft aloud together, in full, before you tap anything. Ask him what's wrong with it <em>before</em> revealing the answers. Then work through the highlighted stretches one at a time — but let him predict each fix before you open the annotation.
+    </div>
+    <div class="say-block">
+      <div class="who">Say this</div>
+      "Read this out loud with me. It's not terrible. It's exactly what a real first draft looks like. Now — what's the first thing you'd change?"
+    </div>
+    <div class="tablewrap">
+      <table class="simple">
+        <tr><th>#</th><th>Lens</th><th>What to draw out</th></tr>
+        <tr><td>1</td><td>Sharpen</td><td>The word "nervous" disappears entirely in the edit. Ask him to find it — he can't, because the edit shows the feeling instead. That's show-don't-tell as a concrete move.</td></tr>
+        <tr><td>2</td><td>Cut</td><td>An entire sentence deleted with nothing lost. Ask: "what does this sentence tell us that the one before it didn't?" Answer: nothing.</td></tr>
+        <tr><td>3</td><td>Sharpen</td><td>"A lot of people" → "three hundred people". Push the general principle: an exact number is always more convincing than a vague quantity.</td></tr>
+        <tr><td>4</td><td>Sharpen</td><td>The honest version (Arif says <em>nothing</em>) is more interesting than the tidy one. Links straight back to Lesson 6 on honest detail.</td></tr>
+        <tr><td>5</td><td>Vary</td><td>The big one. One long flat sentence becomes "I came fifth." plus a longer sentence. Read both aloud — he should <em>hear</em> the difference.</td></tr>
+        <tr><td>6</td><td>Check</td><td>A tense slip and a misspelling. Use this to prove why Check is last: neither error changes what the writing does.</td></tr>
+        <tr><td>7</td><td>Cut</td><td>The tidy moral gets deleted. The honest, unresolved ending is stronger. Hardest idea in the lesson — see below.</td></tr>
+      </table>
+    </div>
+    <div class="callout watch">
+      <strong>Change 7 will get pushback</strong>
+      Students are taught for years that a piece of writing should end with a lesson learned, so deleting "it taught me that winning isn't everything" feels like breaking a rule. Don't rush past it. Read both endings aloud and ask which one sounds like a real person. Then point out that the edited version still <em>shows</em> the change — he went back the next week — it just refuses to announce it.
+    </div>
+    <div class="say-block">
+      <div class="who">Finish the stage with this</div>
+      "Look at the word count. The edited version is <em>shorter</em> than the draft. Editing is not the same as adding."
+    </div>
+  </div>
+
+  <!-- STAGE 5 -->
+  <div class="stage-card" id="s5">
+    <div class="stage-head"><div class="stage-num">5</div><h2>Practice: Which Lens Catches This?</h2></div>
+    <p><span class="timing">23–28 min</span>Eight diagnostic problems, sorted into one of the four lenses. Tests whether the method transferred out of the model and into his own judgement.</p>
+    <div class="say-block">
+      <div class="who">Say this</div>
+      "Eight problems from other students' drafts. Which of the four lenses catches each one?"
+    </div>
+    <div class="callout tip">
+      <strong>The two to slow down on</strong>
+      Item 1 ("very cold" / "really cold") legitimately touches both Cut and Sharpen — the marked answer is Cut, but if he says Sharpen, tell him he's half right and explain the sequence: cut the duplicate first, <em>then</em> sharpen what's left. Item 7 ("the food was nice") is the one students most often misread as Cut; the point is that the detail should be <em>replaced</em>, not deleted.
+    </div>
+  </div>
+
+  <!-- STAGE 6 -->
+  <div class="stage-card" id="s6">
+    <div class="stage-head"><div class="stage-num">6</div><h2>Have a Go: The Upgrade Lab</h2></div>
+    <p><span class="timing">28–32 min</span>Three rounds, three candidate sentences each, one genuinely stronger. Hook, then Build detail, then Land.</p>
+    <div class="say-block">
+      <div class="who">Say this</div>
+      "Three rounds. Only one option in each is genuinely stronger. Tell me <em>why</em> before you tap."
+    </div>
+    <p>The "why" matters far more than the choice here. He can get all three right by instinct and still not be able to apply it to his own writing; making him articulate the reason is what transfers.</p>
+    <div class="callout">
+      <strong>Round 3 is the one that teaches</strong>
+      Both wrong answers are the endings students actually write: the cliché ("an experience I'll never forget") and the essay voice ("in conclusion, markets are an important part of..."). Name them as the two standard traps, and point out the second isn't life writing at all — it's slipped into a different genre.
+    </div>
+  </div>
+
+  <!-- STAGE 7 -->
+  <div class="stage-card" id="s7">
+    <div class="stage-head"><div class="stage-num">7</div><h2>Now His Turn: Four Passes Over His Own Draft</h2></div>
+    <p><span class="timing">32–37 min</span>The payoff. Four prompt cards, one per lens, applied live to his own Lesson 10 draft while he marks changes onto Worksheet 11.</p>
+    <div class="say-block">
+      <div class="who">Say this</div>
+      "Get your draft in front of you. We're going to go through it four times, and each time we're only looking for one thing."
+    </div>
+    <div class="tablewrap">
+      <table class="simple">
+        <tr><th>Pass</th><th>What to actually do on the call</th></tr>
+        <tr><td>Cut</td><td>Have him read aloud and stop at every <i>very</i>, <i>really</i>, <i>quite</i>, <i>a lot</i>. Cross them out, don't replace yet. Then ask whether any whole sentence repeats an earlier one.</td></tr>
+        <tr><td>Sharpen</td><td>Pick his two vaguest phrases and interrogate them: "how many, exactly?" "what did it actually smell like?" "what did she actually say?" He usually knows — he just didn't write it down.</td></tr>
+        <tr><td>Vary</td><td>He reads aloud, you listen for flatness. Find his single most important moment and ask him to give it a sentence under five words. Check for four consecutive sentences opening with "I".</td></tr>
+        <tr><td>Check</td><td>Only now. If time is short, set this pass as homework rather than cutting Sharpen or Vary — it's the pass he can most reliably do alone.</td></tr>
+      </table>
+    </div>
+    <div class="callout watch">
+      <strong>He will not want to cut his own writing</strong>
+      This is universal and worth naming out loud: "It feels like losing work. It isn't — you're keeping the good sentences and giving them more room." If he genuinely won't delete something, ask him to read the paragraph aloud with and without it, and let his own ear decide.
+    </div>
+    <div class="callout tip">
+      <strong>Teach the backwards proofread</strong>
+      Reading the last sentence first and working upwards stops the eye autocorrecting text it expects to see. It's a real professional technique, students find it genuinely surprising, and it costs ten seconds to explain.
+    </div>
+  </div>
+
+  <!-- STAGE 8 -->
+  <div class="stage-card" id="s8">
+    <div class="stage-head"><div class="stage-num">8</div><h2>Quick Check</h2></div>
+    <p><span class="timing">37–39 min</span>Seven quickfire questions. Run it fast — if he's slow on any, that's the thing to reinforce in the recap.</p>
+    <div class="say-block">
+      <div class="who">Say this</div>
+      "Quickfire, before you finish this at home."
+    </div>
+    <p>Question 1 (editing vs proofreading) and question 2 (which lens is last) are the two that matter. If either is wrong, re-state the Stage 2 distinction before you let him go.</p>
+  </div>
+
+  <!-- STAGE 9 -->
+  <div class="stage-card" id="s9">
+    <div class="stage-head"><div class="stage-num">9</div><h2>Recap &amp; Homework</h2></div>
+    <p><span class="timing">39–40 min</span>Vocabulary recap, hand off to Worksheet 11 and the review activity, and forward-link to next lesson.</p>
+    <div class="say-block">
+      <div class="who">Say this</div>
+      "That's the full writing cycle now — plan, draft, edit, proofread. On Google Classroom you've got a short review activity and Worksheet 11: diagnose eight problems, rewrite three weak sentences, then run all four passes over your own draft properly."
+    </div>
+    <div class="say-block">
+      <div class="who">Say this</div>
+      "The last question on the worksheet is the important one: tell me the single change that improved your draft most, and why. That's you evaluating your own writing, which is exactly what the Cambridge objective asks for."
+    </div>
+    <div class="say-block">
+      <div class="who">Say this</div>
+      "Next time we put all of it under exam conditions — an unseen passage, and writing to a time limit."
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>If you run short of time</h2>
+    <div class="tablewrap">
+      <table class="simple">
+        <tr><th>Cut this first</th><th>Never cut this</th></tr>
+        <tr><td>Stage 1 warm-up (trim to two cards)</td><td>Stage 2 — the editing/proofreading distinction</td></tr>
+        <tr><td>Stage 6 upgrade lab (drop to Rounds 1 and 3)</td><td>Stage 4 changes 1, 5 and 7</td></tr>
+        <tr><td>Stage 8 quiz (set as self-check at home)</td><td>Stage 7 — at minimum the Cut and Sharpen passes</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="actions no-print">
+    <button class="btn btn-coral" onclick="window.print()">🖨️ Print this script</button>
+    <a class="btn btn-ghost" href="https://claude.ai/code/artifact/5a2354b4-6d7b-4c61-bf76-994fdc8ba516" target="_blank" rel="noopener">← Back to the interactive lesson</a>
+  </div>
+
+  <footer class="no-print">Lesson 11 · Unit 1B: Autobiography and Travel Writing · Cambridge objective 8Wp.04</footer>
+</div>

@@ -1,0 +1,443 @@
+<title>Editing Lab</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&family=Nunito+Sans:wght@400;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap');
+
+:root{
+  --bg:#FDF7EE; --ink:#46280A; --ink-soft:#7A6450;
+  --teal:#007C83; --teal-dark:#005F65; --teal-light:#D7EDEC;
+  --coral:#D1481F; --coral-dark:#A6330F; --coral-light:#FBE3D8;
+  --gold:#FEA74A; --gold-dark:#A65F06; --gold-light:#FFF0DC;
+  --plum:#2C5F8A; --plum-dark:#1E4664; --plum-light:#E0EBF4;
+  --card:#FFFFFF; --line:#EADFCD;
+  --shadow: 0 8px 24px rgba(70,40,10,0.09);
+  --surface-dark:#2A1B0C;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#16110B; --ink:#F6EEE2; --ink-soft:#BBA890;
+    --teal:#2FA7AE; --teal-dark:#8FE3E6; --teal-light:#0E2E30;
+    --coral:#E2572B; --coral-dark:#FF9E77; --coral-light:#3A1F12;
+    --gold:#FEA74A; --gold-dark:#FFD09B; --gold-light:#3B2711;
+    --plum:#4E86B8; --plum-dark:#9CC6E6; --plum-light:#182B3A;
+    --card:#211A12; --line:#382B1D;
+    --shadow: 0 8px 24px rgba(0,0,0,0.45);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#16110B; --ink:#F6EEE2; --ink-soft:#BBA890;
+  --teal:#2FA7AE; --teal-dark:#8FE3E6; --teal-light:#0E2E30;
+  --coral:#E2572B; --coral-dark:#FF9E77; --coral-light:#3A1F12;
+  --gold:#FEA74A; --gold-dark:#FFD09B; --gold-light:#3B2711;
+  --plum:#4E86B8; --plum-dark:#9CC6E6; --plum-light:#182B3A;
+  --card:#211A12; --line:#382B1D;
+  --shadow: 0 8px 24px rgba(0,0,0,0.45);
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{background:var(--bg); color:var(--ink); font-family:'Nunito Sans','Segoe UI',system-ui,sans-serif; line-height:1.6; overflow-x:hidden;}
+h1,h2,h3{font-family:'Nunito','Nunito Sans',system-ui,sans-serif;}
+.mono{font-family:'IBM Plex Mono',monospace;}
+
+.app{max-width:800px; margin:0 auto; padding-inline:20px; padding-block:0 64px;}
+
+.hero{background:linear-gradient(135deg,#2A1B0C,#4A3016); color:#fff; padding-inline:20px; padding-block:30px 26px;}
+.hero-inner{max-width:800px; margin:0 auto;}
+.eyebrow{display:inline-flex; align-items:center; gap:8px; font-size:11.5px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--gold); margin-bottom:10px;}
+.hero h1{font-size:clamp(28px,5.5vw,40px); margin:0 0 10px; letter-spacing:-0.01em; text-wrap:balance; line-height:1.1;}
+.hero p{color:rgba(255,255,255,0.85); font-size:15px; margin:0; max-width:56ch;}
+
+.block{margin-block:34px;}
+.block-head{display:flex; align-items:center; gap:11px; margin-bottom:6px; flex-wrap:wrap;}
+.block-num{width:30px; height:30px; border-radius:50%; background:var(--teal); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:14px; flex-shrink:0; font-family:'Nunito',sans-serif;}
+.block-head h2{margin:0; font-size:22px;}
+.block-intro{font-size:14.5px; color:var(--ink-soft); margin:0 0 16px; max-width:62ch;}
+
+.card{background:var(--card); border:1px solid var(--line); border-radius:16px; padding:18px 20px; box-shadow:var(--shadow);}
+
+/* video */
+.videowrap{background:var(--card); border:1px solid var(--line); border-radius:16px; overflow:hidden; box-shadow:var(--shadow);}
+.vframe{position:relative; width:100%; max-width:100%; aspect-ratio:16/9; background:var(--surface-dark);}
+.vframe iframe{position:absolute; inset:0; width:100%; height:100%; border:0;}
+.vpending{display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; height:100%; color:rgba(255,255,255,0.72); text-align:center; padding:24px;}
+.vpending .vicon{font-size:34px;}
+.vpending p{margin:0; font-size:14px; max-width:40ch;}
+.vfoot{display:flex; align-items:center; justify-content:space-between; gap:12px; padding:13px 18px; flex-wrap:wrap;}
+.vfoot span{font-size:13px; color:var(--ink-soft);}
+
+/* lens cards */
+.lensgrid{display:grid; grid-template-columns:repeat(2,1fr); gap:12px;}
+@media(max-width:560px){.lensgrid{grid-template-columns:1fr;}}
+.lens{border-radius:14px; padding:15px 17px; color:#fff; cursor:pointer; border:none; text-align:left; font-family:inherit;}
+.lens .lname{font-family:'Nunito',sans-serif; font-weight:800; font-size:16px; letter-spacing:0.02em;}
+.lens .lq{font-size:12.5px; color:rgba(255,255,255,0.85); margin-top:2px;}
+.lens .lbody{font-size:13px; line-height:1.5; color:rgba(255,255,255,0.95); margin-top:10px; display:none;}
+.lens.open .lbody{display:block;}
+.lens .lhint{font-size:11px; color:rgba(255,255,255,0.65); margin-top:8px;}
+.lens.open .lhint{display:none;}
+
+/* spot the fix */
+.fix{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:15px 17px; margin-bottom:11px; box-shadow:var(--shadow);}
+.fix-weak{font-family:'IBM Plex Mono',monospace; font-size:13.5px; line-height:1.6; color:var(--ink);}
+.fix-row{display:flex; justify-content:space-between; align-items:flex-start; gap:12px; flex-wrap:wrap;}
+.fix-reveal{margin-top:12px; display:none;}
+.fix.open .fix-reveal{display:block;}
+.fix-tag{display:inline-block; font-family:'Nunito',sans-serif; font-weight:800; font-size:10.5px; letter-spacing:0.07em; text-transform:uppercase; padding:3px 10px; border-radius:999px; color:#fff; margin-bottom:8px;}
+.fix-strong{font-family:'IBM Plex Mono',monospace; font-size:13.5px; line-height:1.6; background:var(--teal-light); color:var(--teal-dark); padding:11px 13px; border-radius:10px;}
+.fix-why{font-size:13px; color:var(--ink-soft); margin:9px 0 0; line-height:1.55;}
+
+/* quiz */
+.qcard{background:var(--card); border:1px solid var(--line); border-radius:16px; padding:18px 20px; margin-bottom:13px; box-shadow:var(--shadow);}
+.qnum{font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-soft); letter-spacing:0.05em;}
+.qtext{font-weight:700; font-size:15px; margin:5px 0 12px; line-height:1.5;}
+.qopts{display:flex; flex-direction:column; gap:8px;}
+.qopt{text-align:left; font-family:inherit; font-size:13.5px; line-height:1.5; border:1.5px solid var(--line); background:var(--card); border-radius:10px; padding:10px 14px; cursor:pointer; color:var(--ink);}
+.qopt:hover{border-color:var(--teal);}
+.qopt.right{border-color:var(--teal); background:var(--teal-light); color:var(--teal-dark); font-weight:700;}
+.qopt.wrong{border-color:var(--coral); background:var(--coral-light); color:var(--coral-dark);}
+.qfb{font-size:13px; margin-top:11px; padding:10px 12px; border-radius:10px; display:none; line-height:1.55; background:var(--gold-light); color:var(--gold-dark);}
+.qcard.done .qfb{display:block;}
+
+.scorebar{position:sticky; top:0; z-index:40; background:var(--card); border:1px solid var(--line); border-radius:14px; padding:12px 16px; display:flex; align-items:center; gap:14px; box-shadow:var(--shadow); margin-bottom:16px; flex-wrap:wrap;}
+.scorebar .slabel{font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:var(--ink-soft);}
+.track{flex:1; min-width:120px; height:9px; background:var(--line); border-radius:999px; overflow:hidden;}
+.track-fill{height:100%; width:0%; background:var(--teal); border-radius:999px; transition:width .35s ease;}
+.scoretext{font-family:'IBM Plex Mono',monospace; font-size:13.5px; font-weight:600; font-variant-numeric:tabular-nums;}
+
+.result{border-radius:16px; padding:20px 22px; margin-top:6px; display:none; background:var(--surface-dark); color:#fff;}
+.result.show{display:block;}
+.result h3{margin:0 0 8px; font-size:19px; color:var(--gold);}
+.result p{margin:0; font-size:14.5px; line-height:1.6; color:rgba(255,255,255,0.9);}
+
+/* checklist */
+.check-item{display:flex; align-items:flex-start; gap:12px; background:var(--card); border:1px solid var(--line); border-radius:12px; padding:13px 16px; margin-bottom:9px; box-shadow:var(--shadow); cursor:pointer;}
+.check-item input{margin:0; width:19px; height:19px; flex-shrink:0; accent-color:var(--teal); margin-top:2px; cursor:pointer;}
+.check-item label{font-size:14px; line-height:1.5; cursor:pointer; flex:1;}
+.check-item .ctag{font-family:'Nunito',sans-serif; font-weight:800; font-size:10.5px; letter-spacing:0.06em; text-transform:uppercase; padding:2px 8px; border-radius:999px; color:#fff; margin-right:7px; display:inline-block; vertical-align:2px;}
+.check-item.ticked label{color:var(--ink-soft); text-decoration:line-through;}
+
+.finish{background:var(--card); border:1px solid var(--line); border-left:5px solid var(--gold); border-radius:0 16px 16px 0; padding:20px 22px; box-shadow:var(--shadow);}
+.finish h3{margin:0 0 8px; font-size:18px;}
+.finish p{margin:0 0 14px; font-size:14.5px; color:var(--ink-soft); line-height:1.6;}
+
+.btn{font-family:'Nunito Sans',sans-serif; font-weight:700; font-size:13.5px; border:none; border-radius:10px; padding:10px 18px; cursor:pointer; text-decoration:none; display:inline-flex; align-items:center; gap:7px; transition:transform .15s ease;}
+.btn:hover{transform:translateY(-1px);}
+.btn-teal{background:var(--teal); color:#fff;}
+.btn-gold{background:var(--gold); color:#46280A;}
+.btn-ghost{background:transparent; color:var(--ink-soft); border:1px solid var(--line);}
+.btn-sm{padding:7px 13px; font-size:12.5px;}
+[tabindex]:focus-visible, button:focus-visible, a:focus-visible, input:focus-visible{outline:2px solid var(--teal); outline-offset:2px; border-radius:8px;}
+
+footer{text-align:center; color:var(--ink-soft); font-size:12px; margin-top:44px;}
+
+@media (prefers-reduced-motion: reduce){ *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;} }
+</style>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">Selong Bay School · Lesson 11 review</div>
+    <h1>Editing Lab</h1>
+    <p>Work through this after our lesson, in order. Watch, recap, practise, then test yourself — and finish with your four-pass checklist before you hand in Worksheet 11.</p>
+  </div>
+</div>
+
+<div class="app">
+
+  <!-- 1 · VIDEO -->
+  <section class="block">
+    <div class="block-head"><div class="block-num">1</div><h2>Watch first</h2></div>
+    <p class="block-intro">A short video on why editing matters and what it actually looks like. Watch it before you do anything else on this page.</p>
+    <div class="videowrap">
+      <div class="vframe" id="vframe"></div>
+      <div class="vfoot">
+        <span id="vnote">Roughly 4 minutes.</span>
+        <a class="btn btn-teal btn-sm" id="vlink" href="#" target="_blank" rel="noopener" hidden>Open the video ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 · RECAP -->
+  <section class="block">
+    <div class="block-head"><div class="block-num">2</div><h2>Recap the four lenses</h2></div>
+    <p class="block-intro">Try to say what each lens does <em>before</em> you open it. Tap to check yourself.</p>
+    <div class="lensgrid" id="lensGrid"></div>
+    <div class="card" style="background:var(--gold-light); border:none; margin-top:14px;">
+      <p style="margin:0; font-size:14px; color:var(--gold-dark); line-height:1.6;"><b>Remember the order.</b> Cut, Sharpen and Vary are <i>editing</i> — making the writing work better. Check is <i>proofreading</i> — making sure nothing is wrong. Editing always comes first.</p>
+    </div>
+  </section>
+
+  <!-- 3 · SPOT THE FIX -->
+  <section class="block">
+    <div class="block-head"><div class="block-num">3</div><h2>Spot the fix</h2></div>
+    <p class="block-intro">Six weak sentences. For each one, work out which lens you'd use and how you'd rewrite it — <em>then</em> tap to compare with one possible answer. Yours doesn't have to match mine to be right.</p>
+    <div id="fixList"></div>
+  </section>
+
+  <!-- 4 · QUIZ -->
+  <section class="block">
+    <div class="block-head"><div class="block-num">4</div><h2>Test yourself</h2></div>
+    <p class="block-intro">Eight questions. One attempt each, so read carefully before you answer.</p>
+    <div class="scorebar">
+      <span class="slabel">Score</span>
+      <div class="track"><div class="track-fill" id="trackFill"></div></div>
+      <span class="scoretext" id="scoreText">0 / 8</span>
+    </div>
+    <div id="quizList"></div>
+    <div class="result" id="result"></div>
+  </section>
+
+  <!-- 5 · CHECKLIST -->
+  <section class="block">
+    <div class="block-head"><div class="block-num">5</div><h2>Your four-pass checklist</h2></div>
+    <p class="block-intro">Now go to your own draft. Tick each one off as you do it — and do them in this order, not all at once. This page remembers your ticks on this device.</p>
+    <div id="checkList"></div>
+    <button class="btn btn-ghost btn-sm" id="resetChecks" style="margin-top:6px;">Clear all ticks</button>
+  </section>
+
+  <!-- 6 · HAND IN -->
+  <section class="block">
+    <div class="finish">
+      <h3>Last step: Worksheet 11</h3>
+      <p>Once you've run all four passes, complete Worksheet 11 on Google Classroom. The final question asks you to name the single change that improved your draft most, and explain why — that's the part that actually shows what you've learned, so give it a proper answer rather than one line.</p>
+      <a class="btn btn-gold" href="https://classroom.google.com" target="_blank" rel="noopener">Go to Google Classroom ↗</a>
+    </div>
+  </section>
+
+  <footer>Lesson 11 · Unit 1B: Autobiography and Travel Writing · Cambridge objective 8Wp.04</footer>
+</div>
+
+<script>
+/* ============================================================
+   VIDEO — paste the lesson video link here and republish.
+   Works with a YouTube, Vimeo or Drive link, or any URL.
+   ============================================================ */
+const VIDEO_URL = null;   // e.g. "https://www.youtube.com/watch?v=XXXXXXXXXXX"
+
+function embedFor(url){
+  try{
+    const u = new URL(url);
+    const h = u.hostname.replace(/^www\./,'');
+    if(h === 'youtu.be')        return 'https://www.youtube.com/embed/' + u.pathname.slice(1);
+    if(h.endsWith('youtube.com')){
+      const v = u.searchParams.get('v');
+      if(v) return 'https://www.youtube.com/embed/' + v;
+      if(u.pathname.startsWith('/embed/')) return url;
+    }
+    if(h.endsWith('vimeo.com'))  return 'https://player.vimeo.com/video/' + u.pathname.split('/').filter(Boolean)[0];
+    if(h.endsWith('drive.google.com')){
+      const m = u.pathname.match(/\/d\/([^/]+)/);
+      if(m) return 'https://drive.google.com/file/d/' + m[1] + '/preview';
+    }
+  }catch(e){ /* not a parseable URL */ }
+  return null;
+}
+
+const vframe = document.getElementById('vframe');
+const vlink  = document.getElementById('vlink');
+const vnote  = document.getElementById('vnote');
+
+if(VIDEO_URL){
+  const src = embedFor(VIDEO_URL);
+  if(src){
+    const f = document.createElement('iframe');
+    f.src = src;
+    f.title = 'Lesson 11 video: editing your draft';
+    f.allow = 'accelerometer; clipboard-write; encrypted-media; picture-in-picture';
+    f.allowFullscreen = true;
+    vframe.appendChild(f);
+  } else {
+    vframe.innerHTML = '<div class="vpending"><div class="vicon">🎬</div><p>Tap the button below to open the video.</p></div>';
+  }
+  vlink.href = VIDEO_URL;
+  vlink.hidden = false;
+} else {
+  vframe.innerHTML = '<div class="vpending"><div class="vicon">🎬</div><p>The video for this lesson will appear here. If it hasn’t been added yet, carry on to section 2 and come back to it.</p></div>';
+  vnote.textContent = 'Video to be added.';
+}
+
+/* ---------------- lenses ---------------- */
+const lenses = [
+  {n:'CUT', q:'What isn’t earning its place?', c:'#A6330F',
+   body:'Delete filler words — very, really, quite, actually — plus any repeated idea, and any sentence that explains something the reader already understood. Cutting is the fastest way to improve a draft and the hardest thing to make yourself do.'},
+  {n:'SHARPEN', q:'What’s vague that could be exact?', c:'#005F65',
+   body:'Swap general words for precise ones. “A lot of people” becomes “three hundred people”. “It smelled nice” becomes “it smelled of chlorine and floor polish”. This is also where you turn telling into showing.'},
+  {n:'VARY', q:'Does it all sound the same?', c:'#A65F06',
+   body:'Read it aloud. If every sentence is the same length, the writing goes flat. A short sentence straight after a long one is the simplest way there is to make a moment land. Check you haven’t started four sentences in a row with “I”.'},
+  {n:'CHECK', q:'Is anything actually wrong?', c:'#1E4664',
+   body:'The proofread, and only now. Spelling, punctuation, tense consistency, homophones. Try reading your last sentence first and working backwards — it stops your eye correcting mistakes without noticing them.'}
+];
+const lensGrid = document.getElementById('lensGrid');
+lenses.forEach(l=>{
+  const b = document.createElement('button');
+  b.className = 'lens';
+  b.style.background = l.c;
+  b.setAttribute('aria-expanded','false');
+  b.innerHTML = '<div class="lname">' + l.n + '</div><div class="lq">' + l.q + '</div>'
+              + '<div class="lbody">' + l.body + '</div><div class="lhint">Tap to check ↻</div>';
+  b.onclick = ()=>{
+    b.classList.toggle('open');
+    b.setAttribute('aria-expanded', b.classList.contains('open') ? 'true' : 'false');
+  };
+  lensGrid.appendChild(b);
+});
+
+/* ---------------- spot the fix ---------------- */
+const fixes = [
+  {weak:'It was a very hot day and the sun was very bright.', lens:'CUT', c:'#A6330F',
+   strong:'It was a hot day and the sun was bright.',
+   why:'Two “verys” in one short sentence, and neither adds anything. Cut them both first — then, if you want, sharpen “hot” into something exact like “thirty-four degrees by nine in the morning”.'},
+  {weak:'There were quite a lot of people waiting outside the shop.', lens:'SHARPEN', c:'#005F65',
+   strong:'Eleven people were waiting outside the shop, and two of them had brought chairs.',
+   why:'You almost always know the real number, or something close to it. A precise figure is more convincing than a vague quantity — and one odd specific detail (the chairs) proves you were actually there.'},
+  {weak:'I walked to the beach. I saw my friend there. I sat down next to her. I felt happy.', lens:'VARY', c:'#A65F06',
+   strong:'I walked down to the beach and found Nadia already sitting on the wall, and when I dropped down next to her she moved along without looking up. I felt happy.',
+   why:'Four short sentences, all the same shape, all starting with “I”. Joining the first three into one longer sentence lets the short final one — “I felt happy.” — actually land.'},
+  {weak:'My brother and me went to the market and we buyed some fruit.', lens:'CHECK', c:'#1E4664',
+   strong:'My brother and I went to the market and we bought some fruit.',
+   why:'Two accuracy errors: “me” should be “I” (take the other person away — you’d never say “me went”), and “buyed” should be “bought”. Neither changes what the sentence means, which is why this is a proofreading job, not an editing one.'},
+  {weak:'I was extremely scared when the lights went off.', lens:'SHARPEN', c:'#005F65',
+   strong:'When the lights went off I stopped moving completely, and I remember hearing myself breathe.',
+   why:'“Extremely scared” tells us the feeling and stops. Showing what fear actually made you <em>do</em> is stronger — and notice the rewrite never uses the word “scared” at all.'},
+  {weak:'Overall, it was a truly unforgettable experience that I will always remember.', lens:'CUT', c:'#A6330F',
+   strong:'I went back the next week, and the week after that.',
+   why:'“Unforgettable” and “will always remember” say the same thing twice, and both sound like phrases you’re supposed to use rather than anything you mean. Cut the whole line and end on something true and specific instead.'}
+];
+const fixList = document.getElementById('fixList');
+fixes.forEach((f,i)=>{
+  const el = document.createElement('div');
+  el.className = 'fix';
+  el.innerHTML = '<div class="fix-row"><div class="fix-weak">' + f.weak + '</div>'
+    + '<button class="btn btn-ghost btn-sm" tabindex="-1">Show one fix</button></div>'
+    + '<div class="fix-reveal"><span class="fix-tag" style="background:' + f.c + ';">' + f.lens + '</span>'
+    + '<div class="fix-strong">' + f.strong + '</div><p class="fix-why">' + f.why + '</p></div>';
+  el.tabIndex = 0;
+  el.setAttribute('role','button');
+  el.onclick = ()=> el.classList.toggle('open');
+  el.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); el.click(); } });
+  fixList.appendChild(el);
+});
+
+/* ---------------- quiz ---------------- */
+const quiz = [
+  {q:'Which pair correctly describes the two jobs?',
+   opts:['Editing = effectiveness, proofreading = accuracy','Editing = accuracy, proofreading = effectiveness','They are the same job under two names'],
+   a:0, fb:'Editing asks whether the writing <em>works</em>. Proofreading asks whether anything is <em>wrong</em>. Two different questions.'},
+  {q:'You notice your draft says "there" where you meant "their". Which lens?',
+   opts:['Cut','Sharpen','Check'],
+   a:2, fb:'A homophone error is an accuracy problem, so it belongs in the final Check pass — not in your first read-through.'},
+  {q:'Why should Check always come last?',
+   opts:['Because spelling is the least important part of writing','Because there is no point correcting a sentence you might delete','Because it takes the longest'],
+   a:1, fb:'If you proofread first, you waste effort perfecting sentences that the editing passes will cut or rewrite anyway.'},
+  {q:'Your paragraph reads: "It was really cold and very windy and quite dark." What’s the first problem?',
+   opts:['Three filler words doing no work','The tense is wrong','It is too short'],
+   a:0, fb:'"Really", "very" and "quite" all take up space without adding meaning. Cut them, then sharpen what’s left into something exact.'},
+  {q:'Which is the strongest opening line for a piece of life writing?',
+   opts:['My holiday last year was a really amazing experience.','I had never seen my father run before that morning.','This piece is going to be about my holiday.'],
+   a:1, fb:'It names a real person, gives one precise image, and leaves a question hanging that makes you want the next sentence.'},
+  {q:'You read your draft aloud and every sentence sounds the same length. Which lens?',
+   opts:['Cut','Vary','Check'],
+   a:1, fb:'Vary. Reading aloud is the only reliable way to catch this — you can’t hear rhythm when you read silently.'},
+  {q:'True or false: a good edit usually makes a piece longer.',
+   opts:['True','False'],
+   a:1, fb:'False. Editing is about making every word earn its place. The model edit in our lesson came out shorter than the draft.'},
+  {q:'Your piece ends "and that is a lesson I will never forget." What would you do?',
+   opts:['Keep it — endings should state the lesson learned','Cut it and end on something honest and specific instead','Move it to the start'],
+   a:1, fb:'A tidy moral sounds like something a writer thinks they’re supposed to say. An honest, unresolved ending — or one concrete action — is far stronger.'}
+];
+
+let score = 0, answered = 0;
+const quizList = document.getElementById('quizList');
+const trackFill = document.getElementById('trackFill');
+const scoreText = document.getElementById('scoreText');
+const resultEl  = document.getElementById('result');
+
+quiz.forEach((item,i)=>{
+  const el = document.createElement('div');
+  el.className = 'qcard';
+  const opts = item.opts.map((o,j)=>'<button class="qopt" data-j="' + j + '">' + o + '</button>').join('');
+  el.innerHTML = '<div class="qnum">QUESTION ' + (i+1) + ' OF ' + quiz.length + '</div>'
+    + '<div class="qtext">' + item.q + '</div>'
+    + '<div class="qopts">' + opts + '</div>'
+    + '<div class="qfb"></div>';
+  const fb = el.querySelector('.qfb');
+  el.querySelectorAll('.qopt').forEach(btn=>{
+    btn.onclick = ()=>{
+      if(el.classList.contains('done')) return;
+      el.classList.add('done');
+      const chosen = Number(btn.dataset.j);
+      const ok = chosen === item.a;
+      if(ok) score++;
+      answered++;
+      el.querySelectorAll('.qopt').forEach((b,j)=>{
+        if(j === item.a) b.classList.add('right');
+        else if(j === chosen) b.classList.add('wrong');
+        b.disabled = true;
+      });
+      fb.innerHTML = (ok ? '✓ Correct. ' : '✗ Not this time. ') + item.fb;
+      updateScore();
+    };
+  });
+  quizList.appendChild(el);
+});
+
+function updateScore(){
+  scoreText.textContent = score + ' / ' + quiz.length;
+  trackFill.style.width = Math.round((answered / quiz.length) * 100) + '%';
+  if(answered === quiz.length){
+    let h, p;
+    if(score === 8){ h = 'Full marks — all eight.'; p = 'You’ve got this properly. Go straight to your own draft and run the four passes for real.'; }
+    else if(score >= 6){ h = score + ' out of 8. Strong.'; p = 'Scroll back up and reread the feedback on anything you missed, then move on to your checklist.'; }
+    else if(score >= 4){ h = score + ' out of 8.'; p = 'Worth a second look at section 2 before you edit your own work — especially the difference between editing and proofreading.'; }
+    else { h = score + ' out of 8.'; p = 'Go back to section 2 and reread all four lenses, then try these questions again on a fresh page load. Bring any you still disagree with to our next lesson.'; }
+    resultEl.innerHTML = '<h3>' + h + '</h3><p>' + p + '</p>';
+    resultEl.classList.add('show');
+  }
+}
+
+/* ---------------- checklist ---------------- */
+const checks = [
+  {tag:'CUT', c:'#A6330F', t:'I have deleted every <b>very</b>, <b>really</b>, <b>quite</b> and <b>a lot</b> that wasn’t doing real work.'},
+  {tag:'CUT', c:'#A6330F', t:'I have found any sentence that repeats an idea I already made, and cut one of them.'},
+  {tag:'SHARPEN', c:'#005F65', t:'I have replaced my vaguest words with exact ones — real numbers, real names, real smells and sounds.'},
+  {tag:'SHARPEN', c:'#005F65', t:'Where I <i>told</i> the reader a feeling, I have tried to <i>show</i> it instead.'},
+  {tag:'VARY', c:'#A65F06', t:'I have read the whole thing aloud, listening for sentences that all sound the same length.'},
+  {tag:'VARY', c:'#A65F06', t:'My most important moment now has a short, blunt sentence — and I don’t have four sentences in a row starting with “I”.'},
+  {tag:'CHECK', c:'#1E4664', t:'I have checked spelling, punctuation, and that I stayed in one tense the whole way through.'},
+  {tag:'CHECK', c:'#1E4664', t:'I have read it backwards, last sentence first, as a final proofread.'}
+];
+const checkList = document.getElementById('checkList');
+const STORE = 'sbs-l11-checks';
+
+function loadChecks(){
+  try{ return JSON.parse(localStorage.getItem(STORE) || '[]'); }
+  catch(e){ return []; }
+}
+function saveChecks(arr){
+  try{ localStorage.setItem(STORE, JSON.stringify(arr)); }
+  catch(e){ /* storage unavailable — ticks just won't persist */ }
+}
+let ticked = loadChecks();
+
+checks.forEach((c,i)=>{
+  const row = document.createElement('div');
+  row.className = 'check-item';
+  const id = 'chk' + i;
+  const on = ticked.includes(i);
+  if(on) row.classList.add('ticked');
+  row.innerHTML = '<input type="checkbox" id="' + id + '"' + (on ? ' checked' : '') + '>'
+    + '<label for="' + id + '"><span class="ctag" style="background:' + c.c + ';">' + c.tag + '</span>' + c.t + '</label>';
+  const box = row.querySelector('input');
+  box.addEventListener('change', ()=>{
+    row.classList.toggle('ticked', box.checked);
+    ticked = box.checked ? Array.from(new Set(ticked.concat(i))) : ticked.filter(x=>x!==i);
+    saveChecks(ticked);
+  });
+  checkList.appendChild(row);
+});
+
+document.getElementById('resetChecks').onclick = ()=>{
+  ticked = [];
+  saveChecks(ticked);
+  checkList.querySelectorAll('input').forEach(b=>{ b.checked = false; });
+  checkList.querySelectorAll('.check-item').forEach(r=>r.classList.remove('ticked'));
+};
+</script>
