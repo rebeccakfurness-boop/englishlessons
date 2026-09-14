@@ -38,7 +38,7 @@ body{background:var(--bg); color:var(--ink); font-family:'Nunito Sans','Segoe UI
 h1,h2,h3{font-family:'Nunito','Nunito Sans',system-ui,sans-serif;}
 .mono{font-family:'IBM Plex Mono',monospace;}
 
-.app{max-width:800px; margin:0 auto; padding-inline:20px; padding-block:0 64px;}
+.app{max-width:800px; margin:0 auto; padding-inline:20px; padding-block:0 110px;}
 
 .hero{background:linear-gradient(135deg,#2A1B0C,#4A3016); color:#fff; padding-inline:20px; padding-block:30px 26px;}
 .hero-inner{max-width:800px; margin:0 auto;}
@@ -53,6 +53,13 @@ h1,h2,h3{font-family:'Nunito','Nunito Sans',system-ui,sans-serif;}
 .block-intro{font-size:14.5px; color:var(--ink-soft); margin:0 0 16px; max-width:62ch;}
 
 .card{background:var(--card); border:1px solid var(--line); border-radius:16px; padding:18px 20px; box-shadow:var(--shadow);}
+
+/* name */
+.namebar{background:var(--card); border:1.5px solid var(--teal); border-radius:16px; padding:16px 18px; box-shadow:var(--shadow); display:flex; gap:12px; align-items:center; flex-wrap:wrap;}
+.namebar label{font-family:'Nunito',sans-serif; font-weight:800; font-size:14px; color:var(--ink); flex-shrink:0;}
+.namebar input{flex:1; min-width:180px; font-family:inherit; font-size:15px; padding:10px 13px; border-radius:10px; border:1.5px solid var(--line); background:var(--bg); color:var(--ink);}
+.namebar input:focus{border-color:var(--teal); outline:none;}
+.namehint{font-size:13px; color:var(--ink-soft); margin:10px 0 0; line-height:1.55; width:100%;}
 
 /* video */
 .videowrap{background:var(--card); border:1px solid var(--line); border-radius:16px; overflow:hidden; box-shadow:var(--shadow);}
@@ -112,6 +119,35 @@ h1,h2,h3{font-family:'Nunito','Nunito Sans',system-ui,sans-serif;}
 .result h3{margin:0 0 8px; font-size:19px; color:var(--gold);}
 .result p{margin:0; font-size:14.5px; line-height:1.6; color:rgba(255,255,255,0.9);}
 
+/* ---------- YOUR WORK ---------- */
+.exercise{background:var(--card); border:1px solid var(--line); border-radius:16px; padding:20px 22px; margin-bottom:16px; box-shadow:var(--shadow);}
+.ex-head{display:flex; align-items:baseline; gap:10px; margin-bottom:5px; flex-wrap:wrap;}
+.ex-letter{font-family:'Nunito',sans-serif; font-weight:800; font-size:13px; color:#fff; background:var(--teal); border-radius:7px; padding:3px 9px; flex-shrink:0;}
+.ex-head h3{margin:0; font-size:18px;}
+.ex-task{font-size:14px; color:var(--ink-soft); margin:0 0 15px; line-height:1.6;}
+
+.extract{background:var(--bg); border-left:4px solid var(--gold); border-radius:0 12px 12px 0; padding:14px 17px; margin-bottom:16px; font-size:14px; line-height:1.75;}
+.extract p{margin:0 0 9px;}
+.extract p:last-child{margin:0;}
+.extract .src{font-size:12px; color:var(--ink-soft); font-style:italic; margin-top:9px;}
+
+.forow{display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; padding:11px 0; border-bottom:1px solid var(--line);}
+.forow:last-of-type{border-bottom:none;}
+.fotext{font-size:14px; line-height:1.5; flex:1; min-width:190px;}
+.fotext .fonum{font-family:'IBM Plex Mono',monospace; color:var(--ink-soft); margin-right:8px; font-size:12.5px;}
+.fopts{display:flex; gap:7px; flex-shrink:0;}
+.fopt{font-family:'Nunito Sans',sans-serif; font-size:12.5px; font-weight:800; border-radius:8px; border:1.5px solid var(--line); background:var(--card); padding:7px 14px; cursor:pointer; color:var(--ink-soft);}
+.fopt:hover{border-color:var(--teal);}
+.fopt.picked{background:var(--teal); border-color:var(--teal); color:#fff;}
+
+.field{margin-bottom:15px;}
+.field:last-child{margin-bottom:0;}
+.field label{display:block; font-family:'Nunito',sans-serif; font-weight:800; font-size:13.5px; color:var(--ink); margin-bottom:3px;}
+.field .sub{display:block; font-size:13px; color:var(--ink-soft); margin-bottom:8px; line-height:1.55; font-weight:400;}
+.field textarea{width:100%; font-family:inherit; font-size:14.5px; line-height:1.65; padding:12px 14px; border-radius:11px; border:1.5px solid var(--line); background:var(--bg); color:var(--ink); resize:vertical; min-height:88px;}
+.field textarea:focus{border-color:var(--teal); outline:none;}
+.field .count{font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-soft); margin-top:5px; text-align:right;}
+
 /* checklist */
 .check-item{display:flex; align-items:flex-start; gap:12px; background:var(--card); border:1px solid var(--line); border-radius:12px; padding:13px 16px; margin-bottom:9px; box-shadow:var(--shadow); cursor:pointer;}
 .check-item input{margin:0; width:19px; height:19px; flex-shrink:0; accent-color:var(--teal); margin-top:2px; cursor:pointer;}
@@ -119,17 +155,38 @@ h1,h2,h3{font-family:'Nunito','Nunito Sans',system-ui,sans-serif;}
 .check-item .ctag{font-family:'Nunito',sans-serif; font-weight:800; font-size:10.5px; letter-spacing:0.06em; text-transform:uppercase; padding:2px 8px; border-radius:999px; color:#fff; margin-right:7px; display:inline-block; vertical-align:2px;}
 .check-item.ticked label{color:var(--ink-soft); text-decoration:line-through;}
 
-.finish{background:var(--card); border:1px solid var(--line); border-left:5px solid var(--gold); border-radius:0 16px 16px 0; padding:20px 22px; box-shadow:var(--shadow);}
-.finish h3{margin:0 0 8px; font-size:18px;}
-.finish p{margin:0 0 14px; font-size:14.5px; color:var(--ink-soft); line-height:1.6;}
+/* hand in */
+.finish{background:var(--card); border:1px solid var(--line); border-left:5px solid var(--gold); border-radius:0 16px 16px 0; padding:22px 24px; box-shadow:var(--shadow);}
+.finish h3{margin:0 0 8px; font-size:19px;}
+.finish p{margin:0 0 15px; font-size:14.5px; color:var(--ink-soft); line-height:1.6;}
+.donebox{background:var(--teal-light); border:1.5px solid var(--teal); border-radius:14px; padding:16px 18px; margin-top:15px; display:none;}
+.donebox.show{display:block;}
+.donebox p{margin:0; font-size:14.5px; color:var(--teal-dark); line-height:1.6;}
+
+.copyarea{width:100%; font-family:'IBM Plex Mono',monospace; font-size:12.5px; line-height:1.6; padding:12px 14px; border-radius:11px; border:1.5px solid var(--line); background:var(--bg); color:var(--ink); min-height:200px; margin-top:13px; display:none;}
+.copyarea.show{display:block;}
+
+/* save pill */
+.savepill{position:fixed; right:16px; bottom:16px; z-index:80; background:var(--card); border:1.5px solid var(--line); border-radius:999px; padding:9px 16px; box-shadow:0 8px 24px rgba(42,27,12,0.22); font-size:13px; font-weight:800; display:flex; align-items:center; gap:8px; color:var(--ink-soft); max-width:calc(100vw - 32px);}
+.savepill .dot{width:9px; height:9px; border-radius:50%; background:var(--ink-soft); flex-shrink:0;}
+.savepill.saving{border-color:var(--gold); color:var(--gold-dark);} .savepill.saving .dot{background:var(--gold);}
+.savepill.saved{border-color:var(--teal); color:var(--teal-dark);} .savepill.saved .dot{background:var(--teal);}
+.savepill.local{border-color:var(--plum); color:var(--plum-dark);} .savepill.local .dot{background:var(--plum);}
+.savepill.error{border-color:var(--coral); color:var(--coral-dark);} .savepill.error .dot{background:var(--coral);}
+
+.banner{border-radius:14px; padding:15px 18px; margin-bottom:18px; font-size:14px; line-height:1.6; display:none;}
+.banner.show{display:block;}
+.banner.warn{background:var(--plum-light); border:1.5px solid var(--plum); color:var(--plum-dark);}
 
 .btn{font-family:'Nunito Sans',sans-serif; font-weight:700; font-size:13.5px; border:none; border-radius:10px; padding:10px 18px; cursor:pointer; text-decoration:none; display:inline-flex; align-items:center; gap:7px; transition:transform .15s ease;}
 .btn:hover{transform:translateY(-1px);}
+.btn:disabled{opacity:0.4; cursor:not-allowed; transform:none;}
 .btn-teal{background:var(--teal); color:#fff;}
 .btn-gold{background:var(--gold); color:#46280A;}
 .btn-ghost{background:transparent; color:var(--ink-soft); border:1px solid var(--line);}
+.btn-lg{padding:13px 24px; font-size:15px;}
 .btn-sm{padding:7px 13px; font-size:12.5px;}
-[tabindex]:focus-visible, button:focus-visible, a:focus-visible, input:focus-visible{outline:2px solid var(--teal); outline-offset:2px; border-radius:8px;}
+[tabindex]:focus-visible, button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible{outline:3px solid var(--teal); outline-offset:2px; border-radius:8px;}
 
 footer{text-align:center; color:var(--ink-soft); font-size:12px; margin-top:44px;}
 
@@ -138,15 +195,26 @@ footer{text-align:center; color:var(--ink-soft); font-size:12px; margin-top:44px
 
 <div class="hero">
   <div class="hero-inner">
-    <div class="eyebrow">Selong Bay School · Lesson 3 review</div>
+    <div class="eyebrow">Selong Bay School · Lesson 3 review and homework</div>
     <h1>The Bias Lab</h1>
-    <p>Work through this after our lesson, in order. Watch, recap the three choices, practise spotting them, then test yourself. Finish with the checklist before you hand in Worksheet 3.</p>
+    <p>Everything for this lesson is on this one page. Watch, recap, practise, test yourself, then do your written work right here. Your answers save as you type, so you can stop and come back.</p>
   </div>
 </div>
 
 <div class="app">
 
-  <!-- 1 -->
+  <div class="banner warn" id="localBanner"></div>
+
+  <!-- 0 NAME -->
+  <section class="block">
+    <div class="namebar">
+      <label for="studentName">Your name</label>
+      <input id="studentName" type="text" autocomplete="name" placeholder="Type your first name to start" spellcheck="false">
+      <p class="namehint" id="nameHint">Type your name so your work saves under it. You only need to do this once on this device.</p>
+    </div>
+  </section>
+
+  <!-- 1 VIDEO -->
   <section class="block">
     <div class="block-head"><div class="block-num">1</div><h2>Watch first</h2></div>
     <p class="block-intro">Watch this before you do anything else on this page. Watch the whole thing, then read the two questions underneath and see whether you can answer them.</p>
@@ -157,7 +225,6 @@ footer{text-align:center; color:var(--ink-soft); font-size:12px; margin-top:44px
         <a class="btn btn-teal btn-sm" id="vlink" href="#" target="_blank" rel="noopener" hidden>Open on YouTube ↗</a>
       </div>
     </div>
-
     <div class="card" style="background:var(--gold-light); border:none; margin-top:14px;">
       <div style="font-family:'Nunito',sans-serif; font-weight:800; font-size:11.5px; letter-spacing:0.06em; text-transform:uppercase; color:var(--gold-dark); margin-bottom:9px;">Two things to listen out for</div>
       <p style="margin:0 0 8px; font-size:14px; color:var(--gold-dark); line-height:1.6;"><b>1.</b> Any moment where somebody states an <b>opinion</b> as though it were a <b>fact</b>. Those are the moments we practised spotting in our lesson.</p>
@@ -165,7 +232,7 @@ footer{text-align:center; color:var(--ink-soft); font-size:12px; margin-top:44px
     </div>
   </section>
 
-  <!-- 2 -->
+  <!-- 2 RECAP -->
   <section class="block">
     <div class="block-head"><div class="block-num">2</div><h2>Recap the three choices</h2></div>
     <p class="block-intro">Try to say what each one means before you open it. Tap to check yourself.</p>
@@ -175,17 +242,17 @@ footer{text-align:center; color:var(--ink-soft); font-size:12px; margin-top:44px
     </div>
   </section>
 
-  <!-- 3 -->
+  <!-- 3 PRACTICE -->
   <section class="block">
-    <div class="block-head"><div class="block-num">3</div><h2>Spot what the writer is doing</h2></div>
-    <p class="block-intro">Nine examples, three for each choice. Work out your answer first, then tap to check. Say it out loud if you can, it makes a real difference to whether it sticks.</p>
+    <div class="block-head"><div class="block-num">3</div><h2>Practise spotting it</h2></div>
+    <p class="block-intro">Nine examples, three for each choice. Nothing here is marked, so work out your answer first and then tap to check. Say it out loud if you can.</p>
     <div id="practiceWrap"></div>
   </section>
 
-  <!-- 4 -->
+  <!-- 4 QUIZ -->
   <section class="block">
     <div class="block-head"><div class="block-num">4</div><h2>Test yourself</h2></div>
-    <p class="block-intro">Eight questions. One attempt each, so read carefully before you answer.</p>
+    <p class="block-intro">Eight questions, one attempt each. Your score is saved and I will see it.</p>
     <div class="scorebar">
       <span class="slabel">Score</span>
       <div class="track"><div class="track-fill" id="trackFill"></div></div>
@@ -195,30 +262,133 @@ footer{text-align:center; color:var(--ink-soft); font-size:12px; margin-top:44px
     <div class="result" id="result"></div>
   </section>
 
-  <!-- 5 -->
+  <!-- 5 YOUR WORK -->
   <section class="block">
-    <div class="block-head"><div class="block-num">5</div><h2>Your three-choice checklist</h2></div>
-    <p class="block-intro">Now go back to the true story you wrote. Work through these in order and tick each one off. This page remembers your ticks on this device.</p>
-    <div id="checkList"></div>
-    <button class="btn btn-ghost btn-sm" id="resetChecks" style="margin-top:6px;">Clear all ticks</button>
+    <div class="block-head"><div class="block-num">5</div><h2>Your written work</h2></div>
+    <p class="block-intro">This replaces the paper worksheet. Type straight into the boxes. Everything saves by itself, so if you close the page your work will still be here when you come back.</p>
+
+    <!-- A -->
+    <div class="exercise">
+      <div class="ex-head"><span class="ex-letter">A</span><h3>Fact or opinion?</h3></div>
+      <p class="ex-task">Ten statements. Tap one button for each. Ask yourself the only question that matters: could somebody check this?</p>
+      <div id="foList"></div>
+    </div>
+
+    <!-- B -->
+    <div class="exercise">
+      <div class="ex-head"><span class="ex-letter">B</span><h3>Find the bias</h3></div>
+      <p class="ex-task">Read this account of a school trip. Everything in it is true.</p>
+      <div class="extract">
+        <p>Our class went to the museum in Mataram last Thursday. The bus was supposed to leave at half past seven and did not leave until ten past eight. Twenty-eight of us went.</p>
+        <p>The guide talked for fifty minutes before we were allowed to look at anything, which felt like a very long time, and by then three people had already asked to sit down. We saw the textile collection and some old photographs. Obviously it would have been better to just give us the leaflet and let us walk round on our own. We got back at four.</p>
+        <p class="src">Written for this lesson.</p>
+      </div>
+      <div class="field">
+        <label for="biasA">1. Two facts</label>
+        <span class="sub">Write out two statements from the account that are facts.</span>
+        <textarea id="biasA" data-key="biasA" placeholder="Write your two facts here."></textarea>
+        <div class="count" data-count-for="biasA"></div>
+      </div>
+      <div class="field">
+        <label for="biasB">2. Two opinions</label>
+        <span class="sub">Write out two statements that are opinions, and say which word in each one gives it away.</span>
+        <textarea id="biasB" data-key="biasB" placeholder="Write your two opinions here, and the giveaway word in each."></textarea>
+        <div class="count" data-count-for="biasB"></div>
+      </div>
+      <div class="field">
+        <label for="biasC">3. What has been left out?</label>
+        <span class="sub">This is the important one. Name two true things the writer has probably left out, and explain how putting them in would change the impression the reader gets.</span>
+        <textarea id="biasC" data-key="biasC" style="min-height:130px;" placeholder="Think about what a student who enjoyed the trip would have written instead."></textarea>
+        <div class="count" data-count-for="biasC"></div>
+      </div>
+    </div>
+
+    <!-- C -->
+    <div class="exercise">
+      <div class="ex-head"><span class="ex-letter">C</span><h3>Same facts, two shapes</h3></div>
+      <p class="ex-task">Here are five true things about the same event. You are going to open the same story twice, once in each shape.</p>
+      <div class="extract">
+        <p>1. A water pipe burst on the main road late on Tuesday night.</p>
+        <p>2. Pak Darman noticed the leak at about eleven o'clock while he was walking his dog.</p>
+        <p>3. Forty-two houses had no water for two days.</p>
+        <p>4. The village office handed out bottled water on Wednesday morning.</p>
+        <p>5. The repairs were finished on Thursday afternoon.</p>
+      </div>
+      <div class="field">
+        <label for="shapeA">1. Report shape</label>
+        <span class="sub">Write a headline, then the first sentence. The most important information comes straight away.</span>
+        <textarea id="shapeA" data-key="shapeA" placeholder="HEADLINE:&#10;First sentence:"></textarea>
+        <div class="count" data-count-for="shapeA"></div>
+      </div>
+      <div class="field">
+        <label for="shapeB">2. Story shape</label>
+        <span class="sub">Now write the first two sentences as life writing, told by somebody who lives in one of the forty-two houses. Hold something back.</span>
+        <textarea id="shapeB" data-key="shapeB" placeholder="Start with one vivid moment. Do not explain it yet."></textarea>
+        <div class="count" data-count-for="shapeB"></div>
+      </div>
+      <div class="field">
+        <label for="shapeC">3. Which one, and why?</label>
+        <span class="sub">Which version makes a reader want to keep reading, and which is more useful to somebody in a hurry? Say why.</span>
+        <textarea id="shapeC" data-key="shapeC"></textarea>
+        <div class="count" data-count-for="shapeC"></div>
+      </div>
+    </div>
+
+    <!-- D -->
+    <div class="exercise">
+      <div class="ex-head"><span class="ex-letter">D</span><h3>Add the missing senses</h3></div>
+      <p class="ex-task">This paragraph uses only sight. Rewrite it in the box, keeping the same events, but adding at least one sound, one smell and one touch detail. Add a taste detail too if you can find a place for it.</p>
+      <div class="extract">
+        <p>I walked into the kitchen. My aunt was standing at the table. There was a big pot on the stove. The window was open and I could see the garden. She was wearing her green apron. There were vegetables on the board in front of her.</p>
+      </div>
+      <div class="field">
+        <label for="senses">Your rewrite</label>
+        <textarea id="senses" data-key="senses" style="min-height:170px;" placeholder="Same kitchen, same aunt, same pot. Now let me hear it and smell it."></textarea>
+        <div class="count" data-count-for="senses"></div>
+      </div>
+    </div>
+
+    <!-- E -->
+    <div class="exercise">
+      <div class="ex-head"><span class="ex-letter">E</span><h3>Your own writing</h3></div>
+      <p class="ex-task">Look again at the true story you wrote for homework. Which of the three choices did you handle least well, and what is the one change you are going to make to it? Be honest. This is the question that shows what you have understood.</p>
+      <div class="field">
+        <label for="reflection">Your answer</label>
+        <textarea id="reflection" data-key="reflection" style="min-height:130px;"></textarea>
+        <div class="count" data-count-for="reflection"></div>
+      </div>
+    </div>
   </section>
 
-  <!-- 6 -->
+  <!-- 6 CHECKLIST -->
+  <section class="block">
+    <div class="block-head"><div class="block-num">6</div><h2>Your three-choice checklist</h2></div>
+    <p class="block-intro">Go back to the true story you wrote and work through these in order. Tick each one off as you do it.</p>
+    <div id="checkList"></div>
+  </section>
+
+  <!-- 7 HAND IN -->
   <section class="block">
     <div class="finish">
-      <h3>Last step: Worksheet 3</h3>
-      <p>Once you have been through the checklist, complete Worksheet 3 on Google Classroom. Question 2 asks you to find the bias in a short account and say what has been left out, which is exactly what we did with the two beach clean-up accounts in our lesson.</p>
-      <a class="btn btn-gold" href="https://classroom.google.com" target="_blank" rel="noopener">Go to Google Classroom ↗</a>
+      <h3>Hand in</h3>
+      <p>When you have finished everything above, press this. You can still change your answers afterwards, and they will keep saving, but this tells me you are done.</p>
+      <button class="btn btn-gold btn-lg" id="handInBtn" disabled>Hand in my work</button>
+      <div class="donebox" id="doneBox"><p></p></div>
+      <div style="margin-top:16px;">
+        <button class="btn btn-ghost btn-sm" id="showCopy">Show all my answers as text</button>
+        <textarea class="copyarea" id="copyArea" readonly aria-label="All your answers as plain text"></textarea>
+      </div>
     </div>
   </section>
 
   <footer>Lesson 3 · Unit 1B: Autobiography and Travel Writing · 8Ri.03, 8Ri.05, 8Ws, 8Wv</footer>
 </div>
 
+<div class="savepill" id="savePill"><span class="dot"></span><span id="saveText">Type your name to start saving</span></div>
+
 <script>
 /* ============================================================
    VIDEO: paste the lesson video link here and republish.
-   Works with a YouTube, Vimeo or Drive link, or any URL.
    ============================================================ */
 const VIDEO_URL = "https://www.youtube.com/watch?v=q-Y-z6HmRgI";
 
@@ -240,11 +410,8 @@ function embedFor(url){
   }catch(e){ /* not a parseable URL */ }
   return null;
 }
-
 const vframe = document.getElementById('vframe');
 const vlink  = document.getElementById('vlink');
-const vnote  = document.getElementById('vnote');
-
 if(VIDEO_URL){
   const src = embedFor(VIDEO_URL);
   if(src){
@@ -253,35 +420,195 @@ if(VIDEO_URL){
     f.title = 'Lesson 3 video: fact, opinion and bias';
     f.allow = 'accelerometer; clipboard-write; encrypted-media; picture-in-picture';
     f.allowFullscreen = true;
-    let loaded = false;
-    f.addEventListener('load', ()=>{ loaded = true; });
     vframe.appendChild(f);
-    // If the player never loads (some viewers block embedded video), offer a clear way out.
-    setTimeout(()=>{
-      if(loaded) return;
-      vframe.innerHTML = '<div class="vpending"><div class="vicon">\u25b6\ufe0f</div>'
-        + '<p>The video cannot play inside this page on your device.</p>'
-        + '<a class="btn btn-teal btn-sm" href="' + VIDEO_URL + '" target="_blank" rel="noopener">Watch it on YouTube \u2197</a>'
-        + '</div>';
-    }, 3500);
   } else {
-    vframe.innerHTML = '<div class="vpending"><div class="vicon">🎬</div><p>Tap the button below to open the video.</p></div>';
+    vframe.innerHTML = '<div class="vpending"><div class="vicon">▶️</div><p>Use the button to open the video.</p></div>';
   }
   vlink.href = VIDEO_URL;
   vlink.hidden = false;
 } else {
-  vframe.innerHTML = '<div class="vpending"><div class="vicon">🎬</div><p>The video for this lesson will appear here. If it has not been added yet, carry on to section 2 and come back to it.</p></div>';
-  vnote.textContent = 'Video to be added.';
+  vframe.innerHTML = '<div class="vpending"><div class="vicon">🎬</div><p>The video for this lesson will appear here.</p></div>';
+  document.getElementById('vnote').textContent = 'Video to be added.';
 }
 
-/* ---------------- three choices ---------------- */
+/* ============================================================
+   STATE
+   ============================================================ */
+const LESSON = 'lesson-03';
+const state = {
+  name: '',
+  quiz: {},          // questionIndex -> chosen option index
+  quizScore: null,
+  factOpinion: {},   // statement index -> "Fact" | "Opinion"
+  biasA:'', biasB:'', biasC:'',
+  shapeA:'', shapeB:'', shapeC:'',
+  senses:'', reflection:'',
+  checks: [],
+  submittedAt: null,
+  updatedAt: null
+};
+
+function slugify(s){
+  return String(s).toLowerCase().trim()
+    .replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,60);
+}
+
+/* ============================================================
+   SAVING: db when available, this device otherwise
+   ============================================================ */
+const pill = document.getElementById('savePill');
+const pillText = document.getElementById('saveText');
+const localBanner = document.getElementById('localBanner');
+
+let db = null;          // resolved capability, or null
+let docRef = null;      // current student's document
+let mode = 'waiting';   // waiting | db | local
+let saveTimer = null;
+let dirty = false;
+
+function setPill(kind, text){
+  pill.className = 'savepill ' + kind;
+  pillText.textContent = text;
+}
+
+function localKey(){ return 'sbs-' + LESSON + '-work'; }
+
+function saveLocal(){
+  try{ localStorage.setItem(localKey(), JSON.stringify(state)); return true; }
+  catch(e){ return false; }
+}
+function loadLocal(){
+  try{ return JSON.parse(localStorage.getItem(localKey()) || 'null'); }
+  catch(e){ return null; }
+}
+
+function queueSave(){
+  dirty = true;
+  if(!state.name){ setPill('', 'Type your name to start saving'); return; }
+  setPill('saving', 'Saving');
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(flush, 900);
+}
+
+async function flush(){
+  if(!state.name) return;
+  state.updatedAt = new Date().toISOString();
+  saveLocal();
+  if(mode !== 'db' || !docRef){
+    dirty = false;
+    setPill('local', 'Saved on this device');
+    return;
+  }
+  try{
+    await docRef.set(JSON.parse(JSON.stringify(state)));
+    dirty = false;
+    setPill('saved', 'Saved');
+  }catch(err){
+    const code = err && err.code;
+    if(code === 'unavailable'){
+      setPill('saving', 'Trying again');
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(flush, 2500);
+      return;
+    }
+    if(code === 'revoked' || code === 'not_granted' || code === 'capability_disabled' || code === 'capability_removed'){
+      mode = 'local';
+      showLocalBanner('Your work is now saving on this device only.');
+      setPill('local', 'Saved on this device');
+      return;
+    }
+    setPill('error', 'Could not save, use the text button at the bottom');
+  }
+}
+
+function showLocalBanner(extra){
+  localBanner.innerHTML = '<b>Heads up.</b> This page cannot save your work to your tutor automatically. '
+    + (extra || 'It is saving on this device instead, so finish it on this same device and browser.')
+    + ' When you are done, press <b>Show all my answers as text</b> at the bottom, copy everything, and paste it into Google Classroom.';
+  localBanner.classList.add('show');
+}
+
+window.addEventListener('beforeunload', ()=>{
+  // Stamp the local copy so a half-typed answer wins over the older stored one next time.
+  if(dirty){ state.updatedAt = new Date().toISOString(); saveLocal(); }
+});
+
+/* connect to the store */
+(async ()=>{
+  try{ db = await claude.use('db'); }catch(e){ db = null; }
+  if(!db){
+    mode = 'local';
+    showLocalBanner();
+    if(state.name) setPill('local', 'Saved on this device'); else setPill('', 'Type your name to start saving');
+    return;
+  }
+  mode = 'db';
+  if(state.name) await bindDoc();
+})();
+
+async function bindDoc(){
+  if(mode !== 'db' || !db || !state.name) return;
+  const id = slugify(state.name);
+  if(!id) return;
+  try{
+    docRef = db.doc('submissions/' + LESSON + '-' + id);
+    const snap = await docRef.get();
+    if(snap && snap.exists && snap.data){
+      const d = snap.data();
+      // Only adopt the stored copy if this device has nothing newer.
+      const mine = state.updatedAt ? Date.parse(state.updatedAt) : 0;
+      const theirs = d.updatedAt ? Date.parse(d.updatedAt) : 0;
+      if(theirs >= mine){ Object.assign(state, d); hydrate(); }
+    }
+    await flush();
+  }catch(err){
+    mode = 'local';
+    showLocalBanner();
+    setPill('local', 'Saved on this device');
+  }
+}
+
+/* ============================================================
+   NAME
+   ============================================================ */
+const nameInput = document.getElementById('studentName');
+const NAME_KEY = 'sbs-student-name';
+
+try{
+  const storedName = localStorage.getItem(NAME_KEY);
+  if(storedName){ state.name = storedName; nameInput.value = storedName; }
+}catch(e){ /* storage unavailable */ }
+
+const cached = loadLocal();
+if(cached && (!cached.name || !state.name || cached.name === state.name)){
+  Object.assign(state, cached);
+  if(state.name) nameInput.value = state.name;
+}
+
+let nameTimer = null;
+nameInput.addEventListener('input', ()=>{
+  clearTimeout(nameTimer);
+  nameTimer = setTimeout(async ()=>{
+    state.name = nameInput.value.trim();
+    try{ localStorage.setItem(NAME_KEY, state.name); }catch(e){}
+    updateHandInState();
+    if(state.name){
+      document.getElementById('nameHint').textContent = 'Saving your work under "' + state.name + '".';
+      if(mode === 'db') await bindDoc(); else queueSave();
+    }
+  }, 700);
+});
+
+/* ============================================================
+   CONTENT
+   ============================================================ */
 const choices = [
   {n:'CHOICE 1', name:'Claim', q:'Fact, or opinion?', c:'#005F65',
-   body:'A fact is something someone could check and prove right or wrong. An opinion is a judgement that belongs to the writer. Both belong in life writing. The trouble starts when an opinion is dressed up as a fact, usually with a word like obviously or clearly.'},
+   body:'A fact is something somebody could check and prove right or wrong. An opinion is a judgement that belongs to the writer. Both belong in life writing. The trouble starts when an opinion is dressed up as a fact, usually with a word like obviously or clearly.'},
   {n:'CHOICE 2', name:'Order', q:'Report shape, or story shape?', c:'#1E4664',
    body:'A report front-loads: headline, most important thing, facts, description, what to do. A story holds back: hook, building detail, a turn, the ending, then what you understand now. A report gives you the ending first because it wants you to know. A story saves it because it wants you to feel.'},
   {n:'CHOICE 3', name:'Senses', q:'Which of the five are you using?', c:'#A6330F',
-   body:'Almost everyone writes only what they saw. Sound, smell, touch and taste are where writing stops being a list of events and starts putting the reader in the room. Smell is the most closely wired to memory, so it usually does the most work.'}
+   body:'Almost everybody writes only what they saw. Sound, smell, touch and taste are where writing stops being a list of events and starts putting the reader in the room. Smell is the most closely wired to memory, so it usually does the most work.'}
 ];
 const choiceGrid = document.getElementById('choiceGrid');
 choices.forEach(c=>{
@@ -291,14 +618,10 @@ choices.forEach(c=>{
   b.setAttribute('aria-expanded','false');
   b.innerHTML = '<div class="cnum">' + c.n + '</div><div class="cname">' + c.name + '</div><div class="cq">' + c.q + '</div>'
               + '<div class="cbody">' + c.body + '</div><div class="chint">Tap to check ↻</div>';
-  b.onclick = ()=>{
-    b.classList.toggle('open');
-    b.setAttribute('aria-expanded', b.classList.contains('open') ? 'true' : 'false');
-  };
+  b.onclick = ()=>{ b.classList.toggle('open'); b.setAttribute('aria-expanded', b.classList.contains('open')?'true':'false'); };
   choiceGrid.appendChild(b);
 });
 
-/* ---------------- practice ---------------- */
 const groups = [
   {tag:'CLAIM', c:'#005F65', task:'Is this a fact or an opinion, and what gives it away?', items:[
     {q:'"The ferry was delayed by two hours and forty minutes."',
@@ -345,7 +668,7 @@ groups.forEach(g=>{
   });
 });
 
-/* ---------------- quiz ---------------- */
+/* ---- quiz ---- */
 const quiz = [
   {q:'Which one of these is a fact?',
    opts:['The queue was ridiculously long','Forty-one people were waiting when we arrived','Nobody should have to wait that long'],
@@ -373,7 +696,6 @@ const quiz = [
    a:1, fb:'An exact number plus one strange, specific detail. The other two use vague words and tell you nothing you could picture.'}
 ];
 
-let score = 0, answered = 0;
 const quizList = document.getElementById('quizList');
 const trackFill = document.getElementById('trackFill');
 const scoreText = document.getElementById('scoreText');
@@ -382,47 +704,125 @@ const resultEl  = document.getElementById('result');
 quiz.forEach((item,i)=>{
   const el = document.createElement('div');
   el.className = 'qcard';
+  el.dataset.q = i;
   const opts = item.opts.map((o,j)=>'<button class="qopt" data-j="' + j + '">' + o + '</button>').join('');
   el.innerHTML = '<div class="qnum">QUESTION ' + (i+1) + ' OF ' + quiz.length + '</div>'
     + '<div class="qtext">' + item.q + '</div>'
     + '<div class="qopts">' + opts + '</div>'
     + '<div class="qfb"></div>';
-  const fb = el.querySelector('.qfb');
   el.querySelectorAll('.qopt').forEach(btn=>{
     btn.onclick = ()=>{
       if(el.classList.contains('done')) return;
-      el.classList.add('done');
-      const chosen = Number(btn.dataset.j);
-      const ok = chosen === item.a;
-      if(ok) score++;
-      answered++;
-      el.querySelectorAll('.qopt').forEach((b,j)=>{
-        if(j === item.a) b.classList.add('right');
-        else if(j === chosen) b.classList.add('wrong');
-        b.disabled = true;
-      });
-      fb.innerHTML = (ok ? '✓ Correct. ' : '✗ Not this time. ') + item.fb;
-      updateScore();
+      state.quiz[i] = Number(btn.dataset.j);
+      paintQuestion(i);
+      recomputeScore();
+      queueSave();
     };
   });
   quizList.appendChild(el);
 });
 
-function updateScore(){
+function paintQuestion(i){
+  const el = quizList.querySelector('[data-q="' + i + '"]');
+  if(!el) return;
+  const chosen = state.quiz[i];
+  if(chosen === undefined || chosen === null) return;
+  const item = quiz[i];
+  el.classList.add('done');
+  el.querySelectorAll('.qopt').forEach((b,j)=>{
+    b.classList.remove('right','wrong');
+    if(j === item.a) b.classList.add('right');
+    else if(j === chosen) b.classList.add('wrong');
+    b.disabled = true;
+  });
+  const ok = chosen === item.a;
+  el.querySelector('.qfb').innerHTML = (ok ? '✓ Correct. ' : '✗ Not this time. ') + item.fb;
+}
+
+function recomputeScore(){
+  let score = 0, answered = 0;
+  quiz.forEach((item,i)=>{
+    const c = state.quiz[i];
+    if(c === undefined || c === null) return;
+    answered++;
+    if(c === item.a) score++;
+  });
+  state.quizScore = answered === quiz.length ? score : null;
   scoreText.textContent = score + ' / ' + quiz.length;
   trackFill.style.width = Math.round((answered / quiz.length) * 100) + '%';
   if(answered === quiz.length){
     let h, p;
-    if(score === 8){ h = 'Full marks, all eight.'; p = 'You have got this properly. Go straight to the checklist and work on your own story.'; }
-    else if(score >= 6){ h = score + ' out of 8. Strong.'; p = 'Scroll back and reread the feedback on anything you missed, then move on to the checklist.'; }
-    else if(score >= 4){ h = score + ' out of 8.'; p = 'Worth going back over section 2 before you work on your own writing, especially the difference between a fact and an opinion.'; }
-    else { h = score + ' out of 8.'; p = 'Go back to section 2 and reread all three choices, then reload the page and try these again. Bring any you still disagree with to our next lesson.'; }
+    if(score === 8){ h = 'Full marks, all eight.'; p = 'You have got this properly. Go straight on to your written work below.'; }
+    else if(score >= 6){ h = score + ' out of 8. Strong.'; p = 'Scroll back and reread the feedback on anything you missed, then carry on to your written work.'; }
+    else if(score >= 4){ h = score + ' out of 8.'; p = 'Worth going back over section 2 before you do the written work, especially the difference between a fact and an opinion.'; }
+    else { h = score + ' out of 8.'; p = 'Go back to section 2 and reread all three choices before you carry on. Bring any you still disagree with to our next lesson.'; }
     resultEl.innerHTML = '<h3>' + h + '</h3><p>' + p + '</p>';
     resultEl.classList.add('show');
+  } else {
+    resultEl.classList.remove('show');
   }
+  updateHandInState();
 }
 
-/* ---------------- checklist ---------------- */
+/* ---- A: fact or opinion (recorded, not marked here) ---- */
+const foStatements = [
+  'The ferry left Lembar at 9:40 in the morning.',
+  'The crossing was far too rough for anyone to enjoy.',
+  'Obviously nobody should travel on that route in January.',
+  'My uncle has driven the same route for nineteen years.',
+  'Twenty-two passengers were waiting on the lower deck.',
+  'The lower deck was the worst place to be.',
+  'It rained from the moment we left until we docked.',
+  'Everyone knows the schedule is never kept.',
+  'I was eleven the first time I made that crossing.',
+  'It is the most beautiful stretch of coast in Lombok.'
+];
+const foList = document.getElementById('foList');
+foStatements.forEach((t,i)=>{
+  const row = document.createElement('div');
+  row.className = 'forow';
+  row.dataset.fo = i;
+  row.innerHTML = '<div class="fotext"><span class="fonum">' + (i+1) + '</span>' + t + '</div>'
+    + '<div class="fopts">'
+    + '<button class="fopt" data-val="Fact">Fact</button>'
+    + '<button class="fopt" data-val="Opinion">Opinion</button>'
+    + '</div>';
+  row.querySelectorAll('.fopt').forEach(btn=>{
+    btn.onclick = ()=>{
+      state.factOpinion[i] = btn.dataset.val;
+      paintFo(i);
+      updateHandInState();
+      queueSave();
+    };
+  });
+  foList.appendChild(row);
+});
+function paintFo(i){
+  const row = foList.querySelector('[data-fo="' + i + '"]');
+  if(!row) return;
+  const picked = state.factOpinion[i];
+  row.querySelectorAll('.fopt').forEach(b=> b.classList.toggle('picked', b.dataset.val === picked));
+}
+
+/* ---- textareas ---- */
+document.querySelectorAll('textarea[data-key]').forEach(ta=>{
+  const key = ta.dataset.key;
+  const counter = document.querySelector('[data-count-for="' + key + '"]');
+  const paintCount = ()=>{
+    if(!counter) return;
+    const words = ta.value.trim() ? ta.value.trim().split(/\s+/).length : 0;
+    counter.textContent = words + (words === 1 ? ' word' : ' words');
+  };
+  ta.addEventListener('input', ()=>{
+    state[key] = ta.value;
+    paintCount();
+    updateHandInState();
+    queueSave();
+  });
+  paintCount();
+});
+
+/* ---- checklist ---- */
 const checks = [
   {tag:'CLAIM', c:'#005F65', t:'I have marked every sentence in my story <b>F</b> for fact or <b>O</b> for opinion.'},
   {tag:'CLAIM', c:'#005F65', t:'I have searched for <i>obviously</i>, <i>clearly</i>, <i>of course</i> and <i>everyone knows</i>, and removed any I found.'},
@@ -434,39 +834,150 @@ const checks = [
   {tag:'SENSES', c:'#A6330F', t:'I have added one <b>smell</b> somewhere it belongs.'}
 ];
 const checkList = document.getElementById('checkList');
-const STORE = 'sbs-l3-checks';
-
-function loadChecks(){
-  try{ return JSON.parse(localStorage.getItem(STORE) || '[]'); }
-  catch(e){ return []; }
-}
-function saveChecks(arr){
-  try{ localStorage.setItem(STORE, JSON.stringify(arr)); }
-  catch(e){ /* storage unavailable, ticks just will not persist */ }
-}
-let ticked = loadChecks();
-
 checks.forEach((c,i)=>{
   const row = document.createElement('div');
   row.className = 'check-item';
+  row.dataset.chk = i;
   const id = 'chk' + i;
-  const on = ticked.includes(i);
-  if(on) row.classList.add('ticked');
-  row.innerHTML = '<input type="checkbox" id="' + id + '"' + (on ? ' checked' : '') + '>'
+  row.innerHTML = '<input type="checkbox" id="' + id + '">'
     + '<label for="' + id + '"><span class="ctag" style="background:' + c.c + ';">' + c.tag + '</span>' + c.t + '</label>';
-  const box = row.querySelector('input');
-  box.addEventListener('change', ()=>{
-    row.classList.toggle('ticked', box.checked);
-    ticked = box.checked ? Array.from(new Set(ticked.concat(i))) : ticked.filter(x=>x!==i);
-    saveChecks(ticked);
+  row.querySelector('input').addEventListener('change', e=>{
+    const on = e.target.checked;
+    state.checks = on
+      ? Array.from(new Set(state.checks.concat(i)))
+      : state.checks.filter(x => x !== i);
+    row.classList.toggle('ticked', on);
+    queueSave();
   });
   checkList.appendChild(row);
 });
 
-document.getElementById('resetChecks').onclick = ()=>{
-  ticked = [];
-  saveChecks(ticked);
-  checkList.querySelectorAll('input').forEach(b=>{ b.checked = false; });
-  checkList.querySelectorAll('.check-item').forEach(r=>r.classList.remove('ticked'));
+/* ============================================================
+   HYDRATE the whole page from state
+   ============================================================ */
+function hydrate(){
+  if(state.name) nameInput.value = state.name;
+  quiz.forEach((q,i)=> paintQuestion(i));
+  recomputeScore();
+  foStatements.forEach((t,i)=> paintFo(i));
+  document.querySelectorAll('textarea[data-key]').forEach(ta=>{
+    const key = ta.dataset.key;
+    ta.value = state[key] || '';
+    const counter = document.querySelector('[data-count-for="' + key + '"]');
+    if(counter){
+      const words = ta.value.trim() ? ta.value.trim().split(/\s+/).length : 0;
+      counter.textContent = words + (words === 1 ? ' word' : ' words');
+    }
+  });
+  if(!Array.isArray(state.checks)) state.checks = [];
+  checkList.querySelectorAll('[data-chk]').forEach(row=>{
+    const i = Number(row.dataset.chk);
+    const on = state.checks.indexOf(i) !== -1;
+    row.querySelector('input').checked = on;
+    row.classList.toggle('ticked', on);
+  });
+  if(state.submittedAt) showDone();
+  updateHandInState();
+}
+
+/* ============================================================
+   HAND IN
+   ============================================================ */
+const handInBtn = document.getElementById('handInBtn');
+const doneBox = document.getElementById('doneBox');
+
+function countDone(){
+  let n = 0, total = 0;
+  total++; if(Object.keys(state.factOpinion).length === foStatements.length) n++;
+  ['biasA','biasB','biasC','shapeA','shapeB','shapeC','senses','reflection'].forEach(k=>{
+    total++; if((state[k] || '').trim().length > 0) n++;
+  });
+  total++; if(Object.keys(state.quiz).length === quiz.length) n++;
+  return {n, total};
+}
+
+function updateHandInState(){
+  const {n, total} = countDone();
+  const ready = state.name && n === total;
+  handInBtn.disabled = !ready;
+  handInBtn.textContent = ready
+    ? 'Hand in my work'
+    : 'Hand in my work (' + n + ' of ' + total + ' done)';
+}
+
+function showDone(){
+  const when = state.submittedAt ? new Date(state.submittedAt) : new Date();
+  doneBox.querySelector('p').innerHTML = '✅ <b>Handed in</b> on ' + when.toLocaleDateString()
+    + ' at ' + when.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})
+    + '. You can still change anything above and it will keep saving.';
+  doneBox.classList.add('show');
+}
+
+handInBtn.onclick = async ()=>{
+  state.submittedAt = new Date().toISOString();
+  showDone();
+  clearTimeout(saveTimer);
+  await flush();
+  doneBox.scrollIntoView({behavior:'smooth', block:'center'});
 };
+
+/* ---- plain text copy-out ---- */
+const copyArea = document.getElementById('copyArea');
+document.getElementById('showCopy').onclick = ()=>{
+  copyArea.value = asPlainText();
+  copyArea.classList.add('show');
+  copyArea.focus();
+  copyArea.select();
+};
+
+function asPlainText(){
+  const L = [];
+  L.push('LESSON 3: CLAIM, ORDER, SENSES');
+  L.push('Name: ' + (state.name || '(not given)'));
+  L.push('Last saved: ' + (state.updatedAt || '(not saved)'));
+  if(state.submittedAt) L.push('Handed in: ' + state.submittedAt);
+  L.push('');
+  L.push('QUIZ');
+  let score = 0;
+  quiz.forEach((q,i)=>{
+    const c = state.quiz[i];
+    const chosen = (c === undefined || c === null) ? '(no answer)' : q.opts[c];
+    if(c === q.a) score++;
+    L.push('  Q' + (i+1) + ': ' + chosen + (c === q.a ? '  [correct]' : '  [wrong]'));
+  });
+  L.push('  Score: ' + score + ' / ' + quiz.length);
+  L.push('');
+  L.push('A. FACT OR OPINION');
+  foStatements.forEach((t,i)=>{
+    L.push('  ' + (i+1) + '. ' + t);
+    L.push('     Answer: ' + (state.factOpinion[i] || '(no answer)'));
+  });
+  L.push('');
+  L.push('B. FIND THE BIAS');
+  L.push('  1. Two facts:');       L.push('     ' + (state.biasA || '(blank)'));
+  L.push('  2. Two opinions:');    L.push('     ' + (state.biasB || '(blank)'));
+  L.push('  3. What was left out:'); L.push('     ' + (state.biasC || '(blank)'));
+  L.push('');
+  L.push('C. SAME FACTS, TWO SHAPES');
+  L.push('  1. Report shape:');    L.push('     ' + (state.shapeA || '(blank)'));
+  L.push('  2. Story shape:');     L.push('     ' + (state.shapeB || '(blank)'));
+  L.push('  3. Which and why:');   L.push('     ' + (state.shapeC || '(blank)'));
+  L.push('');
+  L.push('D. ADD THE MISSING SENSES');
+  L.push('  ' + (state.senses || '(blank)'));
+  L.push('');
+  L.push('E. YOUR OWN WRITING');
+  L.push('  ' + (state.reflection || '(blank)'));
+  L.push('');
+  L.push('CHECKLIST: ' + (state.checks || []).length + ' of ' + checks.length + ' ticked');
+  return L.join('\n');
+}
+
+/* ============================================================
+   GO
+   ============================================================ */
+hydrate();
+if(state.name){
+  document.getElementById('nameHint').textContent = 'Saving your work under "' + state.name + '".';
+}
 </script>

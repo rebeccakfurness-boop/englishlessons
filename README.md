@@ -28,12 +28,32 @@ for `prefers-color-scheme: dark` and `[data-theme="dark"]`.
 1. `lesson.html` is the 40 minute interactive lesson, walked through together on the call
 2. `script.html` is the tutor-only guide: stage timings, wording, expected sticking points
 3. `review.html` is the pupil's after-lesson page: video, practice, scored quiz, checklist
-4. `Worksheet-N-*.docx` is the written homework, uploaded to Google Classroom
+4. `Worksheet-N-*.docx` is the written homework, for lessons whose review page
+   does not yet carry the work inline
 
 The video slot in `review.html` is a single `VIDEO_URL` constant at the top of
 its script block. Paste the link there and republish. It handles YouTube, Vimeo
 and Drive links, and always shows a fallback link button in case the embed is
 blocked.
+
+## Saved answers
+
+From Lesson 3 on, `review.html` declares the `db` runtime capability and the
+written work lives in the page instead of a separate worksheet. Publish it with
+`capabilities: {db: {}}` (omit the field on a later republish to carry the
+declaration forward).
+
+- Answers autosave to `submissions/<lesson>-<name-slug>`, one document per pupil
+  per lesson, written with `set()` so the whole state replaces cleanly.
+- Read a submission back with the Artifact tool: `action: "read_db"`,
+  `db_op: "list"`, `collection: "submissions"`.
+- Declaring `db` makes the artifact organization-internal, so it cannot be
+  shared by public link. The pupil must open it signed in to a claude.ai account
+  in the owner's organization.
+- If the capability is unavailable, the page falls back to `localStorage`, shows
+  a banner saying so, and offers a button that dumps every answer as plain text
+  to paste into Google Classroom. That fallback is the reason the page still
+  works for a pupil who cannot sign in.
 
 ## Unit 1B: Autobiography and Travel Writing
 
