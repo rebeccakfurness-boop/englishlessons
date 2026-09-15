@@ -61,16 +61,27 @@ h1,h2,h3{font-family:'Nunito','Nunito Sans',system-ui,sans-serif;}
 .namebar input:focus{border-color:var(--teal); outline:none;}
 .namehint{font-size:13px; color:var(--ink-soft); margin:10px 0 0; line-height:1.55; width:100%;}
 
-/* video */
-.videowrap{background:var(--card); border:1px solid var(--line); border-radius:16px; overflow:hidden; box-shadow:var(--shadow);}
-.vframe{position:relative; width:100%; max-width:100%; aspect-ratio:16/9; background:var(--surface-dark);}
-.vframe iframe{position:absolute; inset:0; width:100%; height:100%; border:0;}
-.vpending{display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; height:100%; color:rgba(255,255,255,0.72); text-align:center; padding:24px;}
-.vpending .vicon{font-size:34px;}
-.vpending p{margin:0; font-size:14px; max-width:40ch;}
-.vpending .btn{margin-top:4px; text-decoration:none;}
-.vfoot{display:flex; align-items:center; justify-content:space-between; gap:12px; padding:13px 18px; flex-wrap:wrap;}
-.vfoot span{font-size:13px; color:var(--ink-soft);}
+/* video: the artifact sandbox blocks embedded players, so this is a link card */
+.watchcard{display:flex; align-items:center; gap:18px; width:100%; text-decoration:none;
+  background:linear-gradient(135deg,#2A1B0C,#4A3016); border:none; border-radius:16px;
+  padding:22px 24px; box-shadow:var(--shadow); cursor:pointer; text-align:left; font-family:inherit;
+  transition:transform .15s ease, box-shadow .15s ease;}
+.watchcard:hover{transform:translateY(-2px); box-shadow:0 12px 30px rgba(42,27,12,0.3);}
+.watchcard .play{width:58px; height:58px; border-radius:50%; background:var(--gold); color:#2A1B0C;
+  display:flex; align-items:center; justify-content:center; font-size:23px; flex-shrink:0; padding-left:5px;}
+.watchcard .wtext{min-width:0; display:block;}
+.watchcard .wtitle{display:block; font-family:'Nunito',sans-serif; font-weight:800; font-size:19px; color:#fff; line-height:1.25;}
+.watchcard .wsub{display:block; font-size:13.5px; color:rgba(255,255,255,0.78); margin-top:4px; line-height:1.5;}
+@media(max-width:480px){
+  .watchcard{flex-direction:column; align-items:flex-start; gap:13px;}
+  .watchcard .wtitle{font-size:17px;}
+}
+.watchedrow{display:flex; align-items:center; gap:12px; background:var(--card); border:1.5px solid var(--line);
+  border-radius:12px; padding:13px 16px; margin-top:12px; cursor:pointer;}
+.watchedrow input{margin:0; width:19px; height:19px; flex-shrink:0; accent-color:var(--teal); cursor:pointer;}
+.watchedrow label{font-size:14.5px; font-weight:700; cursor:pointer; flex:1; color:var(--ink);}
+.watchedrow.ticked{border-color:var(--teal); background:var(--teal-light);}
+.watchedrow.ticked label{color:var(--teal-dark);}
 
 /* three choice cards */
 .choicegrid{display:grid; grid-template-columns:repeat(3,1fr); gap:12px;}
@@ -218,12 +229,16 @@ footer{text-align:center; color:var(--ink-soft); font-size:12px; margin-top:44px
   <section class="block">
     <div class="block-head"><div class="block-num">1</div><h2>Watch first</h2></div>
     <p class="block-intro">Watch this before you do anything else on this page. Watch the whole thing, then read the two questions underneath and see whether you can answer them.</p>
-    <div class="videowrap">
-      <div class="vframe" id="vframe"></div>
-      <div class="vfoot">
-        <span id="vnote">Watch the whole thing before you carry on. If it will not play here, use the button.</span>
-        <a class="btn btn-teal btn-sm" id="vlink" href="#" target="_blank" rel="noopener" hidden>Open on YouTube ↗</a>
-      </div>
+    <a class="watchcard" id="watchCard" href="#" target="_blank" rel="noopener">
+      <span class="play">▶</span>
+      <span class="wtext">
+        <span class="wtitle">Watch the video on YouTube</span>
+        <span class="wsub">Opens in a new tab. Come straight back here afterwards, your place is saved.</span>
+      </span>
+    </a>
+    <div class="watchedrow" id="watchedRow">
+      <input type="checkbox" id="watchedBox">
+      <label for="watchedBox">I have watched the video</label>
     </div>
     <div class="card" style="background:var(--gold-light); border:none; margin-top:14px;">
       <div style="font-family:'Nunito',sans-serif; font-weight:800; font-size:11.5px; letter-spacing:0.06em; text-transform:uppercase; color:var(--gold-dark); margin-bottom:9px;">Two things to listen out for</div>
@@ -392,43 +407,16 @@ footer{text-align:center; color:var(--ink-soft); font-size:12px; margin-top:44px
    ============================================================ */
 const VIDEO_URL = "https://www.youtube.com/watch?v=q-Y-z6HmRgI";
 
-function embedFor(url){
-  try{
-    const u = new URL(url);
-    const h = u.hostname.replace(/^www\./,'');
-    if(h === 'youtu.be')        return 'https://www.youtube.com/embed/' + u.pathname.slice(1);
-    if(h.endsWith('youtube.com')){
-      const v = u.searchParams.get('v');
-      if(v) return 'https://www.youtube.com/embed/' + v;
-      if(u.pathname.startsWith('/embed/')) return url;
-    }
-    if(h.endsWith('vimeo.com'))  return 'https://player.vimeo.com/video/' + u.pathname.split('/').filter(Boolean)[0];
-    if(h.endsWith('drive.google.com')){
-      const m = u.pathname.match(/\/d\/([^/]+)/);
-      if(m) return 'https://drive.google.com/file/d/' + m[1] + '/preview';
-    }
-  }catch(e){ /* not a parseable URL */ }
-  return null;
-}
-const vframe = document.getElementById('vframe');
-const vlink  = document.getElementById('vlink');
+const watchCard = document.getElementById('watchCard');
+const watchedRow = document.getElementById('watchedRow');
+const watchedBox = document.getElementById('watchedBox');
+
 if(VIDEO_URL){
-  const src = embedFor(VIDEO_URL);
-  if(src){
-    const f = document.createElement('iframe');
-    f.src = src;
-    f.title = 'Lesson 3 video: fact, opinion and bias';
-    f.allow = 'accelerometer; clipboard-write; encrypted-media; picture-in-picture';
-    f.allowFullscreen = true;
-    vframe.appendChild(f);
-  } else {
-    vframe.innerHTML = '<div class="vpending"><div class="vicon">▶️</div><p>Use the button to open the video.</p></div>';
-  }
-  vlink.href = VIDEO_URL;
-  vlink.hidden = false;
+  watchCard.href = VIDEO_URL;
 } else {
-  vframe.innerHTML = '<div class="vpending"><div class="vicon">🎬</div><p>The video for this lesson will appear here.</p></div>';
-  document.getElementById('vnote').textContent = 'Video to be added.';
+  watchCard.removeAttribute('href');
+  watchCard.querySelector('.wtitle').textContent = 'Video to be added';
+  watchCard.querySelector('.wsub').textContent = 'Carry on to section 2 and come back to this later.';
 }
 
 /* ============================================================
@@ -444,6 +432,7 @@ const state = {
   shapeA:'', shapeB:'', shapeC:'',
   senses:'', reflection:'',
   checks: [],
+  watched: false,
   submittedAt: null,
   updatedAt: null
 };
@@ -822,6 +811,14 @@ document.querySelectorAll('textarea[data-key]').forEach(ta=>{
   paintCount();
 });
 
+/* ---- watched tick ---- */
+watchedBox.addEventListener('change', ()=>{
+  state.watched = watchedBox.checked;
+  watchedRow.classList.toggle('ticked', state.watched);
+  updateHandInState();
+  queueSave();
+});
+
 /* ---- checklist ---- */
 const checks = [
   {tag:'CLAIM', c:'#005F65', t:'I have marked every sentence in my story <b>F</b> for fact or <b>O</b> for opinion.'},
@@ -857,6 +854,8 @@ checks.forEach((c,i)=>{
    ============================================================ */
 function hydrate(){
   if(state.name) nameInput.value = state.name;
+  watchedBox.checked = !!state.watched;
+  watchedRow.classList.toggle('ticked', !!state.watched);
   quiz.forEach((q,i)=> paintQuestion(i));
   recomputeScore();
   foStatements.forEach((t,i)=> paintFo(i));
@@ -888,6 +887,7 @@ const doneBox = document.getElementById('doneBox');
 
 function countDone(){
   let n = 0, total = 0;
+  total++; if(state.watched) n++;
   total++; if(Object.keys(state.factOpinion).length === foStatements.length) n++;
   ['biasA','biasB','biasC','shapeA','shapeB','shapeC','senses','reflection'].forEach(k=>{
     total++; if((state[k] || '').trim().length > 0) n++;
@@ -936,6 +936,7 @@ function asPlainText(){
   L.push('Name: ' + (state.name || '(not given)'));
   L.push('Last saved: ' + (state.updatedAt || '(not saved)'));
   if(state.submittedAt) L.push('Handed in: ' + state.submittedAt);
+  L.push('Watched the video: ' + (state.watched ? 'yes' : 'not ticked'));
   L.push('');
   L.push('QUIZ');
   let score = 0;

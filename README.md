@@ -32,9 +32,14 @@ for `prefers-color-scheme: dark` and `[data-theme="dark"]`.
    does not yet carry the work inline
 
 The video slot in `review.html` is a single `VIDEO_URL` constant at the top of
-its script block. Paste the link there and republish. It handles YouTube, Vimeo
-and Drive links, and always shows a fallback link button in case the embed is
-blocked.
+its script block. Paste the link there and republish.
+
+**Do not use an `<iframe>` for video.** The artifact sandbox blocks embedded
+players, and a blocked frame renders as a black box with no error, so the pupil
+just sees something broken. The page uses a styled link card that opens the
+video in a new tab, plus an "I have watched the video" tick that saves with the
+rest of the work. Remote thumbnails are blocked too, so the card is drawn in CSS
+rather than pulling an image from YouTube.
 
 ## Saved answers
 
