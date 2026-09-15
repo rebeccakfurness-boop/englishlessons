@@ -51,3 +51,18 @@ a first-person note in italics, with two contrasting moods.
 | # | Lesson | Objective |
 |---|---|---|
 | 11 | Cut, Sharpen, Vary, Check | 8Wp.04: evaluate and edit to improve accuracy and effectiveness |
+
+## Mila (Primary) — Unit 1, Lesson 1
+
+Mila's materials use the palette from her own lesson page (teal `#0E7C86`,
+coral `#F2643B`, gold `#F0A93E`, ink `#0F2A3D`), which is a different set
+from the Selong Bay tokens above. Keep them that way so her pages look
+like one another.
+
+| # | Lesson | Review | Homework |
+|---|---|---|---|
+| 1 | [Getting Started](https://claude.ai/artifact/L3HQjTg54AQZ2v3AZNa3Qu) | none: replaced by the worksheet | `Worksheet-01-Prologues-Review.docx` |
+
+Lesson 1 has no interactive review page. The review is the printed
+worksheet: a quiz on the lesson's concepts, then a writing task built
+around the character, scene and time words Mila came up with herself.
