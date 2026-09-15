@@ -42,6 +42,10 @@ Book 6* (Burt & Ridgard, 2nd ed.). Unit 1 runs across four coursebook sessions:
 | 1 | What is a prologue? | 1.1 | Setting the scene: character, environment, time (worksheet only) |
 | 2 | Read Like a Detective | 1.2 | 6Ri.14, 6Rv.04, 6Rv.02, 6Rv.01 |
 
+Lesson 2's worksheet is the printed review: one quiz section on the
+lesson's takeaways, then a writing task built on the character, scene and
+time words the pupil came up with herself.
+
 Lesson 2 texts are original, written for these lessons rather than reproduced
 from the coursebook, but keep its structure: a third-person scene followed by
 a first-person note in italics, with two contrasting moods.
@@ -51,19 +55,3 @@ a first-person note in italics, with two contrasting moods.
 | # | Lesson | Objective |
 |---|---|---|
 | 11 | Cut, Sharpen, Vary, Check | 8Wp.04: evaluate and edit to improve accuracy and effectiveness |
-
-## Mila (Primary) — Unit 1
-
-Mila's materials use the palette from her own lesson pages (teal `#0E7C86`,
-coral `#F2643B`, gold `#F0A93E`, ink `#0F2A3D`, with Space Grotesk and
-Inter), which is a different set from the Selong Bay tokens above. Keep
-them that way so her pages look like one another.
-
-| # | Lesson | Homework |
-|---|---|---|
-| 1 | [Getting Started](https://claude.ai/artifact/L3HQjTg54AQZ2v3AZNa3Qu): prologues, the prefix *pro-*, first person, tense | not in this repo |
-| 2 | [Word Roots](https://claude.ai/artifact/SML4L46ivrJNTfcf28FAph): Ancient Greek roots and etymological dictionaries | `Worksheet-02-Word-Roots.docx` |
-
-Mila has no interactive review page. Her review is the printed worksheet:
-a quiz on the lesson's concepts, then a writing task built around the
-character, scene and time words she came up with herself.
