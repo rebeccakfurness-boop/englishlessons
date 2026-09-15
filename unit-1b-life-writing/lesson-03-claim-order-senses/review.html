@@ -188,6 +188,7 @@ h1,h2,h3{font-family:'Nunito','Nunito Sans',system-ui,sans-serif;}
 .banner{border-radius:14px; padding:15px 18px; margin-bottom:18px; font-size:14px; line-height:1.6; display:none;}
 .banner.show{display:block;}
 .banner.warn{background:var(--plum-light); border:1.5px solid var(--plum); color:var(--plum-dark);}
+.banner.info{background:var(--teal-light); border:1.5px solid var(--teal); color:var(--teal-dark);}
 
 .btn{font-family:'Nunito Sans',sans-serif; font-weight:700; font-size:13.5px; border:none; border-radius:10px; padding:10px 18px; cursor:pointer; text-decoration:none; display:inline-flex; align-items:center; gap:7px; transition:transform .15s ease;}
 .btn:hover{transform:translateY(-1px);}
@@ -208,20 +209,20 @@ footer{text-align:center; color:var(--ink-soft); font-size:12px; margin-top:44px
   <div class="hero-inner">
     <div class="eyebrow">Selong Bay School · Lesson 3 review and homework</div>
     <h1>The Bias Lab</h1>
-    <p>Everything for this lesson is on this one page. Watch, recap, practise, test yourself, then do your written work right here. Your answers save as you type, so you can stop and come back.</p>
+    <p>Everything for this lesson is on this one page. Watch, recap, practise, test yourself, then do your written work right here. Your answers stay in this browser as you go, so you can stop and come back.</p>
   </div>
 </div>
 
 <div class="app">
 
-  <div class="banner warn" id="localBanner"></div>
+  <div class="banner info show"><b>How this works.</b> Everything you type on this page is kept in this browser as you go, so you can stop and come back. It does not reach your tutor by itself. When you have finished, press <b>Show my answers to copy</b> at the bottom, copy the whole block, and paste it into the answer box on Google Classroom.</div>
 
   <!-- 0 NAME -->
   <section class="block">
     <div class="namebar">
       <label for="studentName">Your name</label>
-      <input id="studentName" type="text" autocomplete="name" placeholder="Type your first name to start" spellcheck="false">
-      <p class="namehint" id="nameHint">Type your name so your work saves under it. You only need to do this once on this device.</p>
+      <input id="studentName" type="text" autocomplete="name" placeholder="Type your first name" spellcheck="false">
+      <p class="namehint" id="nameHint">This goes at the top of your answers so I know whose work it is.</p>
     </div>
   </section>
 
@@ -267,7 +268,7 @@ footer{text-align:center; color:var(--ink-soft); font-size:12px; margin-top:44px
   <!-- 4 QUIZ -->
   <section class="block">
     <div class="block-head"><div class="block-num">4</div><h2>Test yourself</h2></div>
-    <p class="block-intro">Eight questions, one attempt each. Your score is saved and I will see it.</p>
+    <p class="block-intro">Eight questions, one attempt each. Your score goes into the answers you copy out at the end.</p>
     <div class="scorebar">
       <span class="slabel">Score</span>
       <div class="track"><div class="track-fill" id="trackFill"></div></div>
@@ -280,7 +281,7 @@ footer{text-align:center; color:var(--ink-soft); font-size:12px; margin-top:44px
   <!-- 5 YOUR WORK -->
   <section class="block">
     <div class="block-head"><div class="block-num">5</div><h2>Your written work</h2></div>
-    <p class="block-intro">This replaces the paper worksheet. Type straight into the boxes. Everything saves by itself, so if you close the page your work will still be here when you come back.</p>
+    <p class="block-intro">This is your worksheet. Type straight into the boxes. Your work stays in this browser, so if you close the page it will still be here when you come back. At the end you copy it all into Google Classroom in one go.</p>
 
     <!-- A -->
     <div class="exercise">
@@ -385,21 +386,19 @@ footer{text-align:center; color:var(--ink-soft); font-size:12px; margin-top:44px
   <!-- 7 HAND IN -->
   <section class="block">
     <div class="finish">
-      <h3>Hand in</h3>
-      <p>When you have finished everything above, press this. You can still change your answers afterwards, and they will keep saving, but this tells me you are done.</p>
-      <button class="btn btn-gold btn-lg" id="handInBtn" disabled>Hand in my work</button>
+      <h3>Last step: send me your answers</h3>
+      <p>Press the button and everything you have written appears in one block, already selected. Copy it, then paste it into the answer box on Google Classroom. Check the counter first to make sure you have not missed anything.</p>
+      <button class="btn btn-gold btn-lg" id="showCopy">Show my answers to copy</button>
+      <p style="margin:11px 0 0; font-size:13.5px;" id="progressLine"></p>
+      <textarea class="copyarea" id="copyArea" readonly aria-label="All your answers as plain text"></textarea>
       <div class="donebox" id="doneBox"><p></p></div>
-      <div style="margin-top:16px;">
-        <button class="btn btn-ghost btn-sm" id="showCopy">Show all my answers as text</button>
-        <textarea class="copyarea" id="copyArea" readonly aria-label="All your answers as plain text"></textarea>
-      </div>
     </div>
   </section>
 
   <footer>Lesson 3 · Unit 1B: Autobiography and Travel Writing · 8Ri.03, 8Ri.05, 8Ws, 8Wv</footer>
 </div>
 
-<div class="savepill" id="savePill"><span class="dot"></span><span id="saveText">Type your name to start saving</span></div>
+<div class="savepill" id="savePill"><span class="dot"></span><span id="saveText">Nothing typed yet</span></div>
 
 <script>
 /* ============================================================
@@ -433,25 +432,16 @@ const state = {
   senses:'', reflection:'',
   checks: [],
   watched: false,
-  submittedAt: null,
   updatedAt: null
 };
 
-function slugify(s){
-  return String(s).toLowerCase().trim()
-    .replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,60);
-}
-
 /* ============================================================
-   SAVING: db when available, this device otherwise
+   SAVING: this browser only. There is no tutor account to save to,
+   so the page keeps work locally and hands it over as text at the end.
    ============================================================ */
 const pill = document.getElementById('savePill');
 const pillText = document.getElementById('saveText');
-const localBanner = document.getElementById('localBanner');
 
-let db = null;          // resolved capability, or null
-let docRef = null;      // current student's document
-let mode = 'waiting';   // waiting | db | local
 let saveTimer = null;
 let dirty = false;
 
@@ -473,89 +463,22 @@ function loadLocal(){
 
 function queueSave(){
   dirty = true;
-  if(!state.name){ setPill('', 'Type your name to start saving'); return; }
   setPill('saving', 'Saving');
   clearTimeout(saveTimer);
-  saveTimer = setTimeout(flush, 900);
+  saveTimer = setTimeout(flush, 700);
 }
 
-async function flush(){
-  if(!state.name) return;
+function flush(){
   state.updatedAt = new Date().toISOString();
-  saveLocal();
-  if(mode !== 'db' || !docRef){
-    dirty = false;
-    setPill('local', 'Saved on this device');
-    return;
-  }
-  try{
-    await docRef.set(JSON.parse(JSON.stringify(state)));
-    dirty = false;
-    setPill('saved', 'Saved');
-  }catch(err){
-    const code = err && err.code;
-    if(code === 'unavailable'){
-      setPill('saving', 'Trying again');
-      clearTimeout(saveTimer);
-      saveTimer = setTimeout(flush, 2500);
-      return;
-    }
-    if(code === 'revoked' || code === 'not_granted' || code === 'capability_disabled' || code === 'capability_removed'){
-      mode = 'local';
-      showLocalBanner('Your work is now saving on this device only.');
-      setPill('local', 'Saved on this device');
-      return;
-    }
-    setPill('error', 'Could not save, use the text button at the bottom');
-  }
-}
-
-function showLocalBanner(extra){
-  localBanner.innerHTML = '<b>Heads up.</b> This page cannot save your work to your tutor automatically. '
-    + (extra || 'It is saving on this device instead, so finish it on this same device and browser.')
-    + ' When you are done, press <b>Show all my answers as text</b> at the bottom, copy everything, and paste it into Google Classroom.';
-  localBanner.classList.add('show');
+  const ok = saveLocal();
+  dirty = false;
+  setPill(ok ? 'local' : 'error',
+          ok ? 'Saved in this browser' : 'Cannot save here, copy your answers out before you close this');
 }
 
 window.addEventListener('beforeunload', ()=>{
-  // Stamp the local copy so a half-typed answer wins over the older stored one next time.
   if(dirty){ state.updatedAt = new Date().toISOString(); saveLocal(); }
 });
-
-/* connect to the store */
-(async ()=>{
-  try{ db = await claude.use('db'); }catch(e){ db = null; }
-  if(!db){
-    mode = 'local';
-    showLocalBanner();
-    if(state.name) setPill('local', 'Saved on this device'); else setPill('', 'Type your name to start saving');
-    return;
-  }
-  mode = 'db';
-  if(state.name) await bindDoc();
-})();
-
-async function bindDoc(){
-  if(mode !== 'db' || !db || !state.name) return;
-  const id = slugify(state.name);
-  if(!id) return;
-  try{
-    docRef = db.doc('submissions/' + LESSON + '-' + id);
-    const snap = await docRef.get();
-    if(snap && snap.exists && snap.data){
-      const d = snap.data();
-      // Only adopt the stored copy if this device has nothing newer.
-      const mine = state.updatedAt ? Date.parse(state.updatedAt) : 0;
-      const theirs = d.updatedAt ? Date.parse(d.updatedAt) : 0;
-      if(theirs >= mine){ Object.assign(state, d); hydrate(); }
-    }
-    await flush();
-  }catch(err){
-    mode = 'local';
-    showLocalBanner();
-    setPill('local', 'Saved on this device');
-  }
-}
 
 /* ============================================================
    NAME
@@ -577,14 +500,14 @@ if(cached && (!cached.name || !state.name || cached.name === state.name)){
 let nameTimer = null;
 nameInput.addEventListener('input', ()=>{
   clearTimeout(nameTimer);
-  nameTimer = setTimeout(async ()=>{
+  nameTimer = setTimeout(()=>{
     state.name = nameInput.value.trim();
     try{ localStorage.setItem(NAME_KEY, state.name); }catch(e){}
     updateHandInState();
     if(state.name){
-      document.getElementById('nameHint').textContent = 'Saving your work under "' + state.name + '".';
-      if(mode === 'db') await bindDoc(); else queueSave();
+      document.getElementById('nameHint').textContent = 'Your answers will be labelled "' + state.name + '".';
     }
+    queueSave();
   }, 700);
 });
 
@@ -875,15 +798,14 @@ function hydrate(){
     row.querySelector('input').checked = on;
     row.classList.toggle('ticked', on);
   });
-  if(state.submittedAt) showDone();
   updateHandInState();
 }
 
 /* ============================================================
    HAND IN
    ============================================================ */
-const handInBtn = document.getElementById('handInBtn');
 const doneBox = document.getElementById('doneBox');
+const progressLine = document.getElementById('progressLine');
 
 function countDone(){
   let n = 0, total = 0;
@@ -898,28 +820,12 @@ function countDone(){
 
 function updateHandInState(){
   const {n, total} = countDone();
-  const ready = state.name && n === total;
-  handInBtn.disabled = !ready;
-  handInBtn.textContent = ready
-    ? 'Hand in my work'
-    : 'Hand in my work (' + n + ' of ' + total + ' done)';
+  progressLine.textContent = n === total
+    ? '\u2713 All ' + total + ' parts done.'
+    : n + ' of ' + total + ' parts done.';
+  progressLine.style.color = n === total ? 'var(--teal-dark)' : 'var(--ink-soft)';
+  progressLine.style.fontWeight = n === total ? '800' : '400';
 }
-
-function showDone(){
-  const when = state.submittedAt ? new Date(state.submittedAt) : new Date();
-  doneBox.querySelector('p').innerHTML = '✅ <b>Handed in</b> on ' + when.toLocaleDateString()
-    + ' at ' + when.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})
-    + '. You can still change anything above and it will keep saving.';
-  doneBox.classList.add('show');
-}
-
-handInBtn.onclick = async ()=>{
-  state.submittedAt = new Date().toISOString();
-  showDone();
-  clearTimeout(saveTimer);
-  await flush();
-  doneBox.scrollIntoView({behavior:'smooth', block:'center'});
-};
 
 /* ---- plain text copy-out ---- */
 const copyArea = document.getElementById('copyArea');
@@ -928,14 +834,15 @@ document.getElementById('showCopy').onclick = ()=>{
   copyArea.classList.add('show');
   copyArea.focus();
   copyArea.select();
+  doneBox.querySelector('p').innerHTML = 'Everything is selected. Press <b>Ctrl and C</b> (or <b>Cmd and C</b> on a Mac) to copy it, then paste it into Google Classroom.';
+  doneBox.classList.add('show');
 };
 
 function asPlainText(){
   const L = [];
   L.push('LESSON 3: CLAIM, ORDER, SENSES');
   L.push('Name: ' + (state.name || '(not given)'));
-  L.push('Last saved: ' + (state.updatedAt || '(not saved)'));
-  if(state.submittedAt) L.push('Handed in: ' + state.submittedAt);
+  L.push('Date: ' + new Date().toLocaleDateString(undefined, {day:'numeric', month:'long', year:'numeric'}));
   L.push('Watched the video: ' + (state.watched ? 'yes' : 'not ticked'));
   L.push('');
   L.push('QUIZ');

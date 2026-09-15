@@ -41,24 +41,27 @@ video in a new tab, plus an "I have watched the video" tick that saves with the
 rest of the work. Remote thumbnails are blocked too, so the card is drawn in CSS
 rather than pulling an image from YouTube.
 
-## Saved answers
+## How pupil work comes back
 
-From Lesson 3 on, `review.html` declares the `db` runtime capability and the
-written work lives in the page instead of a separate worksheet. Publish it with
-`capabilities: {db: {}}` (omit the field on a later republish to carry the
-declaration forward).
+Pupils do not have claude.ai accounts in the school organisation, so the review
+page does **not** use the `db` capability. Publish it with `capabilities: {}`.
 
-- Answers autosave to `submissions/<lesson>-<name-slug>`, one document per pupil
-  per lesson, written with `set()` so the whole state replaces cleanly.
-- Read a submission back with the Artifact tool: `action: "read_db"`,
-  `db_op: "list"`, `collection: "submissions"`.
-- Declaring `db` makes the artifact organization-internal, so it cannot be
-  shared by public link. The pupil must open it signed in to a claude.ai account
-  in the owner's organization.
-- If the capability is unavailable, the page falls back to `localStorage`, shows
-  a banner saying so, and offers a button that dumps every answer as plain text
-  to paste into Google Classroom. That fallback is the reason the page still
-  works for a pupil who cannot sign in.
+Declaring `db` would make the artifact organization-internal and unshareable by
+public link, and would only save for a viewer signed in to the owner's
+organization. Neither holds here.
+
+Instead the review page carries the whole worksheet inline and:
+
+- keeps answers in `localStorage` as the pupil types, so they can stop and come
+  back in the same browser
+- shows a counter of how many parts are done
+- has a **Show my answers to copy** button that renders every answer, the quiz
+  score and the checklist into one plain-text block, name and date at the top,
+  auto-selected, for pasting into the Google Classroom answer box
+
+The limitation to warn pupils about: the work lives in that browser only until
+they copy it out. A private window, a shared computer, or clearing history
+loses it.
 
 ## Unit 1B: Autobiography and Travel Writing
 
