@@ -180,6 +180,14 @@ p.lede{font-size:17px; color:var(--ink-soft); max-width:640px; line-height:1.55;
 .scorebar .sc-n{font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:15px; color:var(--gold);}
 .scorebar .sc-t{font-size:13.5px; color:rgba(255,255,255,0.85);}
 
+/* optional video link */
+.watchlink{display:inline-flex; align-items:center; gap:10px; text-decoration:none; background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.3); border-radius:11px; padding:9px 14px; margin-top:12px; transition:background .15s ease;}
+.watchlink:hover{background:rgba(255,255,255,0.22);}
+.watchlink .wl-play{width:26px; height:26px; border-radius:50%; background:var(--gold); display:flex; align-items:center; justify-content:center; flex-shrink:0;}
+.watchlink .wl-play i{display:block; width:0; height:0; border-style:solid; border-width:6px 0 6px 9px; border-color:transparent transparent transparent #2A1B0C; margin-left:2px;}
+.watchlink .wl-txt{font-family:'Nunito',sans-serif; font-weight:700; font-size:12.5px; color:#fff; line-height:1.35;}
+.watchlink .wl-txt span{display:block; font-weight:400; font-size:11.5px; color:rgba(255,255,255,0.7);}
+
 .vocab-card{background:var(--card); border-left:4px solid var(--teal); border-radius:10px; padding:12px 16px; margin-bottom:10px; box-shadow:var(--shadow); font-size:14px; line-height:1.55;}
 .vocab-card b{font-family:'Nunito','Nunito Sans',system-ui,sans-serif;}
 .hw-list{list-style:none; padding:0; margin:0;}
@@ -235,6 +243,10 @@ p.lede{font-size:17px; color:var(--ink-soft); max-width:640px; line-height:1.55;
         <div class="kicker" style="background:rgba(255,255,255,0.12); color:var(--gold); margin-bottom:10px;">🔗 From Lesson 1</div>
         <p style="margin:0 0 10px; font-size:14px; line-height:1.6; color:#fff;">You already know a prologue sits <b>before</b> chapter one and its job is to hook the reader. You described characters, the environment and the time.</p>
         <p style="margin:0; font-size:14px; line-height:1.6; color:rgba(255,255,255,0.8);">Today: a prologue doesn&rsquo;t just set a scene. It <i>plants</i> things. Your job is to dig them up.</p>
+        <a class="watchlink" id="senseVideo" href="#" target="_blank" rel="noopener">
+          <span class="wl-play" aria-hidden="true"><i></i></span>
+          <span class="wl-txt">Describing with the five senses<span>Optional. The same video as on her review page.</span></span>
+        </a>
       </div>
     </div>
 
@@ -463,6 +475,12 @@ p.lede{font-size:17px; color:var(--ink-soft); max-width:640px; line-height:1.55;
 
 <script>
 /* ============================================================
+   VIDEO: the five senses refresher from Lesson 1. Change the link
+   here to swap it. Set to null to hide the button.
+   ============================================================ */
+const SENSE_VIDEO_URL = "https://www.youtube.com/watch?v=ULPDb7xD0S4";
+
+/* ============================================================
    CROSS-LINKS: fill these in after publishing, then republish.
    ============================================================ */
 const LINKS = [
@@ -591,6 +609,11 @@ const vocabData = [
   {t:'Word origin', d:'Where a word came from. Many English words are built from ancient Greek and Latin parts: prologue is pro + logos.'},
   {t:'Epilogue', d:'A short section after the story ends. epi (in addition) + logos (word).'}
 ];
+
+/* ---------- optional video ---------- */
+const senseVideo = document.getElementById('senseVideo');
+if(SENSE_VIDEO_URL){ senseVideo.href = SENSE_VIDEO_URL; }
+else { senseVideo.remove(); }
 
 /* ---------- cross-links ---------- */
 const rl = document.getElementById('reslinks');
