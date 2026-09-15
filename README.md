@@ -41,27 +41,25 @@ video in a new tab, plus an "I have watched the video" tick that saves with the
 rest of the work. Remote thumbnails are blocked too, so the card is drawn in CSS
 rather than pulling an image from YouTube.
 
-## How pupil work comes back
+## The homework flow
 
-Pupils do not have claude.ai accounts in the school organisation, so the review
-page does **not** use the `db` capability. Publish it with `capabilities: {}`.
+Two steps, in this order:
 
-Declaring `db` would make the artifact organization-internal and unshareable by
-public link, and would only save for a viewer signed in to the owner's
-organization. Neither holds here.
+1. **Workbook** (`review.html`): video, recap, practice, self-check quiz,
+   checklist. Nothing is marked. Progress is kept in `localStorage` so the pupil
+   can stop and come back. Its final section is a button to Google Classroom.
+2. **Worksheet** (`Worksheet-N-*.docx`): the written work, uploaded to Google
+   Classroom. This is the part the tutor marks.
 
-Instead the review page carries the whole worksheet inline and:
+The workbook deliberately does **not** collect written answers. Pupils have no
+claude.ai account in the school organisation, so publish it with
+`capabilities: {}`. Declaring `db` would make the artifact
+organization-internal and unshareable by public link, and would only save for a
+viewer signed in to the owner's organization.
 
-- keeps answers in `localStorage` as the pupil types, so they can stop and come
-  back in the same browser
-- shows a counter of how many parts are done
-- has a **Show my answers to copy** button that renders every answer, the quiz
-  score and the checklist into one plain-text block, name and date at the top,
-  auto-selected, for pasting into the Google Classroom answer box
-
-The limitation to warn pupils about: the work lives in that browser only until
-they copy it out. A private window, a shared computer, or clearing history
-loses it.
+The Classroom link is the `href` on `#classroomLink` near the end of
+`review.html`. Point it at the specific assignment rather than the Classroom
+home page when the assignment URL is known.
 
 ## Unit 1B: Autobiography and Travel Writing
 
