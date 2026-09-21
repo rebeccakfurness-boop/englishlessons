@@ -1,0 +1,677 @@
+<title>Show Me Who They Are</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&family=Nunito+Sans:wght@400;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap');
+
+:root{
+  --bg:#FDF7EE; --ink:#46280A; --ink-soft:#7A6450;
+  --teal:#007C83; --teal-dark:#005F65; --teal-light:#D7EDEC;
+  --coral:#D1481F; --coral-dark:#A6330F; --coral-light:#FBE3D8;
+  --gold:#FEA74A; --gold-dark:#A65F06; --gold-light:#FFF0DC;
+  --plum:#2C5F8A; --plum-dark:#1E4664; --plum-light:#E0EBF4;
+  --green:#2E7D5B; --green-light:#DCEFE4;
+  --card:#FFFFFF; --line:#EADFCD;
+  --shadow:0 8px 24px rgba(70,40,10,0.09);
+  --scrim:rgba(253,247,238,0.93);
+  --surface-dark:#2A1B0C;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#16110B; --ink:#F6EEE2; --ink-soft:#BBA890;
+    --teal:#2FA7AE; --teal-dark:#8FE3E6; --teal-light:#0E2E30;
+    --coral:#E2572B; --coral-dark:#FF9E77; --coral-light:#3A1F12;
+    --gold:#FEA74A; --gold-dark:#FFD09B; --gold-light:#3B2711;
+    --plum:#4E86B8; --plum-dark:#9CC6E6; --plum-light:#182B3A;
+    --green:#4CAF80; --green-light:#123626;
+    --card:#211A12; --line:#382B1D;
+    --shadow:0 8px 24px rgba(0,0,0,0.45);
+    --scrim:rgba(22,17,11,0.9);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#16110B; --ink:#F6EEE2; --ink-soft:#BBA890;
+  --teal:#2FA7AE; --teal-dark:#8FE3E6; --teal-light:#0E2E30;
+  --coral:#E2572B; --coral-dark:#FF9E77; --coral-light:#3A1F12;
+  --gold:#FEA74A; --gold-dark:#FFD09B; --gold-light:#3B2711;
+  --plum:#4E86B8; --plum-dark:#9CC6E6; --plum-light:#182B3A;
+  --green:#4CAF80; --green-light:#123626;
+  --card:#211A12; --line:#382B1D;
+  --shadow:0 8px 24px rgba(0,0,0,0.45);
+  --scrim:rgba(22,17,11,0.9);
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{background:var(--bg); color:var(--ink); font-family:'Nunito Sans','Segoe UI',system-ui,sans-serif; min-height:100vh; overflow-x:hidden;}
+h1,h2,h3{font-family:'Nunito','Nunito Sans',system-ui,sans-serif;}
+.mono{font-family:'IBM Plex Mono',monospace;}
+
+.app{max-width:920px; margin:0 auto; padding:0 20px 40px;}
+.topbar{position:sticky; top:env(safe-area-inset-top, 0px); z-index:50; background:var(--scrim); backdrop-filter:blur(8px); border-bottom:1px solid var(--line); padding:14px 20px 10px;}
+.topbar-inner{max-width:920px; margin:0 auto;}
+.brandrow{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:10px;}
+.brand{display:flex; align-items:center; gap:8px;}
+.brand-mark{width:26px; height:26px; border-radius:8px; background:linear-gradient(135deg,var(--teal),var(--coral)); flex-shrink:0;}
+.brand-text{font-size:12px; letter-spacing:0.06em; text-transform:uppercase; color:var(--ink-soft); font-weight:600;}
+.reslinks{display:flex; gap:6px; justify-content:center; flex-wrap:wrap; margin-top:10px;}
+.reslinks a{padding:6px 12px; border-radius:999px; background:var(--card); border:1px solid var(--line); color:var(--ink-soft); font-size:11.5px; font-weight:700; text-decoration:none; white-space:nowrap;}
+.reslinks a:hover{border-color:var(--teal); color:var(--teal-dark);}
+@media(max-width:640px){.reslinks{display:none;}}
+.dots{display:flex; gap:6px; justify-content:center; flex-wrap:wrap;}
+.dot{width:22px; height:5px; border-radius:3px; background:var(--line); border:none; cursor:pointer; padding:0; transition:all .25s ease;}
+.dot.active{background:var(--teal); width:34px;}
+.dot.done{background:var(--gold);}
+
+.stage{padding-top:28px; min-height:62vh;}
+.step{display:none; animation:fadein .35s ease;}
+.step.active{display:block;}
+@keyframes fadein{from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:translateY(0);}}
+
+.kicker{display:inline-flex; align-items:center; gap:8px; font-size:12px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--teal-dark); background:var(--teal-light); padding:5px 12px; border-radius:20px; margin-bottom:14px;}
+h1.title{font-size:clamp(28px,5vw,42px); line-height:1.08; margin:0 0 12px; letter-spacing:-0.01em; text-wrap:balance;}
+p.lede{font-size:17px; color:var(--ink-soft); max-width:640px; line-height:1.55; margin:0 0 24px;}
+.objref{font-size:11px; color:var(--ink-soft); font-family:'IBM Plex Mono',monospace; background:var(--card); border:1px solid var(--line); padding:3px 9px; border-radius:999px; display:inline-block; margin-bottom:10px;}
+
+.grid{display:grid; gap:14px;}
+.grid-2{grid-template-columns:1fr 1fr;}
+.grid-3{grid-template-columns:repeat(3,1fr);}
+@media(max-width:640px){.grid-2,.grid-3{grid-template-columns:1fr;}}
+.card{background:var(--card); border:1px solid var(--line); border-radius:16px; padding:18px 20px; box-shadow:var(--shadow);}
+
+.btn{font-family:'Nunito Sans',sans-serif; font-weight:600; font-size:14px; border:none; border-radius:10px; padding:10px 18px; cursor:pointer; transition:transform .15s ease, box-shadow .15s ease;}
+.btn:hover{transform:translateY(-1px);}
+.btn-primary{background:var(--teal); color:#fff;}
+.btn-ghost{background:transparent; color:var(--ink-soft); border:1px solid var(--line);}
+.btn-ghost:hover{border-color:var(--teal);}
+.btn:disabled{opacity:0.35; cursor:not-allowed; transform:none;}
+.btn-sm{padding:7px 12px; font-size:12.5px; border-radius:8px;}
+[tabindex]:focus-visible, button:focus-visible, a:focus-visible{outline:3px solid var(--teal); outline-offset:2px; border-radius:8px;}
+
+/* flip cards */
+.flip{perspective:1200px; height:172px; cursor:pointer;}
+.flip-inner{position:relative; width:100%; height:100%; transition:transform .5s cubic-bezier(.2,.8,.2,1); transform-style:preserve-3d;}
+.flip.flipped .flip-inner{transform:rotateY(180deg);}
+.flip-face{position:absolute; inset:0; backface-visibility:hidden; border-radius:16px; padding:16px 18px; display:flex; flex-direction:column; justify-content:center; border:1px solid var(--line); box-shadow:var(--shadow); overflow:auto;}
+.flip-front{background:var(--card);}
+.flip-back{transform:rotateY(180deg); color:#fff;}
+.flip-front .flip-term{font-family:'Nunito',sans-serif; font-weight:700; font-size:17px; margin-bottom:4px; line-height:1.4;}
+.flip-front .flip-sub{font-size:12.5px; color:var(--ink-soft); line-height:1.45;}
+.flip-front .flip-hint{font-size:12px; color:var(--ink-soft); margin-top:8px;}
+.flip-back p{margin:0; font-size:13px; line-height:1.5;}
+
+/* the person swapper */
+.swapbar{display:inline-flex; background:var(--card); border:1px solid var(--line); border-radius:999px; padding:5px; gap:5px; box-shadow:var(--shadow); margin-bottom:16px;}
+.swapbar button{border:none; background:transparent; font-family:'Nunito',sans-serif; font-weight:800; font-size:15px; color:var(--ink-soft); padding:10px 22px; border-radius:999px; cursor:pointer; transition:background .2s ease, color .2s ease;}
+.swapbar button.on{background:var(--teal); color:#fff;}
+.swaptext{background:var(--card); border:1px solid var(--line); border-radius:16px; padding:24px 26px; box-shadow:var(--shadow); font-size:19px; line-height:2; max-width:62ch;}
+.swaptext .w{transition:background .25s ease, color .25s ease; border-radius:5px; padding:1px 2px;}
+.swaptext .w.hot{background:var(--gold); color:#2A1B0C; font-weight:700;}
+.swapcount{font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--teal-dark); background:var(--teal-light); padding:7px 14px; border-radius:999px; display:inline-block; margin-top:14px;}
+
+/* the emphasis game */
+.emphline{display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-bottom:18px;}
+.emphw{font-family:'Nunito',sans-serif; font-weight:700; font-size:clamp(20px,4.4vw,30px); padding:8px 13px; border-radius:12px; border:2px solid var(--line); background:var(--card); color:var(--ink); cursor:pointer; line-height:1.2; transition:all .2s ease;}
+.emphw:hover{border-color:var(--gold); transform:translateY(-2px);}
+.emphw.on{background:var(--gold); border-color:var(--gold-dark); color:#2A1B0C; font-style:italic; transform:translateY(-3px); box-shadow:0 7px 16px rgba(254,167,74,0.5);}
+.emphout{background:var(--surface-dark); color:#fff; border-radius:16px; padding:20px 24px; min-height:96px; box-shadow:var(--shadow);}
+.emphout .eo-lbl{font-family:'Nunito',sans-serif; font-weight:800; font-size:10.5px; letter-spacing:0.1em; text-transform:uppercase; color:var(--gold); margin-bottom:7px;}
+.emphout .eo-txt{font-size:17px; line-height:1.55; margin:0;}
+.emphout .eo-idle{color:rgba(255,255,255,0.6); font-style:italic; font-size:15px;}
+.emphtally{display:flex; gap:6px; flex-wrap:wrap; margin-top:14px; align-items:center;}
+.emphtally .pip{width:13px; height:13px; border-radius:50%; background:var(--line); transition:background .3s ease;}
+.emphtally .pip.lit{background:var(--gold);}
+.emphtally span{font-size:12.5px; color:var(--ink-soft); font-family:'IBM Plex Mono',monospace; margin-left:6px;}
+
+/* show don't tell */
+.sdt{background:var(--card); border:1px solid var(--line); border-radius:16px; padding:17px 20px; box-shadow:var(--shadow); margin-bottom:13px;}
+.sdt-word{font-family:'Nunito',sans-serif; font-weight:800; font-size:20px; color:var(--coral-dark); margin-bottom:4px;}
+.sdt-ask{font-size:13.5px; color:var(--ink-soft); margin-bottom:11px;}
+.sdt-opts{display:flex; flex-direction:column; gap:8px;}
+.sdt-opt{text-align:left; font-family:'Nunito Sans',sans-serif; font-size:15px; padding:12px 15px; border-radius:11px; border:1.5px solid var(--line); background:transparent; color:var(--ink); cursor:pointer; line-height:1.5;}
+.sdt-opt:hover{border-color:var(--teal);}
+.sdt.done .sdt-opt{cursor:default;}
+.sdt-opt.good{background:var(--green-light); border-color:var(--green); font-weight:600;}
+.sdt-opt.bad{background:var(--coral-light); border-color:var(--coral); color:var(--coral-dark);}
+.sdt-fb{margin-top:11px; font-size:14px; line-height:1.6; display:none; color:var(--ink-soft);}
+.sdt.done .sdt-fb{display:block;}
+
+/* the character machine */
+.mrow{margin-bottom:15px;}
+.mrow-head{display:flex; align-items:center; gap:9px; margin-bottom:8px;}
+.mrow-n{width:25px; height:25px; border-radius:50%; background:var(--surface-dark); color:#fff; display:flex; align-items:center; justify-content:center; font-family:'Nunito',sans-serif; font-weight:800; font-size:12.5px; flex-shrink:0;}
+.mrow-t{font-family:'Nunito',sans-serif; font-weight:700; font-size:14.5px;}
+.mopts{display:flex; flex-direction:column; gap:7px;}
+.mopt{text-align:left; font-family:'IBM Plex Mono',monospace; font-size:13.5px; padding:11px 14px; border-radius:10px; border:1.5px solid var(--line); background:var(--card); color:var(--ink); cursor:pointer; line-height:1.45;}
+.mopt:hover{border-color:var(--coral);}
+.mopt.sel{background:var(--coral-light); border-color:var(--coral); color:var(--coral-dark); font-weight:600;}
+.mout{background:linear-gradient(135deg,var(--plum-dark),var(--surface-dark)); color:#fff; border-radius:18px; padding:24px 26px; margin-top:18px; box-shadow:var(--shadow); min-height:110px;}
+.mout .mo-lbl{font-family:'Nunito',sans-serif; font-weight:800; font-size:10.5px; letter-spacing:0.1em; text-transform:uppercase; color:var(--gold); margin-bottom:9px;}
+.mout p{margin:0; font-size:18px; line-height:1.75;}
+.mout .mo-idle{color:rgba(255,255,255,0.55); font-style:italic; font-size:15px;}
+
+/* quiz */
+.quiz-card{background:var(--card); border:1px solid var(--line); border-radius:15px; padding:16px 19px; box-shadow:var(--shadow); margin-bottom:12px;}
+.quiz-q{font-family:'Nunito',sans-serif; font-weight:700; font-size:15px; margin-bottom:11px; line-height:1.5;}
+.quiz-opts{display:flex; gap:8px; flex-wrap:wrap;}
+.quiz-fb{margin-top:11px; font-size:13.5px; line-height:1.6; display:none;}
+.quiz-fb.correct{display:block; color:var(--green);}
+.quiz-fb.wrong{display:block; color:var(--coral-dark);}
+.scorebar{display:flex; align-items:center; gap:12px; background:var(--surface-dark); color:#fff; border-radius:14px; padding:13px 18px; margin-bottom:16px;}
+.scorebar .sc-n{font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:15px; color:var(--gold);}
+.scorebar .sc-t{font-size:13.5px; color:rgba(255,255,255,0.85);}
+
+.vocab-card{background:var(--card); border-left:4px solid var(--teal); border-radius:10px; padding:12px 16px; margin-bottom:10px; box-shadow:var(--shadow); font-size:14px; line-height:1.55;}
+.vocab-card b{font-family:'Nunito',sans-serif;}
+.hw-list{list-style:none; padding:0; margin:0;}
+.hw-list li{padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.15); font-size:14.5px; display:flex; gap:10px; align-items:center;}
+.hw-list li:last-child{border-bottom:none;}
+.hw-box{width:16px; height:16px; border-radius:4px; border:2px solid var(--gold); flex-shrink:0;}
+
+.navbar{position:sticky; bottom:0; background:var(--scrim); backdrop-filter:blur(8px); border-top:1px solid var(--line); padding:14px 20px calc(14px + env(safe-area-inset-bottom, 0px)); display:flex; justify-content:space-between; align-items:center; margin-top:26px; border-radius:16px 16px 0 0;}
+.step-count{font-size:12px; color:var(--ink-soft); font-family:'IBM Plex Mono',monospace;}
+.note-i{font-size:12.5px; color:var(--ink-soft); font-style:italic; margin-top:10px; line-height:1.55;}
+
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+}
+</style>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brandrow">
+      <div class="brand">
+        <div class="brand-mark"></div>
+        <div class="brand-text">Selong Bay School · Cambridge Primary English 6</div>
+      </div>
+      <div class="step-count mono"><span id="stepNow">1</span> / <span id="stepTotal">11</span></div>
+    </div>
+    <div class="dots" id="dots"></div>
+    <div class="reslinks" id="reslinks"></div>
+  </div>
+</div>
+
+<div class="app">
+<div class="stage">
+
+  <!-- 0 -->
+  <section class="step active" data-step="0">
+    <span class="objref">Ref: 6Rv.04 · 6Ri.14</span>
+    <span class="kicker">Lesson 3 · Unit 1</span>
+    <h1 class="title">Show Me Who They Are</h1>
+    <p class="lede">Last lesson you were the detective, reading someone else's clues. Today you swap sides. You become the writer, and you learn three tricks for making a reader see a person, without ever telling them what that person is like.</p>
+
+    <div class="grid grid-2">
+      <div class="card" style="background:var(--teal-light); border:none;">
+        <div style="font-family:'Nunito',sans-serif; font-weight:700; font-size:12px; text-transform:uppercase; letter-spacing:0.06em; color:var(--teal-dark); margin-bottom:8px;">Today's three tricks</div>
+        <ul style="margin:0; padding-left:18px; font-size:14.5px; color:var(--teal-dark); line-height:1.9;">
+          <li><b>Who is telling it?</b> I, or she</li>
+          <li><b>Which word is loud?</b> Italics and emphasis</li>
+          <li><b>Show, do not tell.</b> One detail beats ten adjectives</li>
+        </ul>
+      </div>
+      <div class="card" style="background:var(--surface-dark); color:#fff; border:none;">
+        <div class="kicker" style="background:rgba(255,255,255,0.12); color:var(--gold); margin-bottom:10px;">🔗 The question I left hanging</div>
+        <p style="margin:0 0 10px; font-size:14.5px; line-height:1.65;">In Lesson 2 you noticed something and we did not finish it. Part 1 of that prologue said <b>she</b> and <b>her</b>. The note said <b>I</b> and <b>you</b>.</p>
+        <p style="margin:0; font-size:14.5px; line-height:1.65; color:var(--gold);">Today you find out why that matters so much.</p>
+      </div>
+    </div>
+
+    <div class="card" style="background:var(--gold-light); border:none; margin-top:14px;">
+      <p style="margin:0; font-size:14.5px; color:var(--gold-dark); line-height:1.65;"><b>Cambridge objective 6Rv.04</b> asks you to <i>"comment on a writer's choice of language, demonstrating some awareness of the impact on the reader."</i> In plain words: notice what the writer did, and say what it does to the person reading.</p>
+    </div>
+  </section>
+
+  <!-- 1 -->
+  <section class="step" data-step="1">
+    <span class="kicker">Warm-up · 3 min</span>
+    <h1 class="title">Still Got It?</h1>
+    <p class="lede">Four things from last lesson. Say your answer out loud <em>before</em> you tap.</p>
+    <div class="grid grid-2" id="warmupFlips"></div>
+  </section>
+
+  <!-- 2 -->
+  <section class="step" data-step="2">
+    <span class="kicker">Teach · Trick one</span>
+    <h1 class="title">Who Is Telling It?</h1>
+    <p class="lede">Every story is told by somebody. That somebody is the <b>narrator</b>, and a writer gets to choose where they stand.</p>
+
+    <div class="grid grid-2">
+      <div class="card" style="background:var(--teal-light); border:1px solid var(--teal);">
+        <div style="font-family:'Nunito',sans-serif; font-weight:800; font-size:17px; color:var(--teal-dark); margin-bottom:6px;">First person</div>
+        <p style="margin:0 0 9px; font-size:14.5px; color:var(--teal-dark); line-height:1.6;">Uses <b>I</b>, <b>me</b>, <b>my</b>. You are inside the character's head, seeing only what they see.</p>
+        <p style="margin:0; font-size:13.5px; color:var(--teal-dark); line-height:1.55;"><i>"I pushed the gate open."</i></p>
+      </div>
+      <div class="card" style="background:var(--plum-light); border:1px solid var(--plum);">
+        <div style="font-family:'Nunito',sans-serif; font-weight:800; font-size:17px; color:var(--plum-dark); margin-bottom:6px;">Third person</div>
+        <p style="margin:0 0 9px; font-size:14.5px; color:var(--plum-dark); line-height:1.6;">Uses <b>she</b>, <b>he</b>, <b>they</b>. You are outside, watching. You can be told things the character does not know.</p>
+        <p style="margin:0; font-size:13.5px; color:var(--plum-dark); line-height:1.55;"><i>"She pushed the gate open."</i></p>
+      </div>
+    </div>
+
+    <div class="card" style="background:var(--gold-light); border:none; margin-top:14px;">
+      <p style="margin:0; font-size:14.5px; color:var(--gold-dark); line-height:1.65;"><b>Remember the all-knowing narrator?</b> That is third person doing its special trick. <i>"What she did not know was..."</i> only works from outside. In first person it is impossible, because if she does not know it, she cannot tell you.</p>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section class="step" data-step="3">
+    <span class="kicker">Play · The swapper</span>
+    <h1 class="title">Flip the Whole Story</h1>
+    <p class="lede">Same events. Same words, almost. Press the buttons and watch what changes, then tell me which one feels closer to you.</p>
+
+    <div class="swapbar" id="swapBar">
+      <button data-p="third" class="on">She</button>
+      <button data-p="first">I</button>
+    </div>
+
+    <div class="swaptext" id="swapText"></div>
+    <div class="swapcount" id="swapCount"></div>
+
+    <div class="card" style="background:var(--plum-light); border:none; margin-top:16px;">
+      <p style="margin:0; font-size:14.5px; color:var(--plum-dark); line-height:1.65;"><b>Only five words changed.</b> Nothing else moved at all. But one version feels like watching through a window, and the other feels like being the person carrying the box. That is how much work a pronoun does.</p>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section class="step" data-step="4">
+    <span class="kicker">Teach · Trick two</span>
+    <h1 class="title">The Loud Word</h1>
+    <p class="lede">When you speak, you make one word louder to change what you mean. Writers cannot be loud on paper, so they lean the word over instead. That is what <i>italics</i> are for.</p>
+
+    <div class="card">
+      <p style="margin:0 0 12px; font-size:15px; line-height:1.7;">Italics have two jobs in a story:</p>
+      <div class="grid grid-2">
+        <div style="background:var(--teal-light); border-radius:12px; padding:14px 16px;">
+          <div style="font-family:'Nunito',sans-serif; font-weight:800; font-size:14px; color:var(--teal-dark); margin-bottom:5px;">1. Say it louder</div>
+          <p style="margin:0; font-size:13.5px; color:var(--teal-dark); line-height:1.6;">Push on one word so the reader hears it the way you do.</p>
+        </div>
+        <div style="background:var(--gold-light); border-radius:12px; padding:14px 16px;">
+          <div style="font-family:'Nunito',sans-serif; font-weight:800; font-size:14px; color:var(--gold-dark); margin-bottom:5px;">2. Change the voice</div>
+          <p style="margin:0; font-size:13.5px; color:var(--gold-dark); line-height:1.6;">Show that a different person is speaking now, like the note in our prologue last lesson.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 -->
+  <section class="step" data-step="5">
+    <span class="kicker">Play · The loud word game</span>
+    <h1 class="title">Seven Words, Seven Meanings</h1>
+    <p class="lede">Here is one sentence. Tap a word to make it the loud one, and watch the meaning change completely. Say each version out loud. Try to find all seven.</p>
+
+    <div class="emphline" id="emphLine"></div>
+    <div class="emphout" id="emphOut"><p class="eo-idle">Tap any word above to make it loud.</p></div>
+    <div class="emphtally" id="emphTally"></div>
+
+    <p class="note-i">Nothing about the sentence changed. Not one letter. Only which word you leaned on.</p>
+  </section>
+
+  <!-- 6 -->
+  <section class="step" data-step="6">
+    <span class="kicker">Teach · Trick three</span>
+    <h1 class="title">Show, Do Not Tell</h1>
+    <p class="lede">This is the biggest one, and it is the reason your reader believes you.</p>
+
+    <div class="grid grid-2">
+      <div class="card" style="background:var(--coral-light); border:1px solid var(--coral);">
+        <div style="font-family:'Nunito',sans-serif; font-weight:800; font-size:14px; color:var(--coral-dark); margin-bottom:6px;">TELLING</div>
+        <p style="margin:0 0 8px; font-size:16px; color:var(--coral-dark); line-height:1.6;"><i>"She was angry."</i></p>
+        <p style="margin:0; font-size:13.5px; color:var(--coral-dark); line-height:1.6;">You have given the reader a label. They read it and move on. They feel nothing.</p>
+      </div>
+      <div class="card" style="background:var(--green-light); border:1px solid var(--green);">
+        <div style="font-family:'Nunito',sans-serif; font-weight:800; font-size:14px; color:var(--green); margin-bottom:6px;">SHOWING</div>
+        <p style="margin:0 0 8px; font-size:16px; color:var(--ink); line-height:1.6;"><i>"She put the cup down harder than she meant to."</i></p>
+        <p style="margin:0; font-size:13.5px; color:var(--ink); line-height:1.6;">Now the reader works it out, and because they worked it out, they believe it.</p>
+      </div>
+    </div>
+
+    <div class="card" style="background:var(--surface-dark); color:#fff; border:none; margin-top:14px;">
+      <p style="margin:0; font-size:14.5px; line-height:1.65;">Notice this is <b style="color:var(--gold);">inference again</b>, from the other side. Last lesson you found the clues. Today you are the one hiding them.</p>
+    </div>
+  </section>
+
+  <!-- 7 -->
+  <section class="step" data-step="7">
+    <span class="kicker">Play · Your own words</span>
+    <h1 class="title">Turn Your Words Into Pictures</h1>
+    <p class="lede">These four describing words are <em>yours</em>. You wrote them yourself. Each one is telling. For each, pick the version that <b>shows</b> it instead.</p>
+    <div id="sdtList"></div>
+  </section>
+
+  <!-- 8 -->
+  <section class="step" data-step="8">
+    <span class="kicker">Play · The character machine</span>
+    <h1 class="title">Build a Person</h1>
+    <p class="lede">Three choices. That is all it takes. Pick one from each row and watch a person appear who nobody has ever met before.</p>
+    <div id="machineRows"></div>
+    <div class="mout" id="machineOut"><p class="mo-idle">Pick one from each row and your character will appear here.</p></div>
+    <p class="note-i">Look at what you built: not one word in it says what your character is feeling. And yet you can see them.</p>
+  </section>
+
+  <!-- 9 -->
+  <section class="step" data-step="9">
+    <span class="kicker">Quiz · 4 min</span>
+    <h1 class="title">Check Yourself</h1>
+    <p class="lede">Six questions. Say why you chose your answer before you tap.</p>
+    <div class="scorebar"><span class="sc-n" id="scoreN">0 / 6</span><span class="sc-t" id="scoreT">Answer them in any order.</span></div>
+    <div id="quizList"></div>
+  </section>
+
+  <!-- 10 -->
+  <section class="step" data-step="10">
+    <span class="kicker">Recap</span>
+    <h1 class="title">Now You Are the Writer</h1>
+    <p class="lede">The words from today. Keep these in your learning journal.</p>
+    <div id="vocabList"></div>
+
+    <div class="card" style="background:var(--surface-dark); color:#fff; border:none; margin-top:20px;">
+      <div class="kicker" style="background:rgba(255,255,255,0.12); color:var(--gold); margin-bottom:10px;">🏠 Homework: Worksheet 3</div>
+      <ul class="hw-list">
+        <li><div class="hw-box"></div>Swap a passage from third person into first</li>
+        <li><div class="hw-box"></div>Choose the loud word, and say what it changes</li>
+        <li><div class="hw-box"></div>Turn four telling sentences into showing ones</li>
+        <li><div class="hw-box"></div>Build your own character with three details</li>
+      </ul>
+      <p style="margin:14px 0 0; font-size:13px; color:rgba(255,255,255,0.75);">Print it out and write straight onto it, like last time.</p>
+    </div>
+
+    <p class="lede" style="margin-top:20px;">🎉 Next lesson: <b>Punctuate with purpose</b>. Hyphens that glue words together into one idea, and dashes that make a reader stop <i>right</i> before the good bit.</p>
+  </section>
+
+</div>
+
+<div class="navbar">
+  <button class="btn btn-ghost" id="prevBtn">← Back</button>
+  <button class="btn btn-primary" id="nextBtn">Next →</button>
+</div>
+</div>
+
+<script>
+const LINKS = [
+  {label:'↩ Lesson 2', url:'https://claude.ai/artifact/9oXp9kWQG2XZf9mvqorqhS'},
+  {label:'🗣️ Teaching script', url:'https://claude.ai/artifact/5EV5FtaZs7ob2cjaWfC3CG'}
+];
+
+const warmupData = [
+  {term:'Inference', sub:'What are its two ingredients?', back:"A clue from the text, plus what you already know. It has to start with something really written down.", colour:'#005F65'},
+  {term:'Evidence', sub:'What goes in every single answer?', back:"A quotation. The exact words from the text, inside quotation marks. Without one it is only an opinion.", colour:'#A65F06'},
+  {term:'Mood', sub:'Whose feeling is it?', back:"Yours, the reader's. The writer builds it on purpose, one word choice at a time.", colour:'#A6330F'},
+  {term:'A new word: NARRATOR', sub:'Have a guess. Who is it?', back:"The voice telling the story. Not the writer, and not always a character either. Today you get to choose where your narrator stands.", colour:'#1E4664'}
+];
+
+/* The swapper. Same sentence, two narrators. */
+const swapData = {
+  third: ["She"," pushed the gate open with ","her"," shoulder, because ","her"," hands were full. The forest was silent. ","She"," did not look back at the house, and ","she"," did not say goodbye to anyone."],
+  first: ["I"," pushed the gate open with ","my"," shoulder, because ","my"," hands were full. The forest was silent. ","I"," did not look back at the house, and ","I"," did not say goodbye to anyone."]
+};
+const swapHot = [0,2,4,6,8];
+
+const emphData = [
+  {w:'I',     lbl:'Loud word: I',     txt:"Somebody said it, but it was not me. I am telling you that you have got the wrong person."},
+  {w:'never', lbl:'Loud word: never', txt:"Not once. Not ever. I am not just denying it, I am denying it completely."},
+  {w:'said',  lbl:'Loud word: said',  txt:"I did not SAY it out loud. Maybe I thought it. Maybe I wrote it down. But I never said it."},
+  {w:'she',   lbl:'Loud word: she',   txt:"Somebody took them, and I did say so. But it was not her. You have blamed the wrong person."},
+  {w:'took',  lbl:'Loud word: took',  txt:"She did something with them, but taking is the wrong word. Maybe she borrowed them, or just moved them."},
+  {w:'my',    lbl:'Loud word: my',    txt:"She took a pair of shoes. They simply were not mine."},
+  {w:'shoes', lbl:'Loud word: shoes', txt:"She took something of mine, and I said so. It was not the shoes though."}
+];
+
+/* Show, do not tell. Built on her own describing words. */
+const sdtData = [
+  {word:'angry', ask:'Which one SHOWS us that he is angry?',
+   opts:["He was very angry indeed.","He put the plate in the sink without looking at anyone.","He felt anger inside him."],
+   correct:1,
+   fb:"The first and last just label the feeling. The middle one gives you one small action and lets you work the rest out. Notice the word angry never appears."},
+  {word:'silent', ask:'Which one SHOWS us how silent the forest was?',
+   opts:["The forest was silent and quiet.","It was a very silent place.","I could hear my own breathing, and nothing else."],
+   correct:2,
+   fb:"You cannot hear silence, so a writer has to show it sideways: by naming the one tiny sound that is left. That is what makes it feel silent."},
+  {word:'happy', ask:'Which one SHOWS us she is happy?',
+   opts:["She took the stairs two at a time.","She was really happy that day.","Happiness filled her up."],
+   correct:0,
+   fb:"Happy people move differently. One action does the whole job, and the reader gets to notice it themselves."},
+  {word:'crazy', ask:'Which one SHOWS us he is a bit wild?',
+   opts:["He was completely crazy.","He acted in a crazy way.","He spun round three times, then bowed to a tree."],
+   correct:2,
+   fb:"Careful with a word like crazy: on its own it tells the reader nothing at all. One strange, specific action tells them everything."}
+];
+
+const machineData = {
+  carry: {n:1, title:'What are they carrying?', opts:[
+    "a torch with no batteries in it",
+    "a bag that is far too heavy for them",
+    "nothing at all, not even a coat"
+  ]},
+  hands: {n:2, title:'What are their hands doing?', opts:[
+    "turning a ring round and round",
+    "pushed deep into their pockets",
+    "picking at the strap, over and over"
+  ]},
+  never: {n:3, title:'What do they never do?', opts:[
+    "look back at the house",
+    "say your name out loud",
+    "sit down, not even once"
+  ]}
+};
+
+const quizData = [
+  {q:'Which words tell you a story is in the first person?', opts:['I, me, my','she, he, they','it, that, those'], correct:0,
+   fb:'First person uses I, me and my. You are inside that character’s head.'},
+  {q:'Which narrator can tell you something the character does not know?', opts:['First person','Third person','Neither of them'], correct:1,
+   fb:'Only third person. In first person, if she does not know it, she cannot tell you about it.'},
+  {q:'Why do writers put a word in italics?', opts:['To make it look pretty','To make it the loud word, or to show a different voice','Because it is a long word'], correct:1,
+   fb:'Two jobs: leaning on one word so the reader hears it, or showing that somebody else is speaking now.'},
+  {q:'Which of these is SHOWING rather than telling?', opts:['She was nervous.','Nervousness came over her.','She checked the door was locked three times.'], correct:2,
+   fb:'The third one gives you an action and lets you name the feeling yourself. That is showing.'},
+  {q:'Why is showing stronger than telling?', opts:['It uses longer words','The reader works it out, so they believe it','It takes up more of the page'], correct:1,
+   fb:'A reader trusts what they worked out for themselves far more than a label you handed them.'},
+  {q:'"I never said she took my shoes." If the loud word is TOOK, what does it mean?', opts:['Somebody else said it','She did something with them, but taking is the wrong word','The shoes were not mine'], correct:1,
+   fb:'Leaning on took argues with that one word. Maybe she borrowed them, or moved them, but she did not take them.'}
+];
+
+const vocabData = [
+  {t:'Narrator', d:'The voice telling the story. The writer chooses where that voice stands.'},
+  {t:'First person', d:'Told using I, me and my. You are inside one character, and you only know what they know.'},
+  {t:'Third person', d:'Told using she, he and they. You watch from outside, and you can be told things the characters do not know.'},
+  {t:'Italics', d:'Sloping letters. They make a word the loud one, or show that a different voice is speaking.'},
+  {t:'Emphasis', d:'Leaning on one word to change what a sentence means, without changing any of the words.'},
+  {t:'Show, do not tell', d:'Give the reader an action or a detail instead of a label, and let them work the feeling out.'}
+];
+
+/* ---------- cross-links ---------- */
+const rl = document.getElementById('reslinks');
+LINKS.forEach(l=>{
+  const a=document.createElement('a');
+  a.href=l.url; a.target='_blank'; a.rel='noopener'; a.textContent=l.label;
+  rl.appendChild(a);
+});
+
+/* ---------- flip cards ---------- */
+const wrapF = document.getElementById('warmupFlips');
+warmupData.forEach(item=>{
+  const el=document.createElement('div');
+  el.className='flip'; el.tabIndex=0; el.setAttribute('role','button');
+  el.setAttribute('aria-label','Reveal: '+item.term);
+  el.innerHTML='<div class="flip-inner">'
+    +'<div class="flip-face flip-front"><div class="flip-term">'+item.term+'</div><div class="flip-sub">'+item.sub+'</div><div class="flip-hint">Tap to check →</div></div>'
+    +'<div class="flip-face flip-back" style="background:'+item.colour+';"><p>'+item.back+'</p></div></div>';
+  const go=()=>el.classList.toggle('flipped');
+  el.onclick=go;
+  el.onkeydown=e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); go(); } };
+  wrapF.appendChild(el);
+});
+
+/* ---------- the swapper ---------- */
+const swapText=document.getElementById('swapText');
+const swapCount=document.getElementById('swapCount');
+let swapMode='third';
+function renderSwap(){
+  const parts=swapData[swapMode];
+  swapText.innerHTML=parts.map((t,i)=>
+    '<span class="w'+(swapHot.includes(i)?' hot':'')+'">'+t+'</span>').join('');
+  swapCount.textContent=swapMode==='third'
+    ? 'Third person. The 5 gold words are the ones that will change.'
+    : 'First person. Those same 5 words are all that moved.';
+}
+document.querySelectorAll('#swapBar button').forEach(b=>{
+  b.onclick=()=>{
+    document.querySelectorAll('#swapBar button').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on');
+    swapMode=b.dataset.p;
+    renderSwap();
+  };
+});
+renderSwap();
+
+/* ---------- the loud word game ---------- */
+const emphLine=document.getElementById('emphLine');
+const emphOut=document.getElementById('emphOut');
+const emphTally=document.getElementById('emphTally');
+const found=new Set();
+emphData.forEach((item,i)=>{
+  const b=document.createElement('button');
+  b.className='emphw';
+  b.textContent=item.w + (i===emphData.length-1 ? '.' : '');
+  b.onclick=()=>{
+    document.querySelectorAll('.emphw').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on');
+    emphOut.innerHTML='<div class="eo-lbl">'+item.lbl+'</div><p class="eo-txt">'+item.txt+'</p>';
+    found.add(i);
+    renderTally();
+  };
+  emphLine.appendChild(b);
+});
+function renderTally(){
+  emphTally.innerHTML=emphData.map((_,i)=>'<span class="pip'+(found.has(i)?' lit':'')+'"></span>').join('')
+    + '<span>'+found.size+' of 7 found</span>'
+    + (found.size===7 ? '<span style="color:var(--green); font-weight:700;">All seven. Brilliant.</span>' : '');
+}
+renderTally();
+
+/* ---------- show, do not tell ---------- */
+const sdtWrap=document.getElementById('sdtList');
+sdtData.forEach(item=>{
+  const el=document.createElement('div');
+  el.className='sdt';
+  el.innerHTML='<div class="sdt-word">'+item.word+'</div><div class="sdt-ask">'+item.ask+'</div>'
+    +'<div class="sdt-opts">'+item.opts.map((o,i)=>'<button class="sdt-opt" data-i="'+i+'">'+o+'</button>').join('')+'</div>'
+    +'<div class="sdt-fb">'+item.fb+'</div>';
+  el.querySelectorAll('.sdt-opt').forEach(btn=>{
+    btn.onclick=()=>{
+      if(el.classList.contains('done')) return;
+      el.classList.add('done');
+      el.querySelectorAll('.sdt-opt').forEach((b,i)=>{
+        if(i===item.correct) b.classList.add('good');
+        else if(b===btn) b.classList.add('bad');
+      });
+    };
+  });
+  sdtWrap.appendChild(el);
+});
+
+/* ---------- the character machine ---------- */
+const mWrap=document.getElementById('machineRows');
+const mOut=document.getElementById('machineOut');
+const mState={carry:null, hands:null, never:null};
+Object.keys(machineData).forEach(key=>{
+  const d=machineData[key];
+  const row=document.createElement('div');
+  row.className='mrow';
+  row.innerHTML='<div class="mrow-head"><div class="mrow-n">'+d.n+'</div><div class="mrow-t">'+d.title+'</div></div>'
+    +'<div class="mopts">'+d.opts.map((o,i)=>'<button class="mopt" data-i="'+i+'">'+o+'</button>').join('')+'</div>';
+  row.querySelectorAll('.mopt').forEach(btn=>{
+    btn.onclick=()=>{
+      row.querySelectorAll('.mopt').forEach(b=>b.classList.remove('sel'));
+      btn.classList.add('sel');
+      mState[key]=Number(btn.dataset.i);
+      renderMachine();
+    };
+  });
+  mWrap.appendChild(row);
+});
+function renderMachine(){
+  if(mState.carry===null || mState.hands===null || mState.never===null){
+    const picked=Object.values(mState).filter(v=>v!==null).length;
+    mOut.innerHTML='<p class="mo-idle">'+(picked===0
+      ? 'Pick one from each row and your character will appear here.'
+      : picked+' of 3 chosen. Keep going.')+'</p>';
+    return;
+  }
+  const c=machineData.carry.opts[mState.carry];
+  const h=machineData.hands.opts[mState.hands];
+  const n=machineData.never.opts[mState.never];
+  mOut.innerHTML='<div class="mo-lbl">Your character</div>'
+    +'<p>She came down the path carrying '+c+'. Her hands were '+h+'. In all the years I knew her, she would never '+n+'.</p>';
+}
+
+/* ---------- quiz ---------- */
+const quizWrap=document.getElementById('quizList');
+const scoreN=document.getElementById('scoreN'), scoreT=document.getElementById('scoreT');
+let score=0;
+quizData.forEach(item=>{
+  const el=document.createElement('div');
+  el.className='quiz-card';
+  el.innerHTML='<div class="quiz-q">'+item.q+'</div><div class="quiz-opts">'
+    +item.opts.map((o,i)=>'<button class="btn btn-sm btn-ghost" data-i="'+i+'">'+o+'</button>').join('')
+    +'</div><div class="quiz-fb"></div>';
+  const fb=el.querySelector('.quiz-fb');
+  let locked=false;
+  el.querySelectorAll('.quiz-opts button').forEach(btn=>{
+    btn.onclick=()=>{
+      if(locked) return;
+      const ok=Number(btn.dataset.i)===item.correct;
+      fb.textContent=(ok?'✓ ':'✗ Not quite: ')+item.fb;
+      fb.className='quiz-fb '+(ok?'correct':'wrong');
+      if(ok){
+        locked=true;
+        btn.style.background='var(--teal)'; btn.style.color='#fff'; btn.style.borderColor='var(--teal)';
+        score++;
+        scoreN.textContent=score+' / '+quizData.length;
+        scoreT.textContent = score===quizData.length ? 'All six. You are a writer now.' : 'Keep going.';
+      }
+    };
+  });
+  quizWrap.appendChild(el);
+});
+
+/* ---------- vocab ---------- */
+const vWrap=document.getElementById('vocabList');
+vocabData.forEach(item=>{
+  const el=document.createElement('div');
+  el.className='vocab-card';
+  el.innerHTML='<b>'+item.t+':</b> '+item.d;
+  vWrap.appendChild(el);
+});
+
+/* ---------- navigation ---------- */
+const steps=document.querySelectorAll('.step');
+const dotsWrap=document.getElementById('dots');
+let current=0;
+steps.forEach((s,i)=>{
+  const d=document.createElement('button');
+  d.className='dot'+(i===0?' active':'');
+  d.setAttribute('aria-label','Go to step '+(i+1));
+  d.onclick=()=>goTo(i);
+  dotsWrap.appendChild(d);
+});
+document.getElementById('stepTotal').textContent=steps.length;
+function goTo(i){
+  if(i<0||i>=steps.length) return;
+  steps[current].classList.remove('active');
+  dotsWrap.children[current].classList.remove('active');
+  if(i>current) dotsWrap.children[current].classList.add('done');
+  current=i;
+  steps[current].classList.add('active');
+  Array.from(dotsWrap.children).forEach((d,idx)=>{ d.classList.toggle('active', idx===current); });
+  document.getElementById('stepNow').textContent=current+1;
+  document.getElementById('prevBtn').disabled=current===0;
+  document.getElementById('nextBtn').textContent=current===steps.length-1?'Finish 🎉':'Next →';
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+document.getElementById('prevBtn').onclick=()=>goTo(current-1);
+document.getElementById('nextBtn').onclick=()=>{ if(current<steps.length-1) goTo(current+1); };
+document.addEventListener('keydown',e=>{
+  if(e.target && (e.target.tagName==='BUTTON'||e.target.tagName==='INPUT')) return;
+  if(e.key==='ArrowRight') goTo(current+1);
+  if(e.key==='ArrowLeft') goTo(current-1);
+});
+goTo(0);
+</script>

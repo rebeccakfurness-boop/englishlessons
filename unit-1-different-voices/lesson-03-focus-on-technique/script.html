@@ -1,0 +1,328 @@
+<title>Lesson 3 Teaching Script</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&family=Nunito+Sans:wght@400;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap');
+
+:root{
+  --bg:#FDF7EE; --ink:#46280A; --ink-soft:#7A6450;
+  --teal:#007C83; --teal-dark:#005F65; --teal-light:#D7EDEC;
+  --coral:#D1481F; --coral-dark:#A6330F; --coral-light:#FBE3D8;
+  --gold:#FEA74A; --gold-dark:#A65F06; --gold-light:#FFF0DC;
+  --plum:#2C5F8A; --plum-dark:#1E4664; --plum-light:#E0EBF4;
+  --card:#FFFFFF; --line:#EADFCD;
+  --shadow:0 8px 24px rgba(70,40,10,0.09);
+  --surface-dark:#2A1B0C;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#16110B; --ink:#F6EEE2; --ink-soft:#BBA890;
+    --teal:#2FA7AE; --teal-dark:#8FE3E6; --teal-light:#0E2E30;
+    --coral:#E2572B; --coral-dark:#FF9E77; --coral-light:#3A1F12;
+    --gold:#FEA74A; --gold-dark:#FFD09B; --gold-light:#3B2711;
+    --plum:#4E86B8; --plum-dark:#9CC6E6; --plum-light:#182B3A;
+    --card:#211A12; --line:#382B1D;
+    --shadow:0 8px 24px rgba(0,0,0,0.45);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#16110B; --ink:#F6EEE2; --ink-soft:#BBA890;
+  --teal:#2FA7AE; --teal-dark:#8FE3E6; --teal-light:#0E2E30;
+  --coral:#E2572B; --coral-dark:#FF9E77; --coral-light:#3A1F12;
+  --gold:#FEA74A; --gold-dark:#FFD09B; --gold-light:#3B2711;
+  --plum:#4E86B8; --plum-dark:#9CC6E6; --plum-light:#182B3A;
+  --card:#211A12; --line:#382B1D;
+  --shadow:0 8px 24px rgba(0,0,0,0.45);
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{background:var(--bg); color:var(--ink); font-family:'Nunito Sans','Segoe UI',system-ui,sans-serif;}
+h1,h2,h3{font-family:'Nunito','Nunito Sans',system-ui,sans-serif;}
+.mono{font-family:'IBM Plex Mono',monospace;}
+.app{max-width:800px; margin:0 auto; padding:0 20px 50px;}
+
+.topbar{background:linear-gradient(135deg,#2A1B0C,#4A3016); color:#fff; padding:26px 20px 22px;}
+.topbar-inner{max-width:800px; margin:0 auto;}
+.tabs{display:flex; gap:8px; flex-wrap:wrap; margin-top:16px;}
+.tabs a{padding:7px 14px; border-radius:999px; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.25); color:#fff; font-size:12.5px; font-weight:700; text-decoration:none;}
+.tabs a.active{background:var(--gold); border-color:var(--gold); color:#46280A;}
+.tabs a:hover{background:rgba(255,255,255,0.22);}
+.kicker{display:inline-flex; align-items:center; gap:8px; font-size:12px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--gold); margin:0 0 8px;}
+h1.title{font-size:clamp(26px,4vw,36px); margin:0 0 6px; letter-spacing:-0.01em; text-wrap:balance; color:#fff;}
+.sub{color:rgba(255,255,255,0.82); font-size:14px; margin:0; max-width:620px; line-height:1.55;}
+
+.section{margin:26px 0;}
+.section h2{font-size:20px; margin:0 0 10px;}
+.section p{font-size:14.5px; margin:0 0 12px; line-height:1.65;}
+
+.timing{display:inline-block; background:var(--teal-light); color:var(--teal-dark); font-weight:700; font-size:12px; padding:3px 11px; border-radius:999px; margin-right:8px; font-family:'IBM Plex Mono',monospace;}
+.runtot{font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-soft);}
+
+.callout{border-left:4px solid var(--gold); background:var(--gold-light); border-radius:0 12px 12px 0; padding:14px 18px; margin:14px 0; font-size:13.5px; color:var(--gold-dark); line-height:1.6;}
+.callout strong:first-child{display:block; text-transform:uppercase; font-size:10.5px; letter-spacing:0.06em; margin-bottom:4px; font-family:'Nunito',sans-serif;}
+.callout.tip{border-color:var(--teal); background:var(--teal-light); color:var(--teal-dark);}
+.callout.watch{border-color:var(--coral); background:var(--coral-light); color:var(--coral-dark);}
+
+.say-block{background:var(--plum-light); border:1px dashed var(--plum); border-radius:12px; padding:14px 18px; margin:12px 0; font-size:14.5px; color:var(--ink); line-height:1.65;}
+.say-block .who{font-weight:700; color:var(--plum-dark); font-size:11px; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:6px; font-family:'Nunito',sans-serif;}
+.say-block p{margin:0 0 10px;}
+.say-block p:last-child{margin-bottom:0;}
+
+.stage-card{background:var(--card); border:1px solid var(--line); border-radius:16px; padding:22px 24px; margin-bottom:18px; box-shadow:var(--shadow);}
+.stage-head{display:flex; align-items:center; gap:10px; margin-bottom:8px; flex-wrap:wrap;}
+.stage-num{width:28px; height:28px; border-radius:50%; background:var(--surface-dark); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:13px; flex-shrink:0;}
+.stage-head h2{margin:0; font-size:18px;}
+.stage-card > p:first-of-type{color:var(--ink-soft);}
+
+.tablewrap{overflow-x:auto;}
+table.simple{width:100%; border-collapse:collapse; margin:14px 0; font-size:13.5px;}
+table.simple th, table.simple td{border:1px solid var(--line); padding:9px 11px; text-align:left; vertical-align:top; line-height:1.55;}
+table.simple th{background:var(--teal-light); color:var(--teal-dark); font-size:11.5px; text-transform:uppercase; letter-spacing:0.04em;}
+
+.toc{background:var(--card); border:1px solid var(--line); border-radius:16px; padding:18px 22px; box-shadow:var(--shadow); margin:20px 0;}
+.toc h3{margin:0 0 10px; font-size:13px; text-transform:uppercase; letter-spacing:0.05em; color:var(--ink-soft);}
+.toc ol{margin:0; padding-left:20px; columns:2; column-gap:24px;}
+.toc li{font-size:13px; margin-bottom:6px; break-inside:avoid;}
+.toc a{color:var(--teal-dark); text-decoration:none; font-weight:600;}
+.toc a:hover{text-decoration:underline;}
+@media(max-width:560px){.toc ol{columns:1;}}
+
+.objbox{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:16px 20px; margin:16px 0; box-shadow:var(--shadow); font-size:14px; line-height:1.65;}
+.objbox b{font-family:'Nunito',sans-serif;}
+.objbox ul{margin:10px 0 0; padding-left:18px;}
+.objbox li{margin-bottom:7px;}
+
+.answer{background:var(--teal-light); border-radius:10px; padding:11px 15px; margin:10px 0; font-size:13.5px; color:var(--teal-dark); line-height:1.6;}
+.answer b{font-family:'Nunito',sans-serif;}
+
+footer{text-align:center; color:var(--ink-soft); font-size:12px; margin-top:40px; line-height:1.7;}
+
+[tabindex]:focus-visible, button:focus-visible, a:focus-visible{outline:2px solid var(--teal); outline-offset:2px; border-radius:8px;}
+@media (prefers-reduced-motion: reduce){ *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;} }
+@media print{
+  .no-print{display:none !important;}
+  body{background:#fff; --card:#fff; --bg:#fff;}
+  .stage-card{box-shadow:none; border:1px solid #ccc; break-inside:avoid;}
+}
+</style>
+
+<div class="topbar no-print">
+  <div class="topbar-inner">
+    <div class="kicker">🗣️ Teaching Script · tutor only</div>
+    <h1 class="title">Show Me Who They Are</h1>
+    <p class="sub">Lesson 3 · Cambridge Primary English Stage 6, Unit 1: Different voices – different times · Session 1.3 <i>Focus on technique</i> · 40 minutes, one-to-one online</p>
+    <div class="tabs" id="tabs">
+      <a href="#" class="active">🗣️ Script</a>
+    </div>
+  </div>
+</div>
+
+<div class="app">
+
+  <div class="section">
+    <h2>Before you start</h2>
+    <p>Lesson 2 made her a reader who hunts for clues. This lesson turns her round: she becomes the writer who <em>plants</em> them. Say that out loud at the start, because it is the thread holding the three techniques together, and without it this looks like three unrelated tricks.</p>
+
+    <div class="objbox">
+      <b>Where this sits.</b> Cambridge Primary English Stage 6 (0058), Unit 1, Session 1.3 <i>Focus on technique</i>. The coursebook goal is: <i>"explore writers' techniques and how to build a picture of a character."</i> Session 1.3 also carries hyphens and dashes as its language focus; that is a whole topic of its own and it is Lesson 4, not today.
+      <ul>
+        <li><b>6Rv.04</b>: <i>"Comment on a writer's choice of language, demonstrating some awareness of the impact on the reader."</i> This is the spine of the whole lesson.</li>
+        <li><b>6Ri.14</b>: <i>"Support answers to questions with reference to, or quotations from, one or more points in a text."</i> Carried over from Lesson 2: keep asking for the words.</li>
+      </ul>
+      <b>An honest note on codes:</b> Cambridge has specific objectives for narrative voice and for composing character description, but I could not reach the framework document to quote them exactly, so I have not cited codes I cannot verify. The two above are quoted verbatim. Check them against your own copy before any formal record.
+    </div>
+
+    <div class="callout tip"><strong>Teaching this to a young learner working in her second language</strong>The whole lesson is built out of doing rather than explaining, because that is what holds a ten-year-old. Three of the eleven screens are games. Your job on those is mostly to <b>shut up and let her play</b>, then ask one question at the end of each.
+      <br><br>
+      Pre-teach three words before you start: <b>narrator</b>, <b>emphasis</b>, <b>italics</b>. Everything else she can meet in context. Let her answer in short phrases; you are not assessing her spoken English today.
+      <br><br>
+      <b>The showing sentences in stage 7 use her own four describing words</b> from her worksheet: angry, silent, happy, crazy. Point that out. It matters more than you would think that the material is hers.
+    </div>
+
+    <div class="callout watch"><strong>The one habit to keep</strong>Same as last lesson: <b>"Which words made you think that?"</b> Today it works in both directions. When she reads, it finds the evidence. When she writes, it makes her notice her own choices. Use it after every single game.</div>
+  </div>
+
+  <div class="toc">
+    <h3>Running order · 40 minutes</h3>
+    <ol>
+      <li><a href="#s1">Welcome: you are the writer now · 2 min</a></li>
+      <li><a href="#s2">Warm-up: still got it? · 3 min</a></li>
+      <li><a href="#s3">Teach: who is telling it? · 3 min</a></li>
+      <li><a href="#s4">Play: the swapper · 5 min</a></li>
+      <li><a href="#s5">Teach: the loud word · 2 min</a></li>
+      <li><a href="#s6">Play: seven words, seven meanings · 6 min</a></li>
+      <li><a href="#s7">Teach: show, do not tell · 3 min</a></li>
+      <li><a href="#s8">Play: her own words · 5 min</a></li>
+      <li><a href="#s9">Play: the character machine · 6 min</a></li>
+      <li><a href="#s10">Quiz · 4 min</a></li>
+      <li><a href="#s11">Recap and homework · 1 min</a></li>
+    </ol>
+  </div>
+
+  <div class="stage-card" id="s1">
+    <div class="stage-head"><div class="stage-num">1</div><h2>Welcome: you are the writer now</h2><span class="timing">2 min</span><span class="runtot">0:00 → 0:02</span></div>
+    <p>Screen 1. Read the three tricks in the teal box together, then go to the dark box on the right.</p>
+    <div class="say-block">
+      <div class="who">Say</div>
+      <p>"Last lesson you were the detective. You found the clues somebody else had hidden. Today we swap over. Today <em>you</em> are the one hiding them."</p>
+      <p>"And remember that thing you spotted last time, where part one said <b>she</b> and the note said <b>I</b>? I never told you why. That is where we are starting."</p>
+    </div>
+    <div class="callout tip"><strong>This callback is worth doing properly</strong>You deliberately left that question unanswered at the end of Lesson 2. Paying it off now tells her the lessons are one continuous thing, not a series of separate worksheets.</div>
+  </div>
+
+  <div class="stage-card" id="s2">
+    <div class="stage-head"><div class="stage-num">2</div><h2>Warm-up: still got it?</h2><span class="timing">3 min</span><span class="runtot">0:02 → 0:05</span></div>
+    <p>Four flip cards. She answers out loud, then you tap.</p>
+    <div class="tablewrap"><table class="simple">
+      <tr><th>Card</th><th>What you want</th></tr>
+      <tr><td><b>Inference</b></td><td>Clue plus what you already know. If she says only "a guess", push back: what has to come first?</td></tr>
+      <tr><td><b>Evidence</b></td><td>A quotation. She should be quick on this one by now.</td></tr>
+      <tr><td><b>Mood</b></td><td>The reader's feeling, not the character's. The most commonly muddled of the three.</td></tr>
+      <tr><td><b>Narrator</b></td><td>New word, so let her guess. Anything near "the person telling it" is a win. Do not correct "the writer" harshly, just say "close, and today you will see why they are not always the same".</td></tr>
+    </table></div>
+  </div>
+
+  <div class="stage-card" id="s3">
+    <div class="stage-head"><div class="stage-num">3</div><h2>Teach: who is telling it?</h2><span class="timing">3 min</span><span class="runtot">0:05 → 0:08</span></div>
+    <p>Screen 3. Two cards, first person and third person. Keep this short: the game on the next screen does the real teaching.</p>
+    <div class="say-block">
+      <div class="who">Say</div>
+      <p>"Every story is told by somebody, and a writer gets to choose where that somebody stands. Inside the character's head, or outside watching them."</p>
+    </div>
+    <div class="answer"><b>Then connect it straight back:</b> the gold box reminds her that an all-knowing narrator is third person doing its special trick. Ask: <i>"Could you write 'What she did not know was...' if the story was told by I?"</i> Let her think. The answer is no, and working that out herself is the moment the concept lands.</div>
+  </div>
+
+  <div class="stage-card" id="s4">
+    <div class="stage-head"><div class="stage-num">4</div><h2>Play: the swapper</h2><span class="timing">5 min</span><span class="runtot">0:08 → 0:13</span></div>
+    <p>Screen 4. Two buttons, <b>She</b> and <b>I</b>, and one passage that rewrites itself. The five words that change are highlighted in gold in both versions.</p>
+    <div class="say-block"><div class="who">Do this</div><p>Let her press the buttons herself, several times. Do not narrate over it. Then ask the three questions below, in order.</p></div>
+    <div class="tablewrap"><table class="simple">
+      <tr><th>Ask</th><th>What you are listening for</th></tr>
+      <tr><td>"How many words actually changed?"</td><td>Five. They are all pronouns. Nothing else in the passage moved at all.</td></tr>
+      <tr><td>"Which one feels closer to you?"</td><td>Almost everyone says <b>I</b>. Ask why. Target: because you are the one carrying the box, not watching somebody carry it.</td></tr>
+      <tr><td>"So when would a writer choose <b>she</b>?"</td><td>The hard question. When you need to tell the reader something the character does not know, or show more than one person.</td></tr>
+    </table></div>
+    <div class="callout"><strong>Notice the passage</strong>It uses "the forest was silent", which is hers, from her own worksheet. If she spots it, brilliant. If not, tell her at the end of the stage.</div>
+  </div>
+
+  <div class="stage-card" id="s5">
+    <div class="stage-head"><div class="stage-num">5</div><h2>Teach: the loud word</h2><span class="timing">2 min</span><span class="runtot">0:13 → 0:15</span></div>
+    <p>Screen 5. Ninety seconds of talking, no more. The game is next and it explains itself.</p>
+    <div class="say-block">
+      <div class="who">Say, and demonstrate with your voice</div>
+      <p>"When you talk, you make one word louder to change what you mean. Listen: <em>I</em> never said that. I <em>never</em> said that."</p>
+      <p>"On paper you cannot be loud. So writers lean the word over instead. That is what italics are for."</p>
+    </div>
+    <div class="callout tip"><strong>Say those two sentences aloud with real emphasis</strong>She needs to hear the difference before she sees it. This is the one stage where your voice does more than the screen.</div>
+  </div>
+
+  <div class="stage-card" id="s6">
+    <div class="stage-head"><div class="stage-num">6</div><h2>Play: seven words, seven meanings</h2><span class="timing">6 min</span><span class="runtot">0:15 → 0:21</span></div>
+    <p>Screen 6, and the best thing in the lesson. One sentence, <span class="mono">"I never said she took my shoes."</span> Tapping any word makes it the loud one and prints what the sentence now means. Seven words, seven completely different meanings, and a row of pips that fills up as she finds them.</p>
+    <div class="say-block">
+      <div class="who">Set it up, then get out of the way</div>
+      <p>"This sentence has seven words. It also has seven completely different meanings, and I have not changed a single letter. Find all seven."</p>
+    </div>
+    <div class="callout watch"><strong>Make her say each one out loud</strong>This is the difference between a nice animation and actual learning. After each tap: <i>"Now say it the way that means that."</i> She has to perform the emphasis with her voice. If she just reads the explanation silently, the stage is wasted.</div>
+    <div class="tablewrap"><table class="simple">
+      <tr><th>Loud word</th><th>What it does</th></tr>
+      <tr><td><b>I</b></td><td>Somebody said it, but not me. You have the wrong person.</td></tr>
+      <tr><td><b>never</b></td><td>Not once, not ever. A total denial.</td></tr>
+      <tr><td><b>said</b></td><td>I did not say it out loud. I might have thought it, or written it.</td></tr>
+      <tr><td><b>she</b></td><td>Somebody took them and I said so, but it was not her.</td></tr>
+      <tr><td><b>took</b></td><td>Argues with that one word. Maybe she borrowed them, or moved them.</td></tr>
+      <tr><td><b>my</b></td><td>She took shoes. They were not mine.</td></tr>
+      <tr><td><b>shoes</b></td><td>She took something of mine, but not the shoes.</td></tr>
+    </table></div>
+    <div class="callout"><strong>The question that closes the stage</strong><i>"So if you write a sentence and you do not tell the reader which word is loud, how do they know?"</i> They do not. That is exactly why writers reach for italics.</div>
+  </div>
+
+  <div class="stage-card" id="s7">
+    <div class="stage-head"><div class="stage-num">7</div><h2>Teach: show, do not tell</h2><span class="timing">3 min</span><span class="runtot">0:21 → 0:24</span></div>
+    <p>Screen 7. Two cards side by side: <i>"She was angry"</i> against <i>"She put the cup down harder than she meant to."</i></p>
+    <div class="say-block">
+      <div class="who">Ask first, do not explain first</div>
+      <p>"Both of these tell you she is angry. Which one do you actually believe? And why?"</p>
+    </div>
+    <div class="answer"><b>Target:</b> the second, because you worked it out yourself. Nobody argues with a conclusion they reached on their own. <b>If she says the first because it is clearer:</b> fair, and worth agreeing with. Clearer is not the same as stronger. The first is a label; the second is a picture.</div>
+    <div class="callout tip"><strong>The line that ties the unit together</strong>The dark box says it: showing is <b>inference from the other side</b>. Last lesson she dug clues up. Today she buries them. Say it in those words, because it turns two lessons into one idea.</div>
+  </div>
+
+  <div class="stage-card" id="s8">
+    <div class="stage-head"><div class="stage-num">8</div><h2>Play: her own words</h2><span class="timing">5 min</span><span class="runtot">0:24 → 0:29</span></div>
+    <p>Screen 8. Four rounds, one for each of the describing words <b>she</b> wrote on her worksheet: angry, silent, happy, crazy. Each round gives three sentences and she picks the one that shows rather than tells.</p>
+    <div class="say-block"><div class="who">Open with</div><p>"These four words are yours. You wrote them. Now we are going to turn each one into a picture."</p></div>
+    <div class="tablewrap"><table class="simple">
+      <tr><th>Word</th><th>Answer</th><th>The teaching point</th></tr>
+      <tr><td><b>angry</b></td><td>"He put the plate in the sink without looking at anyone."</td><td>The word angry never appears. Ask her to check. That surprises students every time.</td></tr>
+      <tr><td><b>silent</b></td><td>"I could hear my own breathing, and nothing else."</td><td>The clever one. You cannot hear silence, so you show it by naming the one sound left.</td></tr>
+      <tr><td><b>happy</b></td><td>"She took the stairs two at a time."</td><td>Happy people move differently. One action carries it.</td></tr>
+      <tr><td><b>crazy</b></td><td>"He spun round three times, then bowed to a tree."</td><td>Worth a word here: "crazy" on its own tells a reader nothing, and it is a lazy label about a person. A specific odd action is both kinder and better writing.</td></tr>
+    </table></div>
+    <div class="callout watch"><strong>If she is finding these easy</strong>Stop tapping and make her produce one. <i>"Give me a showing sentence for 'frightened'. You are not allowed the word frightened."</i> Sixty seconds. It is much harder than choosing, and it is exactly what the worksheet asks her to do at home.</div>
+  </div>
+
+  <div class="stage-card" id="s9">
+    <div class="stage-head"><div class="stage-num">9</div><h2>Play: the character machine</h2><span class="timing">6 min</span><span class="runtot">0:29 → 0:35</span></div>
+    <p>Screen 9. Three rows of three: what they carry, what their hands are doing, what they never do. Pick one from each and the machine writes a character paragraph underneath.</p>
+    <div class="say-block"><div class="who">Do this</div><p>Build one together first, then let her rebuild it two or three times with different choices. Read each version out loud in a storyteller voice. This should be fun.</p></div>
+    <div class="callout tip"><strong>The three questions, in this order</strong>
+      1. <i>"Who is this person? Tell me about them."</i> She will invent a whole backstory. Let her.<br>
+      2. <i>"Now find me the word in there that says how they feel."</i> There is not one. Let her hunt for it.<br>
+      3. <i>"So how did you know all that?"</i> She inferred it, from three details. That is the whole lesson, proved with her own example.
+    </div>
+    <div class="answer"><b>Why these three categories:</b> an object, a habit of the hands, and an absence. The third is the strongest and the least obvious. What a person <i>never</i> does characterises them faster than almost anything else, and it is a trick she can take straight into her own writing.</div>
+    <div class="callout"><strong>If you are short of time</strong>This is the stage to shorten, not to cut. One build instead of three, and skip straight to the three questions. Cutting it entirely would remove the moment the lesson is for.</div>
+  </div>
+
+  <div class="stage-card" id="s10">
+    <div class="stage-head"><div class="stage-num">10</div><h2>Quiz</h2><span class="timing">4 min</span><span class="runtot">0:35 → 0:39</span></div>
+    <p>Screen 10. Six questions with a running score. Wrong answers explain and stay open, so she can try again.</p>
+    <div class="tablewrap"><table class="simple">
+      <tr><th>#</th><th>Answer</th><th>Note</th></tr>
+      <tr><td>1</td><td>I, me, my</td><td>Straight recall.</td></tr>
+      <tr><td>2</td><td>Third person</td><td>The one that proves she understood the swapper, not just enjoyed it.</td></tr>
+      <tr><td>3</td><td>To make it the loud word, or show a different voice</td><td>Both jobs. Accept either half in conversation.</td></tr>
+      <tr><td>4</td><td>"She checked the door was locked three times."</td><td>Note that the distractor "Nervousness came over her" is still telling, just dressed up. Worth pointing at.</td></tr>
+      <tr><td>5</td><td>The reader works it out, so they believe it</td><td>The most important question on the page.</td></tr>
+      <tr><td>6</td><td>She did something with them, but taking is the wrong word</td><td>Applies the emphasis game rather than recalling it.</td></tr>
+    </table></div>
+  </div>
+
+  <div class="stage-card" id="s11">
+    <div class="stage-head"><div class="stage-num">11</div><h2>Recap and homework</h2><span class="timing">1 min</span><span class="runtot">0:39 → 0:40</span></div>
+    <p>Screen 11. Six vocabulary cards. Point at the three that are genuinely new: <b>narrator</b>, <b>emphasis</b>, <b>show do not tell</b>.</p>
+    <div class="say-block">
+      <div class="who">Close with</div>
+      <p>"Worksheet 3 is the one you print out, same as last time. You will swap a passage, pick the loud word, turn four telling sentences into showing ones, and build your own character."</p>
+      <p>"And here is the rule for the rest of your life as a writer: if you catch yourself writing 'she was sad', stop, and show me instead."</p>
+    </div>
+    <div class="callout tip"><strong>Next lesson</strong>Session 1.3's language focus: hyphens and dashes. Hyphens glue words into one idea (eleven-year-old, sugar-free, runner-up); a dash makes the reader stop right before the good bit. You already have a page on this from her earlier sequence, so check whether it needs rebuilding or just reordering before you plan Lesson 4.</div>
+  </div>
+
+  <div class="section">
+    <h2>If the lesson runs short</h2>
+    <div class="objbox">
+      <ul>
+        <li><b>Break the machine on purpose.</b> Give her a bad detail to add: "she was feeling quite sad about everything". Put it into the character paragraph and read the whole thing aloud. Ask what it did. It flattens it. One telling sentence can undo three showing ones, and hearing that is worth more than being told it.</li>
+        <li><b>Emphasis, out loud, no screen.</b> You say a sentence with one word loud, she says what you meant. Then swap. Thirty seconds each way, and it is genuinely funny.</li>
+      </ul>
+    </div>
+  </div>
+
+  <footer>
+    Lesson 3 · Unit 1: Different voices – different times · Session 1.3 <i>Focus on technique</i><br>
+    Cambridge Primary English Stage 6 · 6Rv.04 · 6Ri.14
+  </footer>
+</div>
+
+<script>
+const LINKS = [
+  {label:'🕹️ Interactive lesson', url:'https://claude.ai/artifact/Riz7PWi1S5Vr6FpuPz5MUX'},
+  {label:'↩ Lesson 2 script', url:'https://claude.ai/artifact/MPRiAWa8UR5oVn9yDppwkh'}
+];
+const tabs = document.getElementById('tabs');
+LINKS.forEach(l=>{
+  const a=document.createElement('a');
+  a.href=l.url; a.target='_blank'; a.rel='noopener'; a.textContent=l.label;
+  tabs.insertBefore(a, tabs.firstChild);
+});
+</script>
