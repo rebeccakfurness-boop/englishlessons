@@ -1,0 +1,708 @@
+<title>Short Line, Long Line</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&family=Nunito+Sans:wght@400;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap');
+
+:root{
+  --bg:#FDF7EE; --ink:#46280A; --ink-soft:#7A6450;
+  --teal:#007C83; --teal-dark:#005F65; --teal-light:#D7EDEC;
+  --coral:#D1481F; --coral-dark:#A6330F; --coral-light:#FBE3D8;
+  --gold:#FEA74A; --gold-dark:#A65F06; --gold-light:#FFF0DC;
+  --plum:#2C5F8A; --plum-dark:#1E4664; --plum-light:#E0EBF4;
+  --green:#2E7D5B; --green-light:#DCEFE4;
+  --card:#FFFFFF; --line:#EADFCD;
+  --shadow:0 8px 24px rgba(70,40,10,0.09);
+  --scrim:rgba(253,247,238,0.93);
+  --surface-dark:#2A1B0C;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#16110B; --ink:#F6EEE2; --ink-soft:#BBA890;
+    --teal:#2FA7AE; --teal-dark:#8FE3E6; --teal-light:#0E2E30;
+    --coral:#E2572B; --coral-dark:#FF9E77; --coral-light:#3A1F12;
+    --gold:#FEA74A; --gold-dark:#FFD09B; --gold-light:#3B2711;
+    --plum:#4E86B8; --plum-dark:#9CC6E6; --plum-light:#182B3A;
+    --green:#4CAF80; --green-light:#123626;
+    --card:#211A12; --line:#382B1D;
+    --shadow:0 8px 24px rgba(0,0,0,0.45);
+    --scrim:rgba(22,17,11,0.9);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#16110B; --ink:#F6EEE2; --ink-soft:#BBA890;
+  --teal:#2FA7AE; --teal-dark:#8FE3E6; --teal-light:#0E2E30;
+  --coral:#E2572B; --coral-dark:#FF9E77; --coral-light:#3A1F12;
+  --gold:#FEA74A; --gold-dark:#FFD09B; --gold-light:#3B2711;
+  --plum:#4E86B8; --plum-dark:#9CC6E6; --plum-light:#182B3A;
+  --green:#4CAF80; --green-light:#123626;
+  --card:#211A12; --line:#382B1D;
+  --shadow:0 8px 24px rgba(0,0,0,0.45);
+  --scrim:rgba(22,17,11,0.9);
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{background:var(--bg); color:var(--ink); font-family:'Nunito Sans','Segoe UI',system-ui,sans-serif; min-height:100vh; overflow-x:hidden;}
+h1,h2,h3{font-family:'Nunito','Nunito Sans',system-ui,sans-serif;}
+.mono{font-family:'IBM Plex Mono',monospace;}
+
+.app{max-width:920px; margin:0 auto; padding:0 20px 40px;}
+.topbar{position:sticky; top:env(safe-area-inset-top, 0px); z-index:50; background:var(--scrim); backdrop-filter:blur(8px); border-bottom:1px solid var(--line); padding:14px 20px 10px;}
+.topbar-inner{max-width:920px; margin:0 auto;}
+.brandrow{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:10px;}
+.brand{display:flex; align-items:center; gap:8px;}
+.brand-mark{width:26px; height:26px; border-radius:8px; background:linear-gradient(135deg,var(--teal),var(--coral)); flex-shrink:0;}
+.brand-text{font-size:12px; letter-spacing:0.06em; text-transform:uppercase; color:var(--ink-soft); font-weight:600;}
+.reslinks{display:flex; gap:6px; justify-content:center; flex-wrap:wrap; margin-top:10px;}
+.reslinks a{padding:6px 12px; border-radius:999px; background:var(--card); border:1px solid var(--line); color:var(--ink-soft); font-size:11.5px; font-weight:700; text-decoration:none; white-space:nowrap;}
+.reslinks a:hover{border-color:var(--teal); color:var(--teal-dark);}
+@media(max-width:640px){.reslinks{display:none;}}
+.dots{display:flex; gap:6px; justify-content:center; flex-wrap:wrap;}
+.dot{width:22px; height:5px; border-radius:3px; background:var(--line); border:none; cursor:pointer; padding:0; transition:all .25s ease;}
+.dot.active{background:var(--teal); width:34px;}
+.dot.done{background:var(--gold);}
+
+.stage{padding-top:28px; min-height:62vh;}
+.step{display:none; animation:fadein .35s ease;}
+.step.active{display:block;}
+@keyframes fadein{from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:translateY(0);}}
+
+.kicker{display:inline-flex; align-items:center; gap:8px; font-size:12px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--teal-dark); background:var(--teal-light); padding:5px 12px; border-radius:20px; margin-bottom:14px;}
+h1.title{font-size:clamp(28px,5vw,42px); line-height:1.08; margin:0 0 12px; letter-spacing:-0.01em; text-wrap:balance;}
+p.lede{font-size:17px; color:var(--ink-soft); max-width:640px; line-height:1.55; margin:0 0 24px;}
+.objref{font-size:11px; color:var(--ink-soft); font-family:'IBM Plex Mono',monospace; background:var(--card); border:1px solid var(--line); padding:3px 9px; border-radius:999px; display:inline-block; margin-bottom:10px;}
+
+.grid{display:grid; gap:14px;}
+.grid-2{grid-template-columns:1fr 1fr;}
+.grid-3{grid-template-columns:repeat(3,1fr);}
+@media(max-width:640px){.grid-2,.grid-3{grid-template-columns:1fr;}}
+.card{background:var(--card); border:1px solid var(--line); border-radius:16px; padding:18px 20px; box-shadow:var(--shadow);}
+
+.btn{font-family:'Nunito Sans',sans-serif; font-weight:600; font-size:14px; border:none; border-radius:10px; padding:10px 18px; cursor:pointer; transition:transform .15s ease, box-shadow .15s ease;}
+.btn:hover{transform:translateY(-1px);}
+.btn-primary{background:var(--teal); color:#fff;}
+.btn-ghost{background:transparent; color:var(--ink-soft); border:1px solid var(--line);}
+.btn-ghost:hover{border-color:var(--teal);}
+.btn:disabled{opacity:0.35; cursor:not-allowed; transform:none;}
+.btn-sm{padding:7px 12px; font-size:12.5px; border-radius:8px;}
+[tabindex]:focus-visible, button:focus-visible, a:focus-visible{outline:3px solid var(--teal); outline-offset:2px; border-radius:8px;}
+
+/* flip cards */
+.flip{perspective:1200px; height:172px; cursor:pointer;}
+.flip-inner{position:relative; width:100%; height:100%; transition:transform .5s cubic-bezier(.2,.8,.2,1); transform-style:preserve-3d;}
+.flip.flipped .flip-inner{transform:rotateY(180deg);}
+.flip-face{position:absolute; inset:0; backface-visibility:hidden; border-radius:16px; padding:16px 18px; display:flex; flex-direction:column; justify-content:center; border:1px solid var(--line); box-shadow:var(--shadow); overflow:auto;}
+.flip-front{background:var(--card);}
+.flip-back{transform:rotateY(180deg); color:#fff;}
+.flip-front .flip-term{font-family:'Nunito',sans-serif; font-weight:700; font-size:17px; margin-bottom:4px; line-height:1.4;}
+.flip-front .flip-sub{font-size:12.5px; color:var(--ink-soft); line-height:1.45;}
+.flip-front .flip-hint{font-size:12px; color:var(--ink-soft); margin-top:8px;}
+.flip-back p{margin:0; font-size:13px; line-height:1.5;}
+
+/* the two marks, side by side */
+.marks{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+@media(max-width:640px){.marks{grid-template-columns:1fr;}}
+.mark{border-radius:18px; padding:22px 24px; box-shadow:var(--shadow); text-align:center;}
+.mark .glyph{font-family:'IBM Plex Mono',monospace; font-weight:600; line-height:1; margin-bottom:12px;}
+.mark .mname{font-family:'Nunito',sans-serif; font-weight:800; font-size:19px; margin-bottom:6px;}
+.mark p{margin:0; font-size:14px; line-height:1.6;}
+.mark.hy{background:var(--teal-light); border:1px solid var(--teal); color:var(--teal-dark);}
+.mark.hy .glyph{font-size:46px; color:var(--teal-dark);}
+.mark.da{background:var(--gold-light); border:1px solid var(--gold); color:var(--gold-dark);}
+.mark.da .glyph{font-size:46px; color:var(--gold-dark); letter-spacing:-2px;}
+
+/* the gluer */
+.gluegrid{display:grid; grid-template-columns:repeat(2,1fr); gap:12px;}
+@media(max-width:640px){.gluegrid{grid-template-columns:1fr;}}
+.glue{background:var(--card); border:1.5px solid var(--line); border-radius:15px; padding:16px 18px; box-shadow:var(--shadow); cursor:pointer; text-align:center; transition:border-color .2s ease;}
+.glue:hover{border-color:var(--teal);}
+.glue.stuck{border-color:var(--teal); background:var(--teal-light);}
+.glue .pieces{display:flex; gap:9px; justify-content:center; align-items:center; flex-wrap:wrap; transition:gap .35s cubic-bezier(.2,.8,.2,1);}
+.glue.stuck .pieces{gap:1px;}
+.glue .pc{font-family:'Nunito',sans-serif; font-weight:800; font-size:20px; background:var(--bg); border:1.5px solid var(--line); border-radius:9px; padding:7px 12px; color:var(--ink); transition:all .3s ease;}
+.glue.stuck .pc{background:var(--teal); border-color:var(--teal); color:#fff;}
+.glue .hyph{font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:22px; color:var(--teal-dark); opacity:0; transition:opacity .35s ease .15s;}
+.glue.stuck .hyph{opacity:1;}
+.glue .means{font-size:13px; color:var(--ink-soft); margin-top:11px; min-height:18px; line-height:1.5;}
+.glue.stuck .means{color:var(--teal-dark); font-weight:600;}
+.gluehint{font-size:12.5px; color:var(--ink-soft); margin-top:9px;}
+
+/* the pause machine */
+.pausepick{display:inline-flex; background:var(--card); border:1px solid var(--line); border-radius:999px; padding:5px; gap:5px; box-shadow:var(--shadow); margin-bottom:14px;}
+.pausepick button{border:none; background:transparent; font-family:'Nunito',sans-serif; font-weight:800; font-size:14.5px; color:var(--ink-soft); padding:10px 20px; border-radius:999px; cursor:pointer;}
+.pausepick button.on{background:var(--gold); color:#2A1B0C;}
+.stage-screen{background:var(--surface-dark); color:#fff; border-radius:18px; padding:30px 28px; min-height:150px; display:flex; flex-direction:column; justify-content:center; box-shadow:var(--shadow);}
+.stage-screen .line{font-family:'Nunito',sans-serif; font-weight:700; font-size:clamp(19px,3.6vw,26px); line-height:1.5; margin:0;}
+.stage-screen .line .rest{opacity:0; transition:opacity .35s ease;}
+.stage-screen .line .rest.shown{opacity:1;}
+.stage-screen .waiting{color:var(--gold); font-family:'IBM Plex Mono',monospace; font-size:14px; margin-top:14px; min-height:20px;}
+.playrow{display:flex; gap:10px; align-items:center; margin-top:14px; flex-wrap:wrap;}
+
+/* gap clicker */
+.gapsent{background:var(--card); border:1px solid var(--line); border-radius:15px; padding:18px 20px; box-shadow:var(--shadow); margin-bottom:13px;}
+.gapsent .extra{font-size:13.5px; color:var(--ink-soft); margin-bottom:11px;}
+.gapsent .gline{display:flex; flex-wrap:wrap; align-items:center; gap:2px; font-size:16.5px; line-height:2;}
+.gapsent .tok{padding:1px 2px;}
+.gapsent .gap{width:22px; height:26px; border:none; background:transparent; border-bottom:2.5px dotted var(--ink-soft); cursor:pointer; border-radius:4px; font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:20px; color:var(--gold-dark); line-height:1; padding:0;}
+.gapsent .gap:hover{background:var(--gold-light);}
+.gapsent .gap.filled{border-bottom-color:var(--gold); background:var(--gold-light);}
+.gapsent.right .gap.filled{border-bottom-color:var(--green); background:var(--green-light); color:var(--green);}
+.gapsent .gfb{margin-top:12px; font-size:14px; line-height:1.6; display:none;}
+.gapsent.right .gfb{display:block; color:var(--green);}
+.gapsent.wrong .gfb{display:block; color:var(--coral-dark);}
+
+/* sort rows */
+.sortrow{display:flex; gap:14px; align-items:center; justify-content:space-between; background:var(--card); border:1px solid var(--line); border-radius:14px; padding:15px 18px; box-shadow:var(--shadow); margin-bottom:11px; flex-wrap:wrap;}
+.sortrow .stext{flex:1 1 300px; font-size:15px; line-height:1.65;}
+.sortrow .sreason{font-size:13.5px; color:var(--ink-soft); margin-top:8px; display:none; line-height:1.6;}
+.sortrow.answered .sreason{display:block;}
+.sopts{display:flex; gap:7px; flex-wrap:wrap; flex-shrink:0;}
+.sopt{font-family:'Nunito Sans',sans-serif; font-weight:700; font-size:12.5px; padding:9px 13px; border-radius:9px; border:1.5px solid var(--line); background:var(--card); color:var(--ink-soft); cursor:pointer;}
+.sopt:hover{border-color:var(--teal); color:var(--teal-dark);}
+.sortrow.answered .sopt{cursor:default;}
+.sopt.good{background:var(--green); border-color:var(--green); color:#fff;}
+.sopt.bad{background:var(--coral-light); border-color:var(--coral); color:var(--coral-dark);}
+
+/* which mark */
+.wm{background:var(--card); border:1px solid var(--line); border-radius:15px; padding:16px 19px; box-shadow:var(--shadow); margin-bottom:12px;}
+.wm .wsent{font-size:16.5px; line-height:1.8; margin-bottom:12px;}
+.wm .slot{display:inline-block; min-width:34px; text-align:center; border-bottom:2.5px dotted var(--ink-soft); font-family:'IBM Plex Mono',monospace; font-weight:600; color:var(--gold-dark);}
+.wm.done .slot{border-bottom-color:var(--green); color:var(--green);}
+.wm .wopts{display:flex; gap:9px; flex-wrap:wrap;}
+.wopt{font-family:'Nunito',sans-serif; font-weight:800; font-size:14px; padding:10px 18px; border-radius:10px; border:1.5px solid var(--line); background:transparent; color:var(--ink); cursor:pointer;}
+.wopt:hover{border-color:var(--teal);}
+.wm.done .wopt{cursor:default;}
+.wopt.good{background:var(--green-light); border-color:var(--green); color:var(--green);}
+.wopt.bad{background:var(--coral-light); border-color:var(--coral); color:var(--coral-dark);}
+.wm .wfb{margin-top:11px; font-size:14px; line-height:1.6; display:none; color:var(--ink-soft);}
+.wm.done .wfb{display:block;}
+
+/* quiz */
+.quiz-card{background:var(--card); border:1px solid var(--line); border-radius:15px; padding:16px 19px; box-shadow:var(--shadow); margin-bottom:12px;}
+.quiz-q{font-family:'Nunito',sans-serif; font-weight:700; font-size:15px; margin-bottom:11px; line-height:1.5;}
+.quiz-opts{display:flex; gap:8px; flex-wrap:wrap;}
+.quiz-fb{margin-top:11px; font-size:13.5px; line-height:1.6; display:none;}
+.quiz-fb.correct{display:block; color:var(--green);}
+.quiz-fb.wrong{display:block; color:var(--coral-dark);}
+.scorebar{display:flex; align-items:center; gap:12px; background:var(--surface-dark); color:#fff; border-radius:14px; padding:13px 18px; margin-bottom:16px;}
+.scorebar .sc-n{font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:15px; color:var(--gold);}
+.scorebar .sc-t{font-size:13.5px; color:rgba(255,255,255,0.85);}
+
+.vocab-card{background:var(--card); border-left:4px solid var(--teal); border-radius:10px; padding:12px 16px; margin-bottom:10px; box-shadow:var(--shadow); font-size:14px; line-height:1.55;}
+.vocab-card b{font-family:'Nunito',sans-serif;}
+.hw-list{list-style:none; padding:0; margin:0;}
+.hw-list li{padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.15); font-size:14.5px; display:flex; gap:10px; align-items:center;}
+.hw-list li:last-child{border-bottom:none;}
+.hw-box{width:16px; height:16px; border-radius:4px; border:2px solid var(--gold); flex-shrink:0;}
+
+.navbar{position:sticky; bottom:0; background:var(--scrim); backdrop-filter:blur(8px); border-top:1px solid var(--line); padding:14px 20px calc(14px + env(safe-area-inset-bottom, 0px)); display:flex; justify-content:space-between; align-items:center; margin-top:26px; border-radius:16px 16px 0 0;}
+.step-count{font-size:12px; color:var(--ink-soft); font-family:'IBM Plex Mono',monospace;}
+.note-i{font-size:12.5px; color:var(--ink-soft); font-style:italic; margin-top:10px; line-height:1.55;}
+
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+}
+</style>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brandrow">
+      <div class="brand">
+        <div class="brand-mark"></div>
+        <div class="brand-text">Selong Bay School · Cambridge Primary English 6</div>
+      </div>
+      <div class="step-count mono"><span id="stepNow">1</span> / <span id="stepTotal">11</span></div>
+    </div>
+    <div class="dots" id="dots"></div>
+    <div class="reslinks" id="reslinks"></div>
+  </div>
+</div>
+
+<div class="app">
+<div class="stage">
+
+  <!-- 0 -->
+  <section class="step active" data-step="0">
+    <span class="objref">Ref: Session 1.3 Language focus</span>
+    <span class="kicker">Lesson 4 · Unit 1</span>
+    <h1 class="title">Short Line, Long Line</h1>
+    <p class="lede">Two marks. They look almost the same, and they do completely opposite jobs. One <b>glues</b> words together. The other <b>pulls</b> them apart and makes your reader wait.</p>
+
+    <div class="marks">
+      <div class="mark hy">
+        <div class="glyph">-</div>
+        <div class="mname">The hyphen</div>
+        <p>Short. It is <b>glue</b>. It sticks words together so they become one idea.</p>
+      </div>
+      <div class="mark da">
+        <div class="glyph">&#8211;</div>
+        <div class="mname">The dash</div>
+        <p>Longer. It is a <b>gap</b>. It holds the reader still, right before the good bit.</p>
+      </div>
+    </div>
+
+    <div class="card" style="background:var(--surface-dark); color:#fff; border:none; margin-top:14px;">
+      <p style="margin:0; font-size:14.5px; line-height:1.65;">Last lesson you learned to <b style="color:var(--gold);">show, not tell</b>. Today you learn where to put the silence. A dash is how a writer says <i>wait for it</i> without using any words at all.</p>
+    </div>
+  </section>
+
+  <!-- 1 -->
+  <section class="step" data-step="1">
+    <span class="kicker">Warm-up · 3 min</span>
+    <h1 class="title">Still Got It?</h1>
+    <p class="lede">Four things from last lesson. Say your answer out loud <em>before</em> you tap.</p>
+    <div class="grid grid-2" id="warmupFlips"></div>
+  </section>
+
+  <!-- 2 -->
+  <section class="step" data-step="2">
+    <span class="kicker">Teach · The glue</span>
+    <h1 class="title">The Hyphen Sticks Things Together</h1>
+    <p class="lede">A hyphen takes two or three separate words and turns them into <b>one idea</b>. Once they are glued, you read them as a single thing.</p>
+
+    <div class="card" style="background:var(--teal-light); border:none;">
+      <p style="margin:0 0 10px; font-size:15px; color:var(--teal-dark); line-height:1.7;">Look at what happens without the glue:</p>
+      <p style="margin:0 0 6px; font-size:16px; color:var(--teal-dark); line-height:1.7;"><b>a ten year old girl</b> &nbsp;&nbsp;three separate words, a bit confusing</p>
+      <p style="margin:0; font-size:16px; color:var(--teal-dark); line-height:1.7;"><b>a ten-year-old girl</b> &nbsp;&nbsp;one idea, describing the girl</p>
+    </div>
+
+    <div class="card" style="background:var(--gold-light); border:none; margin-top:14px;">
+      <p style="margin:0; font-size:14.5px; color:var(--gold-dark); line-height:1.65;"><b>A number rule worth remembering:</b> every number from twenty-one to ninety-nine is written with a hyphen. So is a fraction, like two-thirds.</p>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section class="step" data-step="3">
+    <span class="kicker">Play · The gluer</span>
+    <h1 class="title">Stick Them Together</h1>
+    <p class="lede">Tap each pile of words and watch the hyphen snap them into one idea.</p>
+    <div class="gluegrid" id="glueGrid"></div>
+    <p class="note-i">Notice there are no spaces around a hyphen. It is glue, so it sits tight against both words.</p>
+  </section>
+
+  <!-- 4 -->
+  <section class="step" data-step="4">
+    <span class="kicker">Teach · The gap</span>
+    <h1 class="title">The Dash Makes You Wait</h1>
+    <p class="lede">A dash is longer, and it has spaces around it. It is the opposite of glue. It opens a gap, and a reader falls into that gap for half a second.</p>
+
+    <div class="card">
+      <p style="margin:0 0 14px; font-size:15px; line-height:1.7;">A single dash can do three jobs:</p>
+      <div class="grid grid-3">
+        <div style="background:var(--coral-light); border-radius:13px; padding:15px 16px;">
+          <div style="font-family:'Nunito',sans-serif; font-weight:800; font-size:14px; color:var(--coral-dark); margin-bottom:5px;">A dramatic pause</div>
+          <p style="margin:0; font-size:13px; color:var(--coral-dark); line-height:1.6;">Right before the big moment, or right before a disappointing one.</p>
+        </div>
+        <div style="background:var(--plum-light); border-radius:13px; padding:15px 16px;">
+          <div style="font-family:'Nunito',sans-serif; font-weight:800; font-size:14px; color:var(--plum-dark); margin-bottom:5px;">An aside</div>
+          <p style="margin:0; font-size:13px; color:var(--plum-dark); line-height:1.6;">A little comment the writer leans in to say. Two dashes, one each side.</p>
+        </div>
+        <div style="background:var(--teal-light); border-radius:13px; padding:15px 16px;">
+          <div style="font-family:'Nunito',sans-serif; font-weight:800; font-size:14px; color:var(--teal-dark); margin-bottom:5px;">Extra information</div>
+          <p style="margin:0; font-size:13px; color:var(--teal-dark); line-height:1.6;">Something added on the end, or a surprising contrast.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 -->
+  <section class="step" data-step="5">
+    <span class="kicker">Play · The pause machine</span>
+    <h1 class="title">Feel the Difference</h1>
+    <p class="lede">Same sentence. One has a comma, one has a dash. Press play and watch how long the reader is made to wait.</p>
+
+    <div class="pausepick" id="pausePick">
+      <button data-m="comma" class="on">With a comma</button>
+      <button data-m="dash">With a dash</button>
+    </div>
+
+    <div class="stage-screen">
+      <p class="line" id="pauseLine"></p>
+      <div class="waiting" id="pauseWait"></div>
+    </div>
+    <div class="playrow">
+      <button class="btn btn-primary" id="playBtn">▶ Play it</button>
+      <span style="font-size:13px; color:var(--ink-soft);" id="playNote">Press play, then swap and press play again.</span>
+    </div>
+
+    <div class="card" style="background:var(--gold-light); border:none; margin-top:16px;">
+      <p style="margin:0; font-size:14.5px; color:var(--gold-dark); line-height:1.65;"><b>A comma is a breath. A dash is a held breath.</b> The words never changed. Only how long you had to wait for the end.</p>
+    </div>
+  </section>
+
+  <!-- 6 -->
+  <section class="step" data-step="6">
+    <span class="kicker">Play · What is it doing?</span>
+    <h1 class="title">Name the Dash's Job</h1>
+    <p class="lede">Four sentences, all with dashes. Decide which of the three jobs each dash is doing.</p>
+    <div id="sortList"></div>
+  </section>
+
+  <!-- 7 -->
+  <section class="step" data-step="7">
+    <span class="kicker">Play · Which mark?</span>
+    <h1 class="title">Glue or Gap?</h1>
+    <p class="lede">Now the real test. For each sentence, decide whether that space needs a short line or a long one.</p>
+    <div id="whichList"></div>
+    <p class="note-i">The question to ask yourself every time: <b>am I sticking words together, or am I making the reader wait?</b></p>
+  </section>
+
+  <!-- 8 -->
+  <section class="step" data-step="8">
+    <span class="kicker">Play · Drop them in</span>
+    <h1 class="title">Put the Dashes Where They Go</h1>
+    <p class="lede">Here is a sentence with an extra bit pushed into the middle of it. Tap the two gaps where the dashes belong, one on each side of the extra bit.</p>
+    <div id="gapList"></div>
+  </section>
+
+  <!-- 9 -->
+  <section class="step" data-step="9">
+    <span class="kicker">Quiz · 4 min</span>
+    <h1 class="title">Check Yourself</h1>
+    <p class="lede">Six questions. Say why you chose your answer before you tap.</p>
+    <div class="scorebar"><span class="sc-n" id="scoreN">0 / 6</span><span class="sc-t" id="scoreT">Answer them in any order.</span></div>
+    <div id="quizList"></div>
+  </section>
+
+  <!-- 10 -->
+  <section class="step" data-step="10">
+    <span class="kicker">Recap</span>
+    <h1 class="title">Two Lines, Two Jobs</h1>
+    <p class="lede">The words from today. Keep these in your learning journal.</p>
+    <div id="vocabList"></div>
+
+    <div class="card" style="background:var(--surface-dark); color:#fff; border:none; margin-top:20px;">
+      <div class="kicker" style="background:rgba(255,255,255,0.12); color:var(--gold); margin-bottom:10px;">🏠 Homework: Worksheet 4</div>
+      <ul class="hw-list">
+        <li><div class="hw-box"></div><b>Focus:</b> choose a hyphen or a dash for each gap</li>
+        <li><div class="hw-box"></div><b>Practice:</b> add the extra bit using two dashes</li>
+        <li><div class="hw-box"></div><b>Challenge:</b> say what each dash is doing</li>
+        <li><div class="hw-box"></div>Write three sentences of your own, one for each job</li>
+      </ul>
+      <p style="margin:14px 0 0; font-size:13px; color:rgba(255,255,255,0.75);">Same three steps as your Cambridge workbook, so they will feel familiar.</p>
+    </div>
+
+    <p class="lede" style="margin-top:20px;">🎉 That is the whole of Unit 1. You can spot a prologue, read it like a detective, build a character nobody has met, and now punctuate it so your reader feels every pause.</p>
+  </section>
+
+</div>
+
+<div class="navbar">
+  <button class="btn btn-ghost" id="prevBtn">← Back</button>
+  <button class="btn btn-primary" id="nextBtn">Next →</button>
+</div>
+</div>
+
+<script>
+const LINKS = [
+  {label:'↩ Lesson 3', url:'https://claude.ai/artifact/Riz7PWi1S5Vr6FpuPz5MUX'},
+  {label:'🗣️ Teaching script', url:'https://claude.ai/artifact/WiNc3yeH7aozUneDQnoM7i'}
+];
+const DASH = '–';
+
+const warmupData = [
+  {term:'First person', sub:'Which words tell you a story is in it?', back:"I, me and my. You are inside that character's head, and you only know what they know.", colour:'#005F65'},
+  {term:'Italics', sub:'What are the two jobs of sloping letters?', back:"Making one word the loud one, and showing that a different voice is speaking.", colour:'#A65F06'},
+  {term:'Show, do not tell', sub:'Why is showing stronger?', back:"Because the reader works it out themselves, and nobody argues with a conclusion they reached on their own.", colour:'#A6330F'},
+  {term:'A new word: COMPOUND', sub:'Have a guess. What might a compound word be?', back:"Two or more words joined into one idea. A hyphen is what joins them. You are about to make a whole pile of them.", colour:'#1E4664'}
+];
+
+const glueData = [
+  {pieces:['ten','year','old'], means:'one idea describing how old someone is'},
+  {pieces:['twenty','three'], means:'every number from 21 to 99 takes a hyphen'},
+  {pieces:['half','eaten'], means:'one idea describing the state of something'},
+  {pieces:['never','ending'], means:'one idea meaning it goes on forever'},
+  {pieces:['wind','swept'], means:'one idea describing a place the wind has blown'},
+  {pieces:['two','thirds'], means:'fractions take a hyphen too'}
+];
+
+const pauseData = {
+  comma: {before:'The forest was silent,', rest:' then the drums started.', wait:260, note:'A comma. A quick breath, and straight on.'},
+  dash:  {before:'The forest was silent ' + DASH, rest:' then the drums started.', wait:1300, note:'A dash. Feel how long you were left hanging there.'}
+};
+
+const sortData = [
+  {name:'She ran all the way to the gate ' + DASH + ' then stopped.',
+   opts:['Dramatic pause','Aside','Extra information'], correct:'Dramatic pause',
+   reason:'The dash holds you still for a moment, and then the big thing happens. That is a dramatic pause leading to a climax.'},
+  {name:'My friend Amina ' + DASH + ' the one who moved away in June ' + DASH + ' sent me a letter.',
+   opts:['Dramatic pause','Aside','Extra information'], correct:'Aside',
+   reason:'Two dashes, one on each side. The writer leans in, tells you a little something about Amina, then carries on. Lift the bit between the dashes out and the sentence still works.'},
+  {name:'I packed everything I needed ' + DASH + ' my torch, my map and a jumper.',
+   opts:['Dramatic pause','Aside','Extra information'], correct:'Extra information',
+   reason:'One dash near the end, then a list that tells you more. Nothing dramatic about it, it is just adding detail.'},
+  {name:'I lifted the lid, and inside the box was ' + DASH + ' nothing at all.',
+   opts:['Dramatic pause','Aside','Extra information'], correct:'Dramatic pause',
+   reason:'Also a dramatic pause, but this one leads to an anti-climax. The dash builds you up and then lets you down on purpose, which is very funny if you time it right.'}
+];
+
+const whichData = [
+  {a:'It was a ten', b:'minute walk to the blue gate.', correct:'hyphen',
+   fb:'Hyphen. "Ten-minute" is one idea describing the walk, so it gets glued.'},
+  {a:'I could hear something behind me', b:'footsteps, getting closer.', correct:'dash',
+   fb:'Dash. It holds you still, then drops the frightening bit. A hyphen here would glue "me" to "footsteps", which means nothing.'},
+  {a:'My brother is twenty', b:'two years old.', correct:'hyphen',
+   fb:'Hyphen. Every number from twenty-one to ninety-nine takes one.'},
+  {a:'She left in June', b:'the hottest month of the whole year.', correct:'dash',
+   fb:'Dash. It adds extra information on the end, and it gives the sentence a little weight as it finishes.'},
+  {a:'We ate half', b:'melted ice cream all the way home.', correct:'hyphen',
+   fb:'Hyphen. "Half-melted" is one idea describing the ice cream.'}
+];
+
+const gapData = [
+  {tokens:['My','school','the','one','near','the','harbour','is','the','biggest','in','the','town.'],
+   gaps:[2,7],
+   extra:'The extra bit is: <b>the one near the harbour</b>',
+   fb:'One dash before the extra bit and one after it. Read the sentence without that middle part: "My school is the biggest in the town." It still works perfectly, which is exactly how you know where the dashes go.'},
+  {tokens:['The','box','the','one','I','found','under','the','hedge','was','still','warm.'],
+   gaps:[2,9],
+   extra:'The extra bit is: <b>the one I found under the hedge</b>',
+   fb:'Same trick. Take out the middle and you get "The box was still warm." The dashes go exactly where you lifted it out.'}
+];
+
+const quizData = [
+  {q:'Which mark glues words together into one idea?', opts:['The hyphen, the short one','The dash, the long one','Both of them'], correct:0,
+   fb:'The hyphen. Short line, and no spaces around it, because it is glue.'},
+  {q:'How do you write the number 47 in words?', opts:['forty seven','forty-seven','forty - seven'], correct:1,
+   fb:'forty-seven. Every number from twenty-one to ninety-nine takes a hyphen.'},
+  {q:'"She opened the door ' + DASH + ' and screamed." What is the dash doing?', opts:['Gluing words together','Making a dramatic pause','Adding an aside'], correct:1,
+   fb:'It holds you still for a beat, then the big moment lands. That is a dramatic pause.'},
+  {q:'How many dashes do you need for an aside in the middle of a sentence?', opts:['One','Two, one on each side','Three'], correct:1,
+   fb:'Two. The aside sits between them, and you can lift it out and still have a sentence that works.'},
+  {q:'Which one is punctuated correctly?', opts:['a well-known singer','a well known-singer','a well - known singer'], correct:0,
+   fb:'"Well-known" is one idea describing the singer, so the hyphen goes between well and known, tight against both.'},
+  {q:'What is the real difference between a comma and a dash?', opts:['A dash is just a longer comma','A comma is a breath, a dash is a held breath','There is no difference'], correct:1,
+   fb:'A dash makes the reader wait noticeably longer. That waiting is the whole point of it.'}
+];
+
+const vocabData = [
+  {t:'Hyphen', d:'A short line with no spaces around it. It glues words into one idea: ten-year-old, twenty-three, half-eaten.'},
+  {t:'Compound word', d:'Two or more words joined by a hyphen so they work as a single idea.'},
+  {t:'Dash', d:'A longer line with a space each side. It opens a gap and makes the reader wait.'},
+  {t:'Dramatic pause', d:'A dash placed right before the big moment, or right before a deliberately disappointing one.'},
+  {t:'Aside', d:'A little comment dropped into the middle of a sentence between two dashes. Lift it out and the sentence still works.'},
+  {t:'Anti-climax', d:'When the writer builds you up with a pause and then gives you something small on purpose.'}
+];
+
+/* ---------- cross-links ---------- */
+const rl = document.getElementById('reslinks');
+LINKS.forEach(l=>{ const a=document.createElement('a'); a.href=l.url; a.target='_blank'; a.rel='noopener'; a.textContent=l.label; rl.appendChild(a); });
+
+/* ---------- flip cards ---------- */
+const wrapF=document.getElementById('warmupFlips');
+warmupData.forEach(item=>{
+  const el=document.createElement('div');
+  el.className='flip'; el.tabIndex=0; el.setAttribute('role','button');
+  el.setAttribute('aria-label','Reveal: '+item.term);
+  el.innerHTML='<div class="flip-inner">'
+    +'<div class="flip-face flip-front"><div class="flip-term">'+item.term+'</div><div class="flip-sub">'+item.sub+'</div><div class="flip-hint">Tap to check →</div></div>'
+    +'<div class="flip-face flip-back" style="background:'+item.colour+';"><p>'+item.back+'</p></div></div>';
+  const go=()=>el.classList.toggle('flipped');
+  el.onclick=go;
+  el.onkeydown=e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); go(); } };
+  wrapF.appendChild(el);
+});
+
+/* ---------- the gluer ---------- */
+const glueWrap=document.getElementById('glueGrid');
+glueData.forEach(item=>{
+  const el=document.createElement('div');
+  el.className='glue'; el.tabIndex=0; el.setAttribute('role','button');
+  const inner=item.pieces.map(p=>'<span class="pc">'+p+'</span>').join('<span class="hyph">-</span>');
+  el.innerHTML='<div class="pieces">'+inner+'</div><div class="means"></div><div class="gluehint">Tap to glue</div>';
+  const go=()=>{
+    if(el.classList.contains('stuck')) return;
+    el.classList.add('stuck');
+    el.querySelector('.means').textContent=item.pieces.join('-')+': '+item.means;
+    el.querySelector('.gluehint').textContent='';
+  };
+  el.onclick=go;
+  el.onkeydown=e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); go(); } };
+  glueWrap.appendChild(el);
+});
+
+/* ---------- the pause machine ---------- */
+const pauseLine=document.getElementById('pauseLine');
+const pauseWait=document.getElementById('pauseWait');
+const playNote=document.getElementById('playNote');
+let pauseMode='comma', playing=false, pauseTimer=null;
+const reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+function renderPause(revealed){
+  const d=pauseData[pauseMode];
+  pauseLine.innerHTML='<span>'+d.before+'</span><span class="rest'+(revealed?' shown':'')+'">'+d.rest+'</span>';
+}
+function resetPause(){
+  clearTimeout(pauseTimer); playing=false;
+  renderPause(true);
+  pauseWait.textContent='';
+  playNote.textContent='Press play, then swap and press play again.';
+}
+document.querySelectorAll('#pausePick button').forEach(b=>{
+  b.onclick=()=>{
+    document.querySelectorAll('#pausePick button').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on'); pauseMode=b.dataset.m; resetPause();
+  };
+});
+document.getElementById('playBtn').onclick=()=>{
+  if(playing) return;
+  const d=pauseData[pauseMode];
+  clearTimeout(pauseTimer);
+  playing=true;
+  renderPause(false);
+  pauseWait.textContent='...';
+  if(reduced){
+    renderPause(true); pauseWait.textContent=d.note; playing=false; return;
+  }
+  pauseTimer=setTimeout(()=>{
+    renderPause(true);
+    pauseWait.textContent=d.note;
+    playing=false;
+  }, d.wait);
+};
+resetPause();
+
+/* ---------- sort rows ---------- */
+const sortWrap=document.getElementById('sortList');
+sortData.forEach(item=>{
+  const row=document.createElement('div');
+  row.className='sortrow';
+  row.innerHTML='<div class="stext">'+item.name+'<div class="sreason">'+item.reason+'</div></div>'
+    +'<div class="sopts">'+item.opts.map(o=>'<button class="sopt" data-v="'+o+'">'+o+'</button>').join('')+'</div>';
+  row.querySelectorAll('.sopt').forEach(btn=>{
+    btn.onclick=()=>{
+      if(row.classList.contains('answered')) return;
+      row.classList.add('answered');
+      row.querySelectorAll('.sopt').forEach(b=>{
+        if(b.dataset.v===item.correct) b.classList.add('good');
+        else if(b===btn) b.classList.add('bad');
+      });
+    };
+  });
+  sortWrap.appendChild(row);
+});
+
+/* ---------- which mark ---------- */
+const whichWrap=document.getElementById('whichList');
+whichData.forEach(item=>{
+  const el=document.createElement('div');
+  el.className='wm';
+  el.innerHTML='<div class="wsent">'+item.a+' <span class="slot">?</span> '+item.b+'</div>'
+    +'<div class="wopts"><button class="wopt" data-v="hyphen">- hyphen</button>'
+    +'<button class="wopt" data-v="dash">'+DASH+' dash</button></div>'
+    +'<div class="wfb">'+item.fb+'</div>';
+  el.querySelectorAll('.wopt').forEach(btn=>{
+    btn.onclick=()=>{
+      if(el.classList.contains('done')) return;
+      el.classList.add('done');
+      el.querySelectorAll('.wopt').forEach(b=>{
+        if(b.dataset.v===item.correct) b.classList.add('good');
+        else if(b===btn) b.classList.add('bad');
+      });
+      el.querySelector('.slot').textContent = item.correct==='hyphen' ? '-' : DASH;
+    };
+  });
+  whichWrap.appendChild(el);
+});
+
+/* ---------- gap clicker ---------- */
+const gapWrap=document.getElementById('gapList');
+gapData.forEach(item=>{
+  const el=document.createElement('div');
+  el.className='gapsent';
+  let html='<div class="extra">'+item.extra+'</div><div class="gline">';
+  item.tokens.forEach((t,i)=>{
+    html+='<button class="gap" data-i="'+i+'" aria-label="Put a dash here"></button>';
+    html+='<span class="tok">'+t+'</span>';
+  });
+  html+='<button class="gap" data-i="'+item.tokens.length+'" aria-label="Put a dash here"></button>';
+  html+='</div><div class="gfb">'+item.fb+'</div>';
+  el.innerHTML=html;
+  const chosen=new Set();
+  el.querySelectorAll('.gap').forEach(g=>{
+    g.onclick=()=>{
+      if(el.classList.contains('right')) return;
+      const i=Number(g.dataset.i);
+      if(chosen.has(i)){ chosen.delete(i); g.classList.remove('filled'); g.textContent=''; }
+      else { chosen.add(i); g.classList.add('filled'); g.textContent=DASH; }
+      el.classList.remove('wrong');
+      if(chosen.size===2){
+        const ok=item.gaps.every(x=>chosen.has(x));
+        el.classList.add(ok?'right':'wrong');
+        if(!ok) el.querySelector('.gfb').textContent='Not quite. Try taking the extra bit out of the sentence in your head, and see where the hole is.';
+        else el.querySelector('.gfb').innerHTML=item.fb;
+      }
+    };
+  });
+  gapWrap.appendChild(el);
+});
+
+/* ---------- quiz ---------- */
+const quizWrap=document.getElementById('quizList');
+const scoreN=document.getElementById('scoreN'), scoreT=document.getElementById('scoreT');
+let score=0;
+quizData.forEach(item=>{
+  const el=document.createElement('div');
+  el.className='quiz-card';
+  el.innerHTML='<div class="quiz-q">'+item.q+'</div><div class="quiz-opts">'
+    +item.opts.map((o,i)=>'<button class="btn btn-sm btn-ghost" data-i="'+i+'">'+o+'</button>').join('')
+    +'</div><div class="quiz-fb"></div>';
+  const fb=el.querySelector('.quiz-fb');
+  let locked=false;
+  el.querySelectorAll('.quiz-opts button').forEach(btn=>{
+    btn.onclick=()=>{
+      if(locked) return;
+      const ok=Number(btn.dataset.i)===item.correct;
+      fb.textContent=(ok?'✓ ':'✗ Not quite: ')+item.fb;
+      fb.className='quiz-fb '+(ok?'correct':'wrong');
+      if(ok){
+        locked=true;
+        btn.style.background='var(--teal)'; btn.style.color='#fff'; btn.style.borderColor='var(--teal)';
+        score++; scoreN.textContent=score+' / '+quizData.length;
+        scoreT.textContent = score===quizData.length ? 'All six. Unit 1 finished.' : 'Keep going.';
+      }
+    };
+  });
+  quizWrap.appendChild(el);
+});
+
+/* ---------- vocab ---------- */
+const vWrap=document.getElementById('vocabList');
+vocabData.forEach(item=>{
+  const el=document.createElement('div');
+  el.className='vocab-card';
+  el.innerHTML='<b>'+item.t+':</b> '+item.d;
+  vWrap.appendChild(el);
+});
+
+/* ---------- navigation ---------- */
+const steps=document.querySelectorAll('.step');
+const dotsWrap=document.getElementById('dots');
+let current=0;
+steps.forEach((s,i)=>{
+  const d=document.createElement('button');
+  d.className='dot'+(i===0?' active':'');
+  d.setAttribute('aria-label','Go to step '+(i+1));
+  d.onclick=()=>goTo(i);
+  dotsWrap.appendChild(d);
+});
+document.getElementById('stepTotal').textContent=steps.length;
+function goTo(i){
+  if(i<0||i>=steps.length) return;
+  steps[current].classList.remove('active');
+  dotsWrap.children[current].classList.remove('active');
+  if(i>current) dotsWrap.children[current].classList.add('done');
+  current=i;
+  steps[current].classList.add('active');
+  Array.from(dotsWrap.children).forEach((d,idx)=>{ d.classList.toggle('active', idx===current); });
+  document.getElementById('stepNow').textContent=current+1;
+  document.getElementById('prevBtn').disabled=current===0;
+  document.getElementById('nextBtn').textContent=current===steps.length-1?'Finish 🎉':'Next →';
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+document.getElementById('prevBtn').onclick=()=>goTo(current-1);
+document.getElementById('nextBtn').onclick=()=>{ if(current<steps.length-1) goTo(current+1); };
+document.addEventListener('keydown',e=>{
+  if(e.target && (e.target.tagName==='BUTTON'||e.target.tagName==='INPUT')) return;
+  if(e.key==='ArrowRight') goTo(current+1);
+  if(e.key==='ArrowLeft') goTo(current-1);
+});
+goTo(0);
+</script>

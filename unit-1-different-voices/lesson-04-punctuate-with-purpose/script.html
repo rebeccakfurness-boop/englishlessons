@@ -1,0 +1,292 @@
+<title>Lesson 4 Teaching Script</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&family=Nunito+Sans:wght@400;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap');
+
+:root{
+  --bg:#FDF7EE; --ink:#46280A; --ink-soft:#7A6450;
+  --teal:#007C83; --teal-dark:#005F65; --teal-light:#D7EDEC;
+  --coral:#D1481F; --coral-dark:#A6330F; --coral-light:#FBE3D8;
+  --gold:#FEA74A; --gold-dark:#A65F06; --gold-light:#FFF0DC;
+  --plum:#2C5F8A; --plum-dark:#1E4664; --plum-light:#E0EBF4;
+  --card:#FFFFFF; --line:#EADFCD;
+  --shadow:0 8px 24px rgba(70,40,10,0.09);
+  --surface-dark:#2A1B0C;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#16110B; --ink:#F6EEE2; --ink-soft:#BBA890;
+    --teal:#2FA7AE; --teal-dark:#8FE3E6; --teal-light:#0E2E30;
+    --coral:#E2572B; --coral-dark:#FF9E77; --coral-light:#3A1F12;
+    --gold:#FEA74A; --gold-dark:#FFD09B; --gold-light:#3B2711;
+    --plum:#4E86B8; --plum-dark:#9CC6E6; --plum-light:#182B3A;
+    --card:#211A12; --line:#382B1D;
+    --shadow:0 8px 24px rgba(0,0,0,0.45);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#16110B; --ink:#F6EEE2; --ink-soft:#BBA890;
+  --teal:#2FA7AE; --teal-dark:#8FE3E6; --teal-light:#0E2E30;
+  --coral:#E2572B; --coral-dark:#FF9E77; --coral-light:#3A1F12;
+  --gold:#FEA74A; --gold-dark:#FFD09B; --gold-light:#3B2711;
+  --plum:#4E86B8; --plum-dark:#9CC6E6; --plum-light:#182B3A;
+  --card:#211A12; --line:#382B1D;
+  --shadow:0 8px 24px rgba(0,0,0,0.45);
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{background:var(--bg); color:var(--ink); font-family:'Nunito Sans','Segoe UI',system-ui,sans-serif;}
+h1,h2,h3{font-family:'Nunito','Nunito Sans',system-ui,sans-serif;}
+.mono{font-family:'IBM Plex Mono',monospace;}
+.app{max-width:800px; margin:0 auto; padding:0 20px 50px;}
+
+.topbar{background:linear-gradient(135deg,#2A1B0C,#4A3016); color:#fff; padding:26px 20px 22px;}
+.topbar-inner{max-width:800px; margin:0 auto;}
+.tabs{display:flex; gap:8px; flex-wrap:wrap; margin-top:16px;}
+.tabs a{padding:7px 14px; border-radius:999px; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.25); color:#fff; font-size:12.5px; font-weight:700; text-decoration:none;}
+.tabs a.active{background:var(--gold); border-color:var(--gold); color:#46280A;}
+.tabs a:hover{background:rgba(255,255,255,0.22);}
+.kicker{display:inline-flex; align-items:center; gap:8px; font-size:12px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--gold); margin:0 0 8px;}
+h1.title{font-size:clamp(26px,4vw,36px); margin:0 0 6px; letter-spacing:-0.01em; text-wrap:balance; color:#fff;}
+.sub{color:rgba(255,255,255,0.82); font-size:14px; margin:0; max-width:620px; line-height:1.55;}
+
+.section{margin:26px 0;}
+.section h2{font-size:20px; margin:0 0 10px;}
+.section p{font-size:14.5px; margin:0 0 12px; line-height:1.65;}
+
+.timing{display:inline-block; background:var(--teal-light); color:var(--teal-dark); font-weight:700; font-size:12px; padding:3px 11px; border-radius:999px; margin-right:8px; font-family:'IBM Plex Mono',monospace;}
+.runtot{font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-soft);}
+
+.callout{border-left:4px solid var(--gold); background:var(--gold-light); border-radius:0 12px 12px 0; padding:14px 18px; margin:14px 0; font-size:13.5px; color:var(--gold-dark); line-height:1.6;}
+.callout strong:first-child{display:block; text-transform:uppercase; font-size:10.5px; letter-spacing:0.06em; margin-bottom:4px; font-family:'Nunito',sans-serif;}
+.callout.tip{border-color:var(--teal); background:var(--teal-light); color:var(--teal-dark);}
+.callout.watch{border-color:var(--coral); background:var(--coral-light); color:var(--coral-dark);}
+
+.say-block{background:var(--plum-light); border:1px dashed var(--plum); border-radius:12px; padding:14px 18px; margin:12px 0; font-size:14.5px; color:var(--ink); line-height:1.65;}
+.say-block .who{font-weight:700; color:var(--plum-dark); font-size:11px; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:6px; font-family:'Nunito',sans-serif;}
+.say-block p{margin:0 0 10px;}
+.say-block p:last-child{margin-bottom:0;}
+
+.stage-card{background:var(--card); border:1px solid var(--line); border-radius:16px; padding:22px 24px; margin-bottom:18px; box-shadow:var(--shadow);}
+.stage-head{display:flex; align-items:center; gap:10px; margin-bottom:8px; flex-wrap:wrap;}
+.stage-num{width:28px; height:28px; border-radius:50%; background:var(--surface-dark); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:13px; flex-shrink:0;}
+.stage-head h2{margin:0; font-size:18px;}
+.stage-card > p:first-of-type{color:var(--ink-soft);}
+
+.tablewrap{overflow-x:auto;}
+table.simple{width:100%; border-collapse:collapse; margin:14px 0; font-size:13.5px;}
+table.simple th, table.simple td{border:1px solid var(--line); padding:9px 11px; text-align:left; vertical-align:top; line-height:1.55;}
+table.simple th{background:var(--teal-light); color:var(--teal-dark); font-size:11.5px; text-transform:uppercase; letter-spacing:0.04em;}
+
+.toc{background:var(--card); border:1px solid var(--line); border-radius:16px; padding:18px 22px; box-shadow:var(--shadow); margin:20px 0;}
+.toc h3{margin:0 0 10px; font-size:13px; text-transform:uppercase; letter-spacing:0.05em; color:var(--ink-soft);}
+.toc ol{margin:0; padding-left:20px; columns:2; column-gap:24px;}
+.toc li{font-size:13px; margin-bottom:6px; break-inside:avoid;}
+.toc a{color:var(--teal-dark); text-decoration:none; font-weight:600;}
+.toc a:hover{text-decoration:underline;}
+@media(max-width:560px){.toc ol{columns:1;}}
+
+.objbox{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:16px 20px; margin:16px 0; box-shadow:var(--shadow); font-size:14px; line-height:1.65;}
+.objbox b{font-family:'Nunito',sans-serif;}
+.objbox ul{margin:10px 0 0; padding-left:18px;}
+.objbox li{margin-bottom:7px;}
+
+.answer{background:var(--teal-light); border-radius:10px; padding:11px 15px; margin:10px 0; font-size:13.5px; color:var(--teal-dark); line-height:1.6;}
+.answer b{font-family:'Nunito',sans-serif;}
+
+footer{text-align:center; color:var(--ink-soft); font-size:12px; margin-top:40px; line-height:1.7;}
+
+[tabindex]:focus-visible, button:focus-visible, a:focus-visible{outline:2px solid var(--teal); outline-offset:2px; border-radius:8px;}
+@media (prefers-reduced-motion: reduce){ *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;} }
+@media print{
+  .no-print{display:none !important;}
+  body{background:#fff; --card:#fff; --bg:#fff;}
+  .stage-card{box-shadow:none; border:1px solid #ccc; break-inside:avoid;}
+}
+</style>
+
+<div class="topbar no-print">
+  <div class="topbar-inner">
+    <div class="kicker">🗣️ Teaching Script · tutor only</div>
+    <h1 class="title">Short Line, Long Line</h1>
+    <p class="sub">Lesson 4 · Cambridge Primary English Stage 6, Unit 1 · Session 1.3 Language focus: hyphens and dashes · 40 minutes, one-to-one online</p>
+    <div class="tabs" id="tabs"><a href="#" class="active">🗣️ Script</a></div>
+  </div>
+</div>
+
+<div class="app">
+
+  <div class="section">
+    <h2>Before you start</h2>
+    <p>This is the punctuation half of Session 1.3, and the last lesson of Unit 1. It is easy to teach badly, because "a hyphen is short and a dash is long" is true, boring, and forgettable. The lesson is built on a different idea: <b>the hyphen is glue and the dash is a gap</b>. One sticks words together, the other pulls them apart. Everything hangs off that.</p>
+
+    <div class="objbox">
+      <b>Straight from her books.</b> Both the Learner's Book and the Workbook carry the same Language focus box for Session 1.3, quoted here as they print it:
+      <ul>
+        <li><i>"A hyphen is a short line that links words together to create one idea, called a compound word."</i> Examples given: eleven-year-old, sugar-free, twenty-nine, two-thirds, runner-up.</li>
+        <li><i>"Dashes are longer than hyphens. A single dash can signal: a dramatic pause leading to a climax or anti-climax; an aside or comment; additional information or contrast."</i> Example given: <i>She paused &#8211; then shouted 'Hooray!'</i></li>
+      </ul>
+      The three jobs taught on screen 5 are exactly those three, in the book's own order.
+    </div>
+
+    <div class="callout tip"><strong>The Workbook pairs with this lesson directly</strong>Workbook page 12 has Session 1.3 in three tiers, and this lesson follows the same shape so the book feels familiar rather than extra:
+      <br><br>
+      <b>Focus</b> (choose hyphen or dash) is screen 8 here. <b>Practice</b> (add information using dashes) is screen 9. <b>Challenge</b> (say what each dash signals) is screen 7.
+      <br><br>
+      The sentences on screen are mine, not the book's, so you can set the Workbook exercises afterwards as genuinely fresh practice. If you have the physical book to hand, open it at the end and let her do Focus 1 straight away while it is warm.
+    </div>
+
+    <div class="callout watch"><strong>One thing to get right yourself before you teach it</strong>A hyphen has <b>no spaces</b> around it: ten-year-old. A dash has <b>a space each side</b>: silent &#8211; then. That spacing is most of how a reader tells them apart, and she will copy whatever you write in the chat window during the lesson. Watch your own typing.</div>
+
+    <div class="callout tip"><strong>Teaching this to a young learner in her second language</strong>Punctuation is abstract, so this lesson makes both marks physical: one visibly snaps words together, the other visibly makes her wait. Let the animations do that work.
+      <br><br>
+      Pre-teach two words: <b>compound</b> and <b>anti-climax</b>. The second is worth a joke rather than a definition. Build something up, then say "and inside the box was... a sock." She will get it immediately.</div>
+  </div>
+
+  <div class="toc">
+    <h3>Running order · 40 minutes</h3>
+    <ol>
+      <li><a href="#s1">Welcome: two marks, two jobs · 2 min</a></li>
+      <li><a href="#s2">Warm-up · 3 min</a></li>
+      <li><a href="#s3">Teach: the hyphen is glue · 2 min</a></li>
+      <li><a href="#s4">Play: the gluer · 5 min</a></li>
+      <li><a href="#s5">Teach: the dash is a gap · 2 min</a></li>
+      <li><a href="#s6">Play: the pause machine · 6 min</a></li>
+      <li><a href="#s7">Play: name the dash's job · 5 min</a></li>
+      <li><a href="#s8">Play: glue or gap? · 5 min</a></li>
+      <li><a href="#s9">Play: drop the dashes in · 4 min</a></li>
+      <li><a href="#s10">Quiz · 5 min</a></li>
+      <li><a href="#s11">Recap and homework · 1 min</a></li>
+    </ol>
+  </div>
+
+  <div class="stage-card" id="s1">
+    <div class="stage-head"><div class="stage-num">1</div><h2>Welcome: two marks, two jobs</h2><span class="timing">2 min</span><span class="runtot">0:00 → 0:02</span></div>
+    <p>Screen 1 shows both marks at large size, side by side. Let her look at them before you say anything.</p>
+    <div class="say-block"><div class="who">Ask first</div><p>"What is the difference between those two?"</p></div>
+    <div class="answer">She will say "one is longer". Accept it, then give her the useful version: <b>"The short one is glue. The long one is a gap."</b> That sentence is the whole lesson, and she should be able to repeat it back at the end.</div>
+  </div>
+
+  <div class="stage-card" id="s2">
+    <div class="stage-head"><div class="stage-num">2</div><h2>Warm-up</h2><span class="timing">3 min</span><span class="runtot">0:02 → 0:05</span></div>
+    <p>Four flip cards from Lesson 3: first person, italics, show do not tell, and <b>compound</b> as the new word to guess.</p>
+    <div class="callout"><strong>On the compound card</strong>Let her guess properly. "Compound" is used in science too, and if she knows that meaning, it transfers: two things joined to make one new thing. That is exactly what a hyphen does to words.</div>
+  </div>
+
+  <div class="stage-card" id="s3">
+    <div class="stage-head"><div class="stage-num">3</div><h2>Teach: the hyphen is glue</h2><span class="timing">2 min</span><span class="runtot">0:05 → 0:07</span></div>
+    <p>Screen 3 contrasts <i>a ten year old girl</i> with <i>a ten-year-old girl</i>. Read both aloud, deliberately stumbling over the first.</p>
+    <div class="say-block"><div class="who">Say</div><p>"Without the glue your eye trips over three separate words. With it, your eye reads one idea and moves on."</p></div>
+    <div class="answer"><b>The number rule is the one that pays off in tests:</b> every number from twenty-one to ninety-nine takes a hyphen, and so do fractions like two-thirds. It comes up in the quiz and on the worksheet.</div>
+  </div>
+
+  <div class="stage-card" id="s4">
+    <div class="stage-head"><div class="stage-num">4</div><h2>Play: the gluer</h2><span class="timing">5 min</span><span class="runtot">0:07 → 0:12</span></div>
+    <p>Screen 4. Six piles of loose words. Tapping one slides the pieces together, a hyphen appears between them, and the meaning prints underneath.</p>
+    <div class="say-block"><div class="who">Before each tap</div><p>"What do you think these will make when I glue them?"</p></div>
+    <div class="tablewrap"><table class="simple">
+      <tr><th>Pile</th><th>Makes</th><th>Worth saying</th></tr>
+      <tr><td>ten / year / old</td><td>ten-year-old</td><td>Three words, two hyphens. All of it describes one person.</td></tr>
+      <tr><td>twenty / three</td><td>twenty-three</td><td>The number rule, made visible.</td></tr>
+      <tr><td>half / eaten</td><td>half-eaten</td><td>Ask her to use it in a sentence about something in her kitchen.</td></tr>
+      <tr><td>never / ending</td><td>never-ending</td><td>Good one to keep for her own writing.</td></tr>
+      <tr><td>wind / swept</td><td>wind-swept</td><td>Ties to her forest scene from the worksheet.</td></tr>
+      <tr><td>two / thirds</td><td>two-thirds</td><td>Fractions take one too.</td></tr>
+    </table></div>
+    <div class="callout watch"><strong>The detail she will get wrong in her own writing</strong>No spaces around a hyphen. Point at the screen: the words are touching. If she writes "ten - year - old" she has made three dashes and no glue.</div>
+  </div>
+
+  <div class="stage-card" id="s5">
+    <div class="stage-head"><div class="stage-num">5</div><h2>Teach: the dash is a gap</h2><span class="timing">2 min</span><span class="runtot">0:07 → 0:14</span></div>
+    <p>Screen 5. Three coloured cards, one per job, in the book's own order: dramatic pause, aside, extra information. Ninety seconds. Do not over-explain, the games do it.</p>
+    <div class="say-block"><div class="who">Say</div><p>"A dash has a space on each side, because it is the opposite of glue. It opens a hole in the sentence, and your reader falls into it for half a second."</p></div>
+  </div>
+
+  <div class="stage-card" id="s6">
+    <div class="stage-head"><div class="stage-num">6</div><h2>Play: the pause machine</h2><span class="timing">6 min</span><span class="runtot">0:14 → 0:20</span></div>
+    <p>Screen 6, and the best thing in the lesson. One sentence, <i>"The forest was silent, then the drums started."</i> Two buttons switch between the comma version and the dash version, and <b>Play it</b> reveals the sentence with a real timed pause. The comma waits a quarter of a second. The dash waits well over a second, and the screen shows dots while you wait.</p>
+    <div class="say-block"><div class="who">Run it in this order</div><p>Comma version first, play it. Then dash version, play it. Then ask.</p></div>
+    <div class="tablewrap"><table class="simple">
+      <tr><th>Ask</th><th>What you are after</th></tr>
+      <tr><td>"Which one made you want to know what came next?"</td><td>The dash. The waiting itself created the wanting.</td></tr>
+      <tr><td>"Did any of the words change?"</td><td>No. Not one. Only the mark, and how long she was held there.</td></tr>
+      <tr><td>"So what is a dash actually for?"</td><td>Target: making the reader wait on purpose. That is the definition worth keeping.</td></tr>
+    </table></div>
+    <div class="callout tip"><strong>Run it a third time with her reading aloud</strong>Have her read the dash version out loud and actually hold the silence. Most children rush straight through it. Making her hold a real pause with her own voice is what connects the mark on the page to the effect in the ear.</div>
+  </div>
+
+  <div class="stage-card" id="s7">
+    <div class="stage-head"><div class="stage-num">7</div><h2>Play: name the dash's job</h2><span class="timing">5 min</span><span class="runtot">0:20 → 0:25</span></div>
+    <p>Screen 7. This is the Workbook's <b>Challenge</b> tier. Four sentences, three possible jobs.</p>
+    <div class="tablewrap"><table class="simple">
+      <tr><th>Sentence</th><th>Answer</th><th>The give-away</th></tr>
+      <tr><td>She ran all the way to the gate &#8211; then stopped.</td><td>Dramatic pause</td><td>One dash, near the end, with the big moment after it.</td></tr>
+      <tr><td>My friend Amina &#8211; the one who moved away in June &#8211; sent me a letter.</td><td>Aside</td><td><b>Two</b> dashes. Teach the test: lift out the middle and see whether the sentence still works. It does.</td></tr>
+      <tr><td>I packed everything I needed &#8211; my torch, my map and a jumper.</td><td>Extra information</td><td>A list that adds detail. Nothing dramatic about it.</td></tr>
+      <tr><td>I lifted the lid, and inside the box was &#8211; nothing at all.</td><td>Dramatic pause</td><td>An anti-climax. Same technique, opposite payoff, and it is meant to be funny.</td></tr>
+    </table></div>
+    <div class="callout"><strong>The counting shortcut</strong>If she is struggling, give her this: <b>two dashes means an aside, nearly always.</b> One dash means she has to think about what comes after it.</div>
+  </div>
+
+  <div class="stage-card" id="s8">
+    <div class="stage-head"><div class="stage-num">8</div><h2>Play: glue or gap?</h2><span class="timing">5 min</span><span class="runtot">0:25 → 0:30</span></div>
+    <p>Screen 8, the Workbook's <b>Focus</b> tier. Five sentences with a gap, and two buttons. Answers: hyphen, dash, hyphen, dash, hyphen.</p>
+    <div class="say-block"><div class="who">Give her the one question that solves all five</div><p>"Am I sticking two words together, or am I making you wait?"</p></div>
+    <div class="answer"><b>The best one to linger on is number 2:</b> <i>"I could hear something behind me &#8211; footsteps, getting closer."</i> Ask what a hyphen would do there. It would glue "me" to "footsteps" and make "me-footsteps", which is nonsense. That absurdity is the clearest proof of the difference in the whole lesson.</div>
+  </div>
+
+  <div class="stage-card" id="s9">
+    <div class="stage-head"><div class="stage-num">9</div><h2>Play: drop the dashes in</h2><span class="timing">4 min</span><span class="runtot">0:30 → 0:34</span></div>
+    <p>Screen 9, the Workbook's <b>Practice</b> tier, turned into something clickable. A sentence with an extra bit pushed into the middle, and tappable gaps between every word. She taps the two gaps where the dashes belong. Two taps and it tells her whether she is right.</p>
+    <div class="callout tip"><strong>Teach the lift-out test before she taps</strong><i>"Read it without the extra bit. 'My school is the biggest in the town.' Now, where did you lift it out from? That is where the dashes go."</i> That test works for every aside she will ever punctuate, and it is the single most useful thing on this screen.</div>
+    <div class="answer"><b>If she puts them in the wrong place,</b> do not correct her. Make her read her own version aloud including the dashes. She will hear that the sentence has broken, and fix it herself.</div>
+  </div>
+
+  <div class="stage-card" id="s10">
+    <div class="stage-head"><div class="stage-num">10</div><h2>Quiz</h2><span class="timing">5 min</span><span class="runtot">0:34 → 0:39</span></div>
+    <div class="tablewrap"><table class="simple">
+      <tr><th>#</th><th>Answer</th><th>Note</th></tr>
+      <tr><td>1</td><td>The hyphen, the short one</td><td>Straight recall.</td></tr>
+      <tr><td>2</td><td>forty-seven</td><td>The number rule.</td></tr>
+      <tr><td>3</td><td>Making a dramatic pause</td><td>Applies screen 7.</td></tr>
+      <tr><td>4</td><td>Two, one on each side</td><td>The aside rule.</td></tr>
+      <tr><td>5</td><td>a well-known singer</td><td>The trickiest. The distractor "well known-singer" glues the wrong pair, which is worth showing her.</td></tr>
+      <tr><td>6</td><td>A comma is a breath, a dash is a held breath</td><td>The line from the pause machine. If she gets this one, the lesson landed.</td></tr>
+    </table></div>
+  </div>
+
+  <div class="stage-card" id="s11">
+    <div class="stage-head"><div class="stage-num">11</div><h2>Recap and homework</h2><span class="timing">1 min</span><span class="runtot">0:39 → 0:40</span></div>
+    <p>Six vocabulary cards. Then point out that this is the end of Unit 1.</p>
+    <div class="say-block">
+      <div class="who">Close the unit</div>
+      <p>"Look what you can do now. You can spot a prologue, read one like a detective, build a character nobody has ever met, and punctuate it so your reader feels every pause. That is a whole unit."</p>
+      <p>"Worksheet 4 has the same three steps as your Cambridge workbook: Focus, Practice, Challenge. Then you write three sentences of your own, one for each job a dash can do."</p>
+    </div>
+    <div class="callout tip"><strong>Set the Workbook too, if you have it</strong>Workbook page 12 is now genuinely easy practice rather than new work, because every shape on it has been played on screen. It is the cheapest extra homework you will ever set.</div>
+  </div>
+
+  <div class="section">
+    <h2>If the lesson runs short</h2>
+    <div class="objbox">
+      <ul>
+        <li><b>The anti-climax game.</b> You start a sentence dramatically, she finishes it with something deliberately boring. "I opened the door, and standing there was &#8211; the postman." Take turns. It teaches timing, and it is the one thing from this lesson she will still be doing next week for fun.</li>
+        <li><b>Hyphen hunt.</b> Give her sixty seconds to find a hyphen anywhere: a book, a food packet, the screen. Then work out together what two ideas it is gluing.</li>
+        <li><b>Semicolons, if she is flying.</b> Activity 1e in the Learner's Book asks about semicolons in the <i>East</i> extract. It is the only place they appear in this session and there is no Language focus teaching them, so treat it as an extension, not as content she is expected to have.</li>
+      </ul>
+    </div>
+  </div>
+
+  <footer>
+    Lesson 4 · Unit 1: Different voices – different times · Session 1.3 Language focus<br>
+    Cambridge Primary English Stage 6 · Learner's Book and Workbook page 12
+  </footer>
+</div>
+
+<script>
+const LINKS = [
+  {label:'🕹️ Interactive lesson', url:'https://claude.ai/artifact/T1BUAPL26oZZ7JvC8Z1H8U'},
+  {label:'↩ Lesson 3 script', url:'https://claude.ai/artifact/5EV5FtaZs7ob2cjaWfC3CG'}
+];
+const tabs = document.getElementById('tabs');
+LINKS.forEach(l=>{ const a=document.createElement('a'); a.href=l.url; a.target='_blank'; a.rel='noopener'; a.textContent=l.label; tabs.insertBefore(a, tabs.firstChild); });
+</script>
