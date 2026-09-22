@@ -42,10 +42,13 @@ Book 6* (Burt & Ridgard, 2nd ed.). Unit 1 runs across four coursebook sessions:
 | 1 | What is a prologue? | 1.1 | Setting the scene: character, environment, time (worksheet only) |
 | 2 | Read Like a Detective | 1.2 | 6Ri.14, 6Rv.04, 6Rv.02, 6Rv.01 |
 | 3 | Show Me Who They Are | 1.3 | 6Rv.04, 6Ri.14 |
-| 4 | Short Line, Long Line | 1.3 Language focus | hyphens and dashes |
+| 4 | Plan Your Prologue | 1.4 | plan a story together, she drafts it |
 
-Lesson 4 follows the Workbook's own three tiers (Focus, Practice,
-Challenge, page 12), so the book can be set afterwards as fresh practice.
+Lesson 4 is a co-planning session, not a taught lesson: the tutor types
+while the pupil decides, and the page assembles a story plan she writes
+up at home. Punctuation is taught inside it as one of the six drafting
+techniques the Learner's Book lists, rather than as drills.
+
 Objective codes are cited only where the wording could be checked; see
 each lesson's script for what is and is not verified.
 

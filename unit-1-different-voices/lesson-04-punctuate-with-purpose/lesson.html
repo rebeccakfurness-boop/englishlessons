@@ -1,4 +1,4 @@
-<title>Short Line, Long Line</title>
+<title>Plan Your Prologue</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&family=Nunito+Sans:wght@400;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap');
 
@@ -97,94 +97,56 @@ p.lede{font-size:17px; color:var(--ink-soft); max-width:640px; line-height:1.55;
 .flip-front .flip-hint{font-size:12px; color:var(--ink-soft); margin-top:8px;}
 .flip-back p{margin:0; font-size:13px; line-height:1.5;}
 
-/* the two marks, side by side */
-.marks{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
-@media(max-width:640px){.marks{grid-template-columns:1fr;}}
-.mark{border-radius:18px; padding:22px 24px; box-shadow:var(--shadow); text-align:center;}
-.mark .glyph{font-family:'IBM Plex Mono',monospace; font-weight:600; line-height:1; margin-bottom:12px;}
-.mark .mname{font-family:'Nunito',sans-serif; font-weight:800; font-size:19px; margin-bottom:6px;}
-.mark p{margin:0; font-size:14px; line-height:1.6;}
-.mark.hy{background:var(--teal-light); border:1px solid var(--teal); color:var(--teal-dark);}
-.mark.hy .glyph{font-size:46px; color:var(--teal-dark);}
-.mark.da{background:var(--gold-light); border:1px solid var(--gold); color:var(--gold-dark);}
-.mark.da .glyph{font-size:46px; color:var(--gold-dark); letter-spacing:-2px;}
+/* planner fields */
+.field{background:var(--card); border:1px solid var(--line); border-radius:16px; padding:17px 19px; box-shadow:var(--shadow); margin-bottom:13px;}
+.field.filled{border-color:var(--green);}
+.field .flabel{font-family:'Nunito',sans-serif; font-weight:800; font-size:15.5px; margin-bottom:3px;}
+.field .fask{font-size:13.5px; color:var(--ink-soft); line-height:1.55; margin-bottom:11px;}
+.field textarea{width:100%; min-height:62px; resize:vertical; font-family:'Nunito Sans',sans-serif; font-size:16px; line-height:1.65; color:var(--ink); background:var(--bg); border:1.5px solid var(--line); border-radius:11px; padding:11px 13px;}
+.field textarea:focus{border-color:var(--teal); outline:none;}
+.field .frow{display:flex; gap:9px; align-items:center; margin-top:10px; flex-wrap:wrap;}
+.spark{font-family:'Nunito',sans-serif; font-weight:700; font-size:13px; padding:8px 14px; border-radius:9px; border:1.5px solid var(--gold); background:var(--gold-light); color:var(--gold-dark); cursor:pointer;}
+.spark:hover{background:var(--gold); color:#2A1B0C;}
+.sparkout{font-size:14px; color:var(--plum-dark); background:var(--plum-light); border-radius:10px; padding:10px 14px; margin-top:10px; line-height:1.6; display:none;}
+.sparkout.on{display:block;}
+.sparkout b{font-family:'Nunito',sans-serif; font-size:11px; letter-spacing:0.06em; text-transform:uppercase; display:block; margin-bottom:4px;}
 
-/* the gluer */
-.gluegrid{display:grid; grid-template-columns:repeat(2,1fr); gap:12px;}
-@media(max-width:640px){.gluegrid{grid-template-columns:1fr;}}
-.glue{background:var(--card); border:1.5px solid var(--line); border-radius:15px; padding:16px 18px; box-shadow:var(--shadow); cursor:pointer; text-align:center; transition:border-color .2s ease;}
-.glue:hover{border-color:var(--teal);}
-.glue.stuck{border-color:var(--teal); background:var(--teal-light);}
-.glue .pieces{display:flex; gap:9px; justify-content:center; align-items:center; flex-wrap:wrap; transition:gap .35s cubic-bezier(.2,.8,.2,1);}
-.glue.stuck .pieces{gap:1px;}
-.glue .pc{font-family:'Nunito',sans-serif; font-weight:800; font-size:20px; background:var(--bg); border:1.5px solid var(--line); border-radius:9px; padding:7px 12px; color:var(--ink); transition:all .3s ease;}
-.glue.stuck .pc{background:var(--teal); border-color:var(--teal); color:#fff;}
-.glue .hyph{font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:22px; color:var(--teal-dark); opacity:0; transition:opacity .35s ease .15s;}
-.glue.stuck .hyph{opacity:1;}
-.glue .means{font-size:13px; color:var(--ink-soft); margin-top:11px; min-height:18px; line-height:1.5;}
-.glue.stuck .means{color:var(--teal-dark); font-weight:600;}
-.gluehint{font-size:12.5px; color:var(--ink-soft); margin-top:9px;}
+/* senses */
+.sense{display:flex; gap:14px; align-items:flex-start; background:var(--card); border:1px solid var(--line); border-radius:15px; padding:15px 17px; box-shadow:var(--shadow); margin-bottom:11px;}
+.sense.filled{border-color:var(--green);}
+.sense .sicon{width:42px; height:42px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0; background:var(--teal-light);}
+.sense .sbody{flex:1; min-width:0;}
+.sense .sname{font-family:'Nunito',sans-serif; font-weight:800; font-size:14.5px; margin-bottom:6px;}
+.sense input{width:100%; font-family:'Nunito Sans',sans-serif; font-size:15.5px; color:var(--ink); background:var(--bg); border:1.5px solid var(--line); border-radius:10px; padding:10px 12px;}
+.sense input:focus{border-color:var(--teal); outline:none;}
+.sense .srow{display:flex; gap:8px; align-items:center; margin-top:8px; flex-wrap:wrap;}
+.sense .shint{font-size:12.5px; color:var(--ink-soft); font-style:italic;}
 
-/* the pause machine */
-.pausepick{display:inline-flex; background:var(--card); border:1px solid var(--line); border-radius:999px; padding:5px; gap:5px; box-shadow:var(--shadow); margin-bottom:14px;}
-.pausepick button{border:none; background:transparent; font-family:'Nunito',sans-serif; font-weight:800; font-size:14.5px; color:var(--ink-soft); padding:10px 20px; border-radius:999px; cursor:pointer;}
-.pausepick button.on{background:var(--gold); color:#2A1B0C;}
-.stage-screen{background:var(--surface-dark); color:#fff; border-radius:18px; padding:30px 28px; min-height:150px; display:flex; flex-direction:column; justify-content:center; box-shadow:var(--shadow);}
-.stage-screen .line{font-family:'Nunito',sans-serif; font-weight:700; font-size:clamp(19px,3.6vw,26px); line-height:1.5; margin:0;}
-.stage-screen .line .rest{opacity:0; transition:opacity .35s ease;}
-.stage-screen .line .rest.shown{opacity:1;}
-.stage-screen .waiting{color:var(--gold); font-family:'IBM Plex Mono',monospace; font-size:14px; margin-top:14px; min-height:20px;}
-.playrow{display:flex; gap:10px; align-items:center; margin-top:14px; flex-wrap:wrap;}
+/* pickers */
+.pickrow{display:flex; gap:9px; flex-wrap:wrap;}
+.pick{font-family:'Nunito Sans',sans-serif; font-weight:600; font-size:14px; padding:11px 16px; border-radius:11px; border:1.5px solid var(--line); background:var(--card); color:var(--ink); cursor:pointer; text-align:left;}
+.pick:hover{border-color:var(--teal);}
+.pick.sel{background:var(--teal); border-color:var(--teal); color:#fff; font-weight:700;}
 
-/* gap clicker */
-.gapsent{background:var(--card); border:1px solid var(--line); border-radius:15px; padding:18px 20px; box-shadow:var(--shadow); margin-bottom:13px;}
-.gapsent .extra{font-size:13.5px; color:var(--ink-soft); margin-bottom:11px;}
-.gapsent .gline{display:flex; flex-wrap:wrap; align-items:center; gap:2px; font-size:16.5px; line-height:2;}
-.gapsent .tok{padding:1px 2px;}
-.gapsent .gap{width:22px; height:26px; border:none; background:transparent; border-bottom:2.5px dotted var(--ink-soft); cursor:pointer; border-radius:4px; font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:20px; color:var(--gold-dark); line-height:1; padding:0;}
-.gapsent .gap:hover{background:var(--gold-light);}
-.gapsent .gap.filled{border-bottom-color:var(--gold); background:var(--gold-light);}
-.gapsent.right .gap.filled{border-bottom-color:var(--green); background:var(--green-light); color:var(--green);}
-.gapsent .gfb{margin-top:12px; font-size:14px; line-height:1.6; display:none;}
-.gapsent.right .gfb{display:block; color:var(--green);}
-.gapsent.wrong .gfb{display:block; color:var(--coral-dark);}
+/* the plan */
+.plan{background:linear-gradient(140deg,var(--plum-dark),var(--surface-dark)); color:#fff; border-radius:20px; padding:26px 28px; box-shadow:var(--shadow);}
+.plan h3{margin:0 0 4px; font-size:21px; color:#fff;}
+.plan .psub{font-size:13.5px; color:rgba(255,255,255,0.65); margin:0 0 18px;}
+.planrow{border-top:1px solid rgba(255,255,255,0.14); padding:11px 0;}
+.planrow:first-of-type{border-top:none;}
+.planrow .pk{font-family:'Nunito',sans-serif; font-weight:800; font-size:10.5px; letter-spacing:0.09em; text-transform:uppercase; color:var(--gold); margin-bottom:4px;}
+.planrow .pv{font-size:15.5px; line-height:1.6; color:#fff;}
+.planrow .pv.empty{color:rgba(255,255,255,0.4); font-style:italic; font-size:14px;}
+.plandone{margin-top:18px; padding-top:15px; border-top:1px solid rgba(255,255,255,0.14); font-size:14px; color:rgba(255,255,255,0.8); line-height:1.6;}
 
-/* sort rows */
-.sortrow{display:flex; gap:14px; align-items:center; justify-content:space-between; background:var(--card); border:1px solid var(--line); border-radius:14px; padding:15px 18px; box-shadow:var(--shadow); margin-bottom:11px; flex-wrap:wrap;}
-.sortrow .stext{flex:1 1 300px; font-size:15px; line-height:1.65;}
-.sortrow .sreason{font-size:13.5px; color:var(--ink-soft); margin-top:8px; display:none; line-height:1.6;}
-.sortrow.answered .sreason{display:block;}
-.sopts{display:flex; gap:7px; flex-wrap:wrap; flex-shrink:0;}
-.sopt{font-family:'Nunito Sans',sans-serif; font-weight:700; font-size:12.5px; padding:9px 13px; border-radius:9px; border:1.5px solid var(--line); background:var(--card); color:var(--ink-soft); cursor:pointer;}
-.sopt:hover{border-color:var(--teal); color:var(--teal-dark);}
-.sortrow.answered .sopt{cursor:default;}
-.sopt.good{background:var(--green); border-color:var(--green); color:#fff;}
-.sopt.bad{background:var(--coral-light); border-color:var(--coral); color:var(--coral-dark);}
-
-/* which mark */
-.wm{background:var(--card); border:1px solid var(--line); border-radius:15px; padding:16px 19px; box-shadow:var(--shadow); margin-bottom:12px;}
-.wm .wsent{font-size:16.5px; line-height:1.8; margin-bottom:12px;}
-.wm .slot{display:inline-block; min-width:34px; text-align:center; border-bottom:2.5px dotted var(--ink-soft); font-family:'IBM Plex Mono',monospace; font-weight:600; color:var(--gold-dark);}
-.wm.done .slot{border-bottom-color:var(--green); color:var(--green);}
-.wm .wopts{display:flex; gap:9px; flex-wrap:wrap;}
-.wopt{font-family:'Nunito',sans-serif; font-weight:800; font-size:14px; padding:10px 18px; border-radius:10px; border:1.5px solid var(--line); background:transparent; color:var(--ink); cursor:pointer;}
-.wopt:hover{border-color:var(--teal);}
-.wm.done .wopt{cursor:default;}
-.wopt.good{background:var(--green-light); border-color:var(--green); color:var(--green);}
-.wopt.bad{background:var(--coral-light); border-color:var(--coral); color:var(--coral-dark);}
-.wm .wfb{margin-top:11px; font-size:14px; line-height:1.6; display:none; color:var(--ink-soft);}
-.wm.done .wfb{display:block;}
-
-/* quiz */
-.quiz-card{background:var(--card); border:1px solid var(--line); border-radius:15px; padding:16px 19px; box-shadow:var(--shadow); margin-bottom:12px;}
-.quiz-q{font-family:'Nunito',sans-serif; font-weight:700; font-size:15px; margin-bottom:11px; line-height:1.5;}
-.quiz-opts{display:flex; gap:8px; flex-wrap:wrap;}
-.quiz-fb{margin-top:11px; font-size:13.5px; line-height:1.6; display:none;}
-.quiz-fb.correct{display:block; color:var(--green);}
-.quiz-fb.wrong{display:block; color:var(--coral-dark);}
-.scorebar{display:flex; align-items:center; gap:12px; background:var(--surface-dark); color:#fff; border-radius:14px; padding:13px 18px; margin-bottom:16px;}
-.scorebar .sc-n{font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:15px; color:var(--gold);}
-.scorebar .sc-t{font-size:13.5px; color:rgba(255,255,255,0.85);}
+/* toolkit */
+.tool{background:var(--card); border:1px solid var(--line); border-radius:15px; padding:16px 18px; box-shadow:var(--shadow); margin-bottom:11px;}
+.tool .tname{font-family:'Nunito',sans-serif; font-weight:800; font-size:15px; margin-bottom:5px; color:var(--teal-dark);}
+.tool p{margin:0; font-size:14px; line-height:1.65; color:var(--ink);}
+.tool .demo{margin-top:11px; background:var(--surface-dark); color:#fff; border-radius:12px; padding:15px 17px; font-family:'Nunito',sans-serif; font-weight:700; font-size:17px; line-height:1.5;}
+.tool .demo .rest{opacity:0; transition:opacity .3s ease;}
+.tool .demo .rest.shown{opacity:1;}
+.tool .demo .dots{color:var(--gold); font-family:'IBM Plex Mono',monospace; font-size:14px; font-weight:500;}
 
 .vocab-card{background:var(--card); border-left:4px solid var(--teal); border-radius:10px; padding:12px 16px; margin-bottom:10px; box-shadow:var(--shadow); font-size:14px; line-height:1.55;}
 .vocab-card b{font-family:'Nunito',sans-serif;}
@@ -196,6 +158,7 @@ p.lede{font-size:17px; color:var(--ink-soft); max-width:640px; line-height:1.55;
 .navbar{position:sticky; bottom:0; background:var(--scrim); backdrop-filter:blur(8px); border-top:1px solid var(--line); padding:14px 20px calc(14px + env(safe-area-inset-bottom, 0px)); display:flex; justify-content:space-between; align-items:center; margin-top:26px; border-radius:16px 16px 0 0;}
 .step-count{font-size:12px; color:var(--ink-soft); font-family:'IBM Plex Mono',monospace;}
 .note-i{font-size:12.5px; color:var(--ink-soft); font-style:italic; margin-top:10px; line-height:1.55;}
+.savetag{font-size:12px; color:var(--ink-soft); font-family:'IBM Plex Mono',monospace;}
 
 @media (prefers-reduced-motion: reduce){
   *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
@@ -221,166 +184,148 @@ p.lede{font-size:17px; color:var(--ink-soft); max-width:640px; line-height:1.55;
 
   <!-- 0 -->
   <section class="step active" data-step="0">
-    <span class="objref">Ref: Session 1.3 Language focus</span>
+    <span class="objref">Ref: Session 1.4 · plan, write and edit a prologue</span>
     <span class="kicker">Lesson 4 · Unit 1</span>
-    <h1 class="title">Short Line, Long Line</h1>
-    <p class="lede">Two marks. They look almost the same, and they do completely opposite jobs. One <b>glues</b> words together. The other <b>pulls</b> them apart and makes your reader wait.</p>
+    <h1 class="title">Plan Your Prologue</h1>
+    <p class="lede">Today we plan a story together. Not a practice one. <em>Yours.</em> We work out who is in it, where it happens, what your reader can see and hear and smell, and the one secret you are going to hide from them. By the end of the lesson the whole plan is on the screen. Then you go away and write it.</p>
 
-    <div class="marks">
-      <div class="mark hy">
-        <div class="glyph">-</div>
-        <div class="mname">The hyphen</div>
-        <p>Short. It is <b>glue</b>. It sticks words together so they become one idea.</p>
+    <div class="grid grid-2">
+      <div class="card" style="background:var(--teal-light); border:none;">
+        <div style="font-family:'Nunito',sans-serif; font-weight:700; font-size:12px; text-transform:uppercase; letter-spacing:0.06em; color:var(--teal-dark); margin-bottom:8px;">What we do today</div>
+        <ul style="margin:0; padding-left:18px; font-size:14.5px; color:var(--teal-dark); line-height:1.9;">
+          <li>Find your <b>who, where and when</b></li>
+          <li>Collect a detail for <b>all five senses</b></li>
+          <li>Build a character out of three things</li>
+          <li>Decide the <b>secret</b> you will not explain</li>
+          <li>Choose your voice, your mood and your shape</li>
+        </ul>
       </div>
-      <div class="mark da">
-        <div class="glyph">&#8211;</div>
-        <div class="mname">The dash</div>
-        <p>Longer. It is a <b>gap</b>. It holds the reader still, right before the good bit.</p>
+      <div class="card" style="background:var(--surface-dark); color:#fff; border:none;">
+        <div class="kicker" style="background:rgba(255,255,255,0.12); color:var(--gold); margin-bottom:10px;">✍️ And afterwards</div>
+        <p style="margin:0 0 10px; font-size:14.5px; line-height:1.65;">You take the plan home and write the prologue itself. Two or three paragraphs. You will not be staring at an empty page, because every decision will already be made.</p>
+        <p style="margin:0; font-size:14.5px; line-height:1.65; color:var(--gold);">Planning is the hard part. We are doing the hard part together.</p>
       </div>
     </div>
 
-    <div class="card" style="background:var(--surface-dark); color:#fff; border:none; margin-top:14px;">
-      <p style="margin:0; font-size:14.5px; line-height:1.65;">Last lesson you learned to <b style="color:var(--gold);">show, not tell</b>. Today you learn where to put the silence. A dash is how a writer says <i>wait for it</i> without using any words at all.</p>
+    <div class="card" style="background:var(--gold-light); border:none; margin-top:14px;">
+      <p style="margin:0; font-size:14.5px; color:var(--gold-dark); line-height:1.65;">Your Cambridge book puts it in one line: <i>"plan, write and edit a prologue."</i> Today is the planning. You have spent three lessons collecting tools, and now you get to use every single one of them.</p>
     </div>
   </section>
 
   <!-- 1 -->
   <section class="step" data-step="1">
     <span class="kicker">Warm-up · 3 min</span>
-    <h1 class="title">Still Got It?</h1>
-    <p class="lede">Four things from last lesson. Say your answer out loud <em>before</em> you tap.</p>
+    <h1 class="title">Everything You Already Have</h1>
+    <p class="lede">Four tools from the last three lessons. You are about to use all of them at once. Say what each one is before you tap.</p>
     <div class="grid grid-2" id="warmupFlips"></div>
   </section>
 
   <!-- 2 -->
   <section class="step" data-step="2">
-    <span class="kicker">Teach · The glue</span>
-    <h1 class="title">The Hyphen Sticks Things Together</h1>
-    <p class="lede">A hyphen takes two or three separate words and turns them into <b>one idea</b>. Once they are glued, you read them as a single thing.</p>
-
-    <div class="card" style="background:var(--teal-light); border:none;">
-      <p style="margin:0 0 10px; font-size:15px; color:var(--teal-dark); line-height:1.7;">Look at what happens without the glue:</p>
-      <p style="margin:0 0 6px; font-size:16px; color:var(--teal-dark); line-height:1.7;"><b>a ten year old girl</b> &nbsp;&nbsp;three separate words, a bit confusing</p>
-      <p style="margin:0; font-size:16px; color:var(--teal-dark); line-height:1.7;"><b>a ten-year-old girl</b> &nbsp;&nbsp;one idea, describing the girl</p>
-    </div>
-
-    <div class="card" style="background:var(--gold-light); border:none; margin-top:14px;">
-      <p style="margin:0; font-size:14.5px; color:var(--gold-dark); line-height:1.65;"><b>A number rule worth remembering:</b> every number from twenty-one to ninety-nine is written with a hyphen. So is a fraction, like two-thirds.</p>
-    </div>
+    <span class="kicker">Plan · The seed</span>
+    <h1 class="title">Who, Where, When</h1>
+    <p class="lede">Every story starts with these three. There are no wrong answers. If you get stuck, press <b>Give me an idea</b> and take one, or change it into something better.</p>
+    <div id="seedFields"></div>
+    <p class="note-i">Your teacher can type while you talk. Everything you say gets saved on this page.</p>
   </section>
 
   <!-- 3 -->
   <section class="step" data-step="3">
-    <span class="kicker">Play · The gluer</span>
-    <h1 class="title">Stick Them Together</h1>
-    <p class="lede">Tap each pile of words and watch the hyphen snap them into one idea.</p>
-    <div class="gluegrid" id="glueGrid"></div>
-    <p class="note-i">Notice there are no spaces around a hyphen. It is glue, so it sits tight against both words.</p>
+    <span class="kicker">Plan · The five senses</span>
+    <h1 class="title">What Can We Sense?</h1>
+    <p class="lede">This is the part that makes a reader feel like they are standing there. One detail for each sense. Not big dramatic things: small, true, exact ones.</p>
+    <div id="senseList"></div>
+    <div class="card" style="background:var(--gold-light); border:none; margin-top:14px;">
+      <p style="margin:0; font-size:14.5px; color:var(--gold-dark); line-height:1.65;"><b>You do not have to use all five when you write.</b> Three is plenty. But collect five now, because then you get to choose the best ones instead of scraping around for any at all.</p>
+    </div>
   </section>
 
   <!-- 4 -->
   <section class="step" data-step="4">
-    <span class="kicker">Teach · The gap</span>
-    <h1 class="title">The Dash Makes You Wait</h1>
-    <p class="lede">A dash is longer, and it has spaces around it. It is the opposite of glue. It opens a gap, and a reader falls into that gap for half a second.</p>
-
-    <div class="card">
-      <p style="margin:0 0 14px; font-size:15px; line-height:1.7;">A single dash can do three jobs:</p>
-      <div class="grid grid-3">
-        <div style="background:var(--coral-light); border-radius:13px; padding:15px 16px;">
-          <div style="font-family:'Nunito',sans-serif; font-weight:800; font-size:14px; color:var(--coral-dark); margin-bottom:5px;">A dramatic pause</div>
-          <p style="margin:0; font-size:13px; color:var(--coral-dark); line-height:1.6;">Right before the big moment, or right before a disappointing one.</p>
-        </div>
-        <div style="background:var(--plum-light); border-radius:13px; padding:15px 16px;">
-          <div style="font-family:'Nunito',sans-serif; font-weight:800; font-size:14px; color:var(--plum-dark); margin-bottom:5px;">An aside</div>
-          <p style="margin:0; font-size:13px; color:var(--plum-dark); line-height:1.6;">A little comment the writer leans in to say. Two dashes, one each side.</p>
-        </div>
-        <div style="background:var(--teal-light); border-radius:13px; padding:15px 16px;">
-          <div style="font-family:'Nunito',sans-serif; font-weight:800; font-size:14px; color:var(--teal-dark); margin-bottom:5px;">Extra information</div>
-          <p style="margin:0; font-size:13px; color:var(--teal-dark); line-height:1.6;">Something added on the end, or a surprising contrast.</p>
-        </div>
-      </div>
-    </div>
+    <span class="kicker">Plan · Your person</span>
+    <h1 class="title">Build Your Character</h1>
+    <p class="lede">Remember the character machine? Same three questions, except this time the answers are yours and they go into your real story.</p>
+    <div id="charFields"></div>
+    <p class="note-i">Remember: not one of these is allowed to say how your character feels. Show the reader, and let them work it out.</p>
   </section>
 
   <!-- 5 -->
   <section class="step" data-step="5">
-    <span class="kicker">Play · The pause machine</span>
-    <h1 class="title">Feel the Difference</h1>
-    <p class="lede">Same sentence. One has a comma, one has a dash. Press play and watch how long the reader is made to wait.</p>
-
-    <div class="pausepick" id="pausePick">
-      <button data-m="comma" class="on">With a comma</button>
-      <button data-m="dash">With a dash</button>
-    </div>
-
-    <div class="stage-screen">
-      <p class="line" id="pauseLine"></p>
-      <div class="waiting" id="pauseWait"></div>
-    </div>
-    <div class="playrow">
-      <button class="btn btn-primary" id="playBtn">▶ Play it</button>
-      <span style="font-size:13px; color:var(--ink-soft);" id="playNote">Press play, then swap and press play again.</span>
-    </div>
-
-    <div class="card" style="background:var(--gold-light); border:none; margin-top:16px;">
-      <p style="margin:0; font-size:14.5px; color:var(--gold-dark); line-height:1.65;"><b>A comma is a breath. A dash is a held breath.</b> The words never changed. Only how long you had to wait for the end.</p>
+    <span class="kicker">Plan · The good bit</span>
+    <h1 class="title">Your Secret</h1>
+    <p class="lede">A prologue works because of something it does <em>not</em> tell you. This is the thing your reader will chase. You know it. They do not. Yet.</p>
+    <div id="secretFields"></div>
+    <div class="card" style="background:var(--coral-light); border:none; margin-top:14px;">
+      <p style="margin:0; font-size:14.5px; color:var(--coral-dark); line-height:1.65;"><b>The rule you learned as a detective, now backwards.</b> Do not explain your secret. Plant one small clue that points at it and then walk away. If your reader has to work, they will keep reading.</p>
     </div>
   </section>
 
   <!-- 6 -->
   <section class="step" data-step="6">
-    <span class="kicker">Play · What is it doing?</span>
-    <h1 class="title">Name the Dash's Job</h1>
-    <p class="lede">Four sentences, all with dashes. Decide which of the three jobs each dash is doing.</p>
-    <div id="sortList"></div>
+    <span class="kicker">Plan · Voice and mood</span>
+    <h1 class="title">Two Quick Decisions</h1>
+    <p class="lede">These two choices change how your whole story sounds. Pick one from each row.</p>
+
+    <div class="card" style="margin-bottom:13px;">
+      <div style="font-family:'Nunito',sans-serif; font-weight:800; font-size:15.5px; margin-bottom:4px;">Who is telling it?</div>
+      <div style="font-size:13.5px; color:var(--ink-soft); margin-bottom:11px;">First person puts the reader inside your character. Third person lets you tell them things your character does not know.</div>
+      <div class="pickrow" id="voicePick"></div>
+    </div>
+
+    <div class="card">
+      <div style="font-family:'Nunito',sans-serif; font-weight:800; font-size:15.5px; margin-bottom:4px;">What should the reader feel?</div>
+      <div style="font-size:13.5px; color:var(--ink-soft); margin-bottom:11px;">Choose the mood now and every word choice afterwards gets easier, because you know what you are aiming at.</div>
+      <div class="pickrow" id="moodPick"></div>
+    </div>
   </section>
 
   <!-- 7 -->
   <section class="step" data-step="7">
-    <span class="kicker">Play · Which mark?</span>
-    <h1 class="title">Glue or Gap?</h1>
-    <p class="lede">Now the real test. For each sentence, decide whether that space needs a short line or a long one.</p>
-    <div id="whichList"></div>
-    <p class="note-i">The question to ask yourself every time: <b>am I sticking words together, or am I making the reader wait?</b></p>
+    <span class="kicker">Plan · The shape</span>
+    <h1 class="title">What Happens, In What Order</h1>
+    <p class="lede">Three short steps. This is your whole prologue, and it is only two or three paragraphs, so it does not need much.</p>
+    <div id="shapeFields"></div>
   </section>
 
   <!-- 8 -->
   <section class="step" data-step="8">
-    <span class="kicker">Play · Drop them in</span>
-    <h1 class="title">Put the Dashes Where They Go</h1>
-    <p class="lede">Here is a sentence with an extra bit pushed into the middle of it. Tap the two gaps where the dashes belong, one on each side of the extra bit.</p>
-    <div id="gapList"></div>
+    <span class="kicker">Teach · Your toolkit</span>
+    <h1 class="title">Six Tools For When You Write</h1>
+    <p class="lede">Your Cambridge book lists exactly these six for writing a prologue. You have met all of them. Here they are in one place, to keep beside you at home.</p>
+    <div id="toolList"></div>
   </section>
 
   <!-- 9 -->
   <section class="step" data-step="9">
-    <span class="kicker">Quiz · 4 min</span>
-    <h1 class="title">Check Yourself</h1>
-    <p class="lede">Six questions. Say why you chose your answer before you tap.</p>
-    <div class="scorebar"><span class="sc-n" id="scoreN">0 / 6</span><span class="sc-t" id="scoreT">Answer them in any order.</span></div>
-    <div id="quizList"></div>
+    <span class="kicker">Your plan</span>
+    <h1 class="title">Here Is Your Story</h1>
+    <p class="lede">Everything we decided together, in one place. Copy it onto your plan sheet, and this is what you write from.</p>
+    <div class="plan" id="planOut"></div>
+    <div style="display:flex; gap:10px; align-items:center; margin-top:14px; flex-wrap:wrap;">
+      <button class="btn btn-ghost btn-sm" id="clearBtn">Start a different story</button>
+      <span class="savetag" id="saveTag"></span>
+    </div>
   </section>
 
   <!-- 10 -->
   <section class="step" data-step="10">
-    <span class="kicker">Recap</span>
-    <h1 class="title">Two Lines, Two Jobs</h1>
-    <p class="lede">The words from today. Keep these in your learning journal.</p>
+    <span class="kicker">At home</span>
+    <h1 class="title">Now Go And Write It</h1>
+    <p class="lede">You have done the hard part. The page is not empty any more.</p>
     <div id="vocabList"></div>
 
     <div class="card" style="background:var(--surface-dark); color:#fff; border:none; margin-top:20px;">
       <div class="kicker" style="background:rgba(255,255,255,0.12); color:var(--gold); margin-bottom:10px;">🏠 Homework: Worksheet 4</div>
       <ul class="hw-list">
-        <li><div class="hw-box"></div><b>Focus:</b> choose a hyphen or a dash for each gap</li>
-        <li><div class="hw-box"></div><b>Practice:</b> add the extra bit using two dashes</li>
-        <li><div class="hw-box"></div><b>Challenge:</b> say what each dash is doing</li>
-        <li><div class="hw-box"></div>Write three sentences of your own, one for each job</li>
+        <li><div class="hw-box"></div>Copy your plan onto the plan sheet</li>
+        <li><div class="hw-box"></div>Write your prologue: two or three paragraphs</li>
+        <li><div class="hw-box"></div>Tick off the six tools as you use them</li>
+        <li><div class="hw-box"></div>Read it out loud to somebody and ask what they think the secret is</li>
       </ul>
-      <p style="margin:14px 0 0; font-size:13px; color:rgba(255,255,255,0.75);">Same three steps as your Cambridge workbook, so they will feel familiar.</p>
+      <p style="margin:14px 0 0; font-size:13px; color:rgba(255,255,255,0.75);">That last one is the real test. If they guess something close, your clue worked.</p>
     </div>
 
-    <p class="lede" style="margin-top:20px;">🎉 That is the whole of Unit 1. You can spot a prologue, read it like a detective, build a character nobody has met, and now punctuate it so your reader feels every pause.</p>
+    <p class="lede" style="margin-top:20px;">🎉 That is the whole of Unit 1. You can spot a prologue, read one like a detective, build a character out of three details, punctuate a pause, and now plan a story from nothing. Bring me what you write.</p>
   </section>
 
 </div>
@@ -399,91 +344,94 @@ const LINKS = [
 const DASH = '–';
 
 const warmupData = [
-  {term:'First person', sub:'Which words tell you a story is in it?', back:"I, me and my. You are inside that character's head, and you only know what they know.", colour:'#005F65'},
-  {term:'Italics', sub:'What are the two jobs of sloping letters?', back:"Making one word the loud one, and showing that a different voice is speaking.", colour:'#A65F06'},
-  {term:'Show, do not tell', sub:'Why is showing stronger?', back:"Because the reader works it out themselves, and nobody argues with a conclusion they reached on their own.", colour:'#A6330F'},
-  {term:'A new word: COMPOUND', sub:'Have a guess. What might a compound word be?', back:"Two or more words joined into one idea. A hyphen is what joins them. You are about to make a whole pile of them.", colour:'#1E4664'}
+  {term:'Sensory language', sub:'From your very first lesson. What is it?', back:"Describing with the five senses: what you can see, hear, smell, touch and taste. It is the fastest way to put a reader inside a place.", colour:'#005F65'},
+  {term:'Inference', sub:'How do you make a reader work?', back:"Give them a clue and let them reach the conclusion themselves. Today you plant the clues instead of finding them.", colour:'#A65F06'},
+  {term:'Show, do not tell', sub:'What do you give instead of a feeling word?', back:"An action or a detail. Not 'she was frightened' but 'she checked the lock three times'.", colour:'#A6330F'},
+  {term:'Mood', sub:'Whose feeling is it, and who chooses it?', back:"The reader's feeling, and the writer chooses it on purpose. Decide your mood early and every word choice gets easier.", colour:'#1E4664'}
 ];
 
-const glueData = [
-  {pieces:['ten','year','old'], means:'one idea describing how old someone is'},
-  {pieces:['twenty','three'], means:'every number from 21 to 99 takes a hyphen'},
-  {pieces:['half','eaten'], means:'one idea describing the state of something'},
-  {pieces:['never','ending'], means:'one idea meaning it goes on forever'},
-  {pieces:['wind','swept'], means:'one idea describing a place the wind has blown'},
-  {pieces:['two','thirds'], means:'fractions take a hyphen too'}
+const seedFields = [
+  {key:'who', label:'Who is your story about?', ask:'One person. Give them something specific, not just a name.',
+   ideas:['a girl who is always the last one to leave','a boy who never takes his coat off, even indoors','a grandmother who still knows all the old dances','a new pupil nobody has spoken to yet','twins who never speak at the same time']},
+  {key:'where', label:'Where does it happen?', ask:'Somewhere you can picture properly. Real places work better than invented ones.',
+   ideas:['the edge of the forest at the end of the garden','an empty school corridor during the holidays','a beach an hour before the festival starts','the bench by the fish market','a room with one window that has been painted shut']},
+  {key:'when', label:'When does it happen?', ask:'Broad or exact, either is fine. Exact is usually better.',
+   ideas:['last night, just before the rain came','the last week of June','three summers ago','the morning of the storm','an hour before anyone else woke up']}
 ];
 
-const pauseData = {
-  comma: {before:'The forest was silent,', rest:' then the drums started.', wait:260, note:'A comma. A quick breath, and straight on.'},
-  dash:  {before:'The forest was silent ' + DASH, rest:' then the drums started.', wait:1300, note:'A dash. Feel how long you were left hanging there.'}
-};
-
-const sortData = [
-  {name:'She ran all the way to the gate ' + DASH + ' then stopped.',
-   opts:['Dramatic pause','Aside','Extra information'], correct:'Dramatic pause',
-   reason:'The dash holds you still for a moment, and then the big thing happens. That is a dramatic pause leading to a climax.'},
-  {name:'My friend Amina ' + DASH + ' the one who moved away in June ' + DASH + ' sent me a letter.',
-   opts:['Dramatic pause','Aside','Extra information'], correct:'Aside',
-   reason:'Two dashes, one on each side. The writer leans in, tells you a little something about Amina, then carries on. Lift the bit between the dashes out and the sentence still works.'},
-  {name:'I packed everything I needed ' + DASH + ' my torch, my map and a jumper.',
-   opts:['Dramatic pause','Aside','Extra information'], correct:'Extra information',
-   reason:'One dash near the end, then a list that tells you more. Nothing dramatic about it, it is just adding detail.'},
-  {name:'I lifted the lid, and inside the box was ' + DASH + ' nothing at all.',
-   opts:['Dramatic pause','Aside','Extra information'], correct:'Dramatic pause',
-   reason:'Also a dramatic pause, but this one leads to an anti-climax. The dash builds you up and then lets you down on purpose, which is very funny if you time it right.'}
+const senseData = [
+  {key:'see',   icon:'👁️', name:'What can you SEE?',   hint:'One thing that should not be there, or one thing that always is.',
+   ideas:['a light on in a house that should be empty','two sets of footprints going one way and none coming back','the trees moving when there is no wind']},
+  {key:'hear',  icon:'👂', name:'What can you HEAR?',  hint:'Sound makes a place real faster than anything else.',
+   ideas:['drums starting up somewhere behind the trees','a door that will not stop creaking','my own breathing, and nothing else at all']},
+  {key:'smell', icon:'👃', name:'What can you SMELL?', hint:'The sense writers forget. Use it and your reader will notice.',
+   ideas:['salt and wet rope','smoke from a fire nobody lit','rain that has not arrived yet']},
+  {key:'touch', icon:'✋', name:'What can you FEEL?',   hint:'On the skin, or underfoot.',
+   ideas:['wind pushing against my back like a hand','cold sand under bare feet','the gate handle colder than it should be']},
+  {key:'taste', icon:'👅', name:'What can you TASTE?', hint:'Harder, but worth one line.',
+   ideas:['salt on my lips','the metal taste that comes with being frightened','tea that has gone cold in my hand']}
 ];
 
-const whichData = [
-  {a:'It was a ten', b:'minute walk to the blue gate.', correct:'hyphen',
-   fb:'Hyphen. "Ten-minute" is one idea describing the walk, so it gets glued.'},
-  {a:'I could hear something behind me', b:'footsteps, getting closer.', correct:'dash',
-   fb:'Dash. It holds you still, then drops the frightening bit. A hyphen here would glue "me" to "footsteps", which means nothing.'},
-  {a:'My brother is twenty', b:'two years old.', correct:'hyphen',
-   fb:'Hyphen. Every number from twenty-one to ninety-nine takes one.'},
-  {a:'She left in June', b:'the hottest month of the whole year.', correct:'dash',
-   fb:'Dash. It adds extra information on the end, and it gives the sentence a little weight as it finishes.'},
-  {a:'We ate half', b:'melted ice cream all the way home.', correct:'hyphen',
-   fb:'Hyphen. "Half-melted" is one idea describing the ice cream.'}
+const charFields = [
+  {key:'carry', label:'What are they carrying?', ask:'An object tells a reader more than a description does.',
+   ideas:['a torch with no batteries in it','a bag that is far too heavy for them','a letter they have not opened','nothing at all, not even a coat']},
+  {key:'habit', label:'What do their hands do?', ask:'A small habit, repeated. This is what makes a character feel alive.',
+   ideas:['turn a ring round and round','stay pushed deep in their pockets','pick at the strap, over and over','fold and unfold the same piece of paper']},
+  {key:'never', label:'What do they NEVER do?', ask:'The strongest one. What a person refuses to do says everything.',
+   ideas:['look back at the house','say your name out loud','sit down, not even once','walk on the left-hand side of the path']}
 ];
 
-const gapData = [
-  {tokens:['My','school','the','one','near','the','harbour','is','the','biggest','in','the','town.'],
-   gaps:[2,7],
-   extra:'The extra bit is: <b>the one near the harbour</b>',
-   fb:'One dash before the extra bit and one after it. Read the sentence without that middle part: "My school is the biggest in the town." It still works perfectly, which is exactly how you know where the dashes go.'},
-  {tokens:['The','box','the','one','I','found','under','the','hedge','was','still','warm.'],
-   gaps:[2,9],
-   extra:'The extra bit is: <b>the one I found under the hedge</b>',
-   fb:'Same trick. Take out the middle and you get "The box was still warm." The dashes go exactly where you lifted it out.'}
+const secretFields = [
+  {key:'secret', label:'What is the secret?', ask:'The thing you know and your reader does not. You will never write this down in the story.',
+   ideas:['she has already packed and is leaving tomorrow','the box was never hers to open','he has been here before and cannot remember it','somebody has been watching from the top of the steps','the festival is not going to happen this year']},
+  {key:'clue', label:'What clue points at it?', ask:'One small detail you DO write down. Do not explain it.',
+   ideas:['a bag under the bed with the zip half open','a second cup on the table, still warm','the dog will not go past the blue gate','a map folded twice, with one place circled']}
 ];
 
-const quizData = [
-  {q:'Which mark glues words together into one idea?', opts:['The hyphen, the short one','The dash, the long one','Both of them'], correct:0,
-   fb:'The hyphen. Short line, and no spaces around it, because it is glue.'},
-  {q:'How do you write the number 47 in words?', opts:['forty seven','forty-seven','forty - seven'], correct:1,
-   fb:'forty-seven. Every number from twenty-one to ninety-nine takes a hyphen.'},
-  {q:'"She opened the door ' + DASH + ' and screamed." What is the dash doing?', opts:['Gluing words together','Making a dramatic pause','Adding an aside'], correct:1,
-   fb:'It holds you still for a beat, then the big moment lands. That is a dramatic pause.'},
-  {q:'How many dashes do you need for an aside in the middle of a sentence?', opts:['One','Two, one on each side','Three'], correct:1,
-   fb:'Two. The aside sits between them, and you can lift it out and still have a sentence that works.'},
-  {q:'Which one is punctuated correctly?', opts:['a well-known singer','a well known-singer','a well - known singer'], correct:0,
-   fb:'"Well-known" is one idea describing the singer, so the hyphen goes between well and known, tight against both.'},
-  {q:'What is the real difference between a comma and a dash?', opts:['A dash is just a longer comma','A comma is a breath, a dash is a held breath','There is no difference'], correct:1,
-   fb:'A dash makes the reader wait noticeably longer. That waiting is the whole point of it.'}
+const shapeFields = [
+  {key:'hook', label:'1. The hook', ask:'Your very first line. Something that makes a reader stop.',
+   ideas:['Start in the middle of an action, not before it','Start with the time: "Three summers before the lights went out."','Start with the one thing that is wrong']},
+  {key:'build', label:'2. The build', ask:'Now put us in the place. This is where your senses go.',
+   ideas:['Two or three sensory details, then the character doing something ordinary','Let it feel calm and normal, so the ending hits harder']},
+  {key:'turn', label:'3. The turn', ask:'The last line. Where you plant the clue and stop.',
+   ideas:['End on the clue itself and do not explain it','End with something the character does not know','End with a short sentence. Much shorter than the ones before it.']}
+];
+
+const voiceOpts = [
+  {v:'First person (I, me, my)', d:'inside the character'},
+  {v:'Third person (she, he, they)', d:'watching from outside'}
+];
+const moodOpts = ['Peaceful','Uneasy','Exciting','Sad','Mysterious','Frightening'];
+
+const toolData = [
+  {n:'1. Words chosen for your mood', p:'You have already picked the mood. Now every word either pushes towards it or fights it. Read a sentence back and ask: does this feel like my mood?'},
+  {n:'2. A clear narrative voice', p:'Stick to the one you chose. Do not start with "I" and slide into "she" halfway through. Readers notice, even when they cannot say why.'},
+  {n:'3. Consistent tense', p:'Pick past or present and stay there. Change it only on purpose, for a moment you really want to stand out.'},
+  {n:'4. Short and long sentences', p:'A long sentence carries you along. A short one stops you dead. Put a short one straight after a long one and the short one will land like a slap.', demo:'short'},
+  {n:'5. Italics for effect', p:'Lean a word over to make it the loud one, or to show that a different voice is speaking. Use it once or twice, not everywhere.'},
+  {n:'6. Dashes and semicolons', p:'A dash opens a gap and makes your reader wait. It is the punctuation version of a held breath, and it is perfect for the last line of a prologue.', demo:'dash'}
 ];
 
 const vocabData = [
-  {t:'Hyphen', d:'A short line with no spaces around it. It glues words into one idea: ten-year-old, twenty-three, half-eaten.'},
-  {t:'Compound word', d:'Two or more words joined by a hyphen so they work as a single idea.'},
-  {t:'Dash', d:'A longer line with a space each side. It opens a gap and makes the reader wait.'},
-  {t:'Dramatic pause', d:'A dash placed right before the big moment, or right before a deliberately disappointing one.'},
-  {t:'Aside', d:'A little comment dropped into the middle of a sentence between two dashes. Lift it out and the sentence still works.'},
-  {t:'Anti-climax', d:'When the writer builds you up with a pause and then gives you something small on purpose.'}
+  {t:'Planning', d:'Deciding everything before you write, so the blank page is never blank.'},
+  {t:'Sensory detail', d:'Something the reader can see, hear, smell, feel or taste. Small and exact beats big and vague.'},
+  {t:'The secret', d:'What your prologue is hiding. You know it, the reader does not, and that is what pulls them on.'},
+  {t:'The clue', d:'The one small detail you do write down, pointing at the secret. Never explained.'},
+  {t:'Hook, build, turn', d:'Stop them, put them in the place, then leave them wanting more.'}
 ];
 
+/* ---------- state ---------- */
+const KEY='sbs-l4-plan';
+const STATE={};
+function load(){ try{ Object.assign(STATE, JSON.parse(localStorage.getItem(KEY)||'{}')); }catch(e){} }
+function save(){
+  try{ localStorage.setItem(KEY, JSON.stringify(STATE)); document.getElementById('saveTag').textContent='Saved on this device.'; }
+  catch(e){ document.getElementById('saveTag').textContent='Could not save here, so copy the plan before you close the page.'; }
+}
+load();
+
 /* ---------- cross-links ---------- */
-const rl = document.getElementById('reslinks');
+const rl=document.getElementById('reslinks');
 LINKS.forEach(l=>{ const a=document.createElement('a'); a.href=l.url; a.target='_blank'; a.rel='noopener'; a.textContent=l.label; rl.appendChild(a); });
 
 /* ---------- flip cards ---------- */
@@ -501,167 +449,161 @@ warmupData.forEach(item=>{
   wrapF.appendChild(el);
 });
 
-/* ---------- the gluer ---------- */
-const glueWrap=document.getElementById('glueGrid');
-glueData.forEach(item=>{
+/* ---------- field builder ---------- */
+function buildFields(wrapId, data){
+  const wrap=document.getElementById(wrapId);
+  data.forEach(item=>{
+    const el=document.createElement('div');
+    el.className='field';
+    el.innerHTML='<div class="flabel">'+item.label+'</div><div class="fask">'+item.ask+'</div>'
+      +'<textarea id="f-'+item.key+'" rows="2" placeholder="Type what she says..."></textarea>'
+      +'<div class="frow"><button class="spark">💡 Give me an idea</button></div>'
+      +'<div class="sparkout"></div>';
+    const ta=el.querySelector('textarea');
+    const out=el.querySelector('.sparkout');
+    let i=0;
+    ta.value=STATE[item.key]||'';
+    el.classList.toggle('filled', !!ta.value.trim());
+    ta.addEventListener('input', ()=>{
+      STATE[item.key]=ta.value;
+      el.classList.toggle('filled', !!ta.value.trim());
+      save(); renderPlan();
+    });
+    el.querySelector('.spark').onclick=()=>{
+      out.classList.add('on');
+      out.innerHTML='<b>One idea, take it or change it</b>'+item.ideas[i % item.ideas.length];
+      i++;
+    };
+    wrap.appendChild(el);
+  });
+}
+buildFields('seedFields', seedFields);
+buildFields('charFields', charFields);
+buildFields('secretFields', secretFields);
+buildFields('shapeFields', shapeFields);
+
+/* ---------- senses ---------- */
+const senseWrap=document.getElementById('senseList');
+senseData.forEach(item=>{
   const el=document.createElement('div');
-  el.className='glue'; el.tabIndex=0; el.setAttribute('role','button');
-  const inner=item.pieces.map(p=>'<span class="pc">'+p+'</span>').join('<span class="hyph">-</span>');
-  el.innerHTML='<div class="pieces">'+inner+'</div><div class="means"></div><div class="gluehint">Tap to glue</div>';
-  const go=()=>{
-    if(el.classList.contains('stuck')) return;
-    el.classList.add('stuck');
-    el.querySelector('.means').textContent=item.pieces.join('-')+': '+item.means;
-    el.querySelector('.gluehint').textContent='';
+  el.className='sense';
+  el.innerHTML='<div class="sicon">'+item.icon+'</div><div class="sbody">'
+    +'<div class="sname">'+item.name+'</div>'
+    +'<input type="text" id="s-'+item.key+'" placeholder="One small, exact detail...">'
+    +'<div class="srow"><button class="spark">💡 Idea</button><span class="shint">'+item.hint+'</span></div>'
+    +'<div class="sparkout"></div></div>';
+  const inp=el.querySelector('input');
+  const out=el.querySelector('.sparkout');
+  let i=0;
+  inp.value=STATE['sense_'+item.key]||'';
+  el.classList.toggle('filled', !!inp.value.trim());
+  inp.addEventListener('input', ()=>{
+    STATE['sense_'+item.key]=inp.value;
+    el.classList.toggle('filled', !!inp.value.trim());
+    save(); renderPlan();
+  });
+  el.querySelector('.spark').onclick=()=>{
+    out.classList.add('on');
+    out.innerHTML='<b>One idea</b>'+item.ideas[i % item.ideas.length];
+    i++;
   };
-  el.onclick=go;
-  el.onkeydown=e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); go(); } };
-  glueWrap.appendChild(el);
+  senseWrap.appendChild(el);
 });
 
-/* ---------- the pause machine ---------- */
-const pauseLine=document.getElementById('pauseLine');
-const pauseWait=document.getElementById('pauseWait');
-const playNote=document.getElementById('playNote');
-let pauseMode='comma', playing=false, pauseTimer=null;
+/* ---------- pickers ---------- */
+function buildPick(wrapId, key, opts){
+  const wrap=document.getElementById(wrapId);
+  opts.forEach(o=>{
+    const label = typeof o === 'string' ? o : o.v;
+    const sub = typeof o === 'string' ? '' : '<br><span style="font-weight:400; font-size:12.5px; opacity:.75;">'+o.d+'</span>';
+    const b=document.createElement('button');
+    b.className='pick'+(STATE[key]===label?' sel':'');
+    b.innerHTML=label+sub;
+    b.onclick=()=>{
+      wrap.querySelectorAll('.pick').forEach(x=>x.classList.remove('sel'));
+      b.classList.add('sel'); STATE[key]=label; save(); renderPlan();
+    };
+    wrap.appendChild(b);
+  });
+}
+buildPick('voicePick','voice',voiceOpts);
+buildPick('moodPick','mood',moodOpts);
+
+/* ---------- toolkit ---------- */
+const toolWrap=document.getElementById('toolList');
 const reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-function renderPause(revealed){
-  const d=pauseData[pauseMode];
-  pauseLine.innerHTML='<span>'+d.before+'</span><span class="rest'+(revealed?' shown':'')+'">'+d.rest+'</span>';
-}
-function resetPause(){
-  clearTimeout(pauseTimer); playing=false;
-  renderPause(true);
-  pauseWait.textContent='';
-  playNote.textContent='Press play, then swap and press play again.';
-}
-document.querySelectorAll('#pausePick button').forEach(b=>{
-  b.onclick=()=>{
-    document.querySelectorAll('#pausePick button').forEach(x=>x.classList.remove('on'));
-    b.classList.add('on'); pauseMode=b.dataset.m; resetPause();
-  };
-});
-document.getElementById('playBtn').onclick=()=>{
-  if(playing) return;
-  const d=pauseData[pauseMode];
-  clearTimeout(pauseTimer);
-  playing=true;
-  renderPause(false);
-  pauseWait.textContent='...';
-  if(reduced){
-    renderPause(true); pauseWait.textContent=d.note; playing=false; return;
+toolData.forEach(item=>{
+  const el=document.createElement('div');
+  el.className='tool';
+  let demo='';
+  if(item.demo==='dash'){
+    demo='<div class="demo"><span>She had done this a hundred times before '+DASH+'</span>'
+      +'<span class="rest"> not once had the gate been locked.</span> <span class="dots"></span></div>'
+      +'<div class="frow"><button class="spark" data-play="dash">▶ Hear the pause</button></div>';
   }
-  pauseTimer=setTimeout(()=>{
-    renderPause(true);
-    pauseWait.textContent=d.note;
-    playing=false;
-  }, d.wait);
+  if(item.demo==='short'){
+    demo='<div class="demo">I had counted the steps to the gate every morning for four years, in rain and in sun, '
+      +'without once looking up from my own feet. <span class="rest">Tonight I looked up.</span> <span class="dots"></span></div>'
+      +'<div class="frow"><button class="spark" data-play="short">▶ Feel it land</button></div>';
+  }
+  el.innerHTML='<div class="tname">'+item.n+'</div><p>'+item.p+'</p>'+demo;
+  const btn=el.querySelector('[data-play]');
+  if(btn){
+    const rest=el.querySelector('.rest'), dots=el.querySelector('.dots');
+    rest.classList.add('shown');
+    btn.onclick=()=>{
+      if(reduced){ rest.classList.add('shown'); return; }
+      rest.classList.remove('shown'); dots.textContent='...';
+      setTimeout(()=>{ rest.classList.add('shown'); dots.textContent=''; }, 1200);
+    };
+  }
+  toolWrap.appendChild(el);
+});
+
+/* ---------- the plan ---------- */
+const planRows=[
+  ['who','Who'],['where','Where'],['when','When'],
+  ['voice','Told by'],['mood','Mood'],
+  ['__senses','What we can sense'],
+  ['carry','They are carrying'],['habit','Their hands'],['never','They never'],
+  ['secret','The secret (never written down)'],['clue','The clue (written down, never explained)'],
+  ['hook','1. Hook'],['build','2. Build'],['turn','3. Turn']
+];
+function renderPlan(){
+  const out=document.getElementById('planOut');
+  let html='<h3>Your prologue plan</h3><p class="psub">Everything we decided together.</p>';
+  planRows.forEach(([k,label])=>{
+    let v;
+    if(k==='__senses'){
+      const bits=senseData.map(s=>{
+        const val=(STATE['sense_'+s.key]||'').trim();
+        return val ? s.icon+' '+val : null;
+      }).filter(Boolean);
+      v=bits.length ? bits.join('<br>') : '';
+    } else {
+      v=(STATE[k]||'').trim();
+    }
+    html+='<div class="planrow"><div class="pk">'+label+'</div>'
+      +'<div class="pv'+(v?'':' empty')+'">'+(v||'not decided yet')+'</div></div>';
+  });
+  const total=planRows.length+4;
+  let done=planRows.filter(([k])=>k!=='__senses' && (STATE[k]||'').trim()).length;
+  done+=senseData.filter(s=>(STATE['sense_'+s.key]||'').trim()).length;
+  html+='<div class="plandone">'+done+' of '+(planRows.length-1+senseData.length)+' decided. '
+    +(done>=12 ? 'That is a plan. Go and write it.' : 'Keep going, the blanks are the bits still to talk about.')+'</div>';
+  out.innerHTML=html;
+}
+renderPlan();
+
+document.getElementById('clearBtn').onclick=()=>{
+  Object.keys(STATE).forEach(k=>delete STATE[k]);
+  try{ localStorage.removeItem(KEY); }catch(e){}
+  document.querySelectorAll('.field textarea, .sense input').forEach(x=>{ x.value=''; });
+  document.querySelectorAll('.field, .sense').forEach(x=>x.classList.remove('filled'));
+  document.querySelectorAll('.pick').forEach(x=>x.classList.remove('sel'));
+  renderPlan();
+  document.getElementById('saveTag').textContent='Cleared.';
 };
-resetPause();
-
-/* ---------- sort rows ---------- */
-const sortWrap=document.getElementById('sortList');
-sortData.forEach(item=>{
-  const row=document.createElement('div');
-  row.className='sortrow';
-  row.innerHTML='<div class="stext">'+item.name+'<div class="sreason">'+item.reason+'</div></div>'
-    +'<div class="sopts">'+item.opts.map(o=>'<button class="sopt" data-v="'+o+'">'+o+'</button>').join('')+'</div>';
-  row.querySelectorAll('.sopt').forEach(btn=>{
-    btn.onclick=()=>{
-      if(row.classList.contains('answered')) return;
-      row.classList.add('answered');
-      row.querySelectorAll('.sopt').forEach(b=>{
-        if(b.dataset.v===item.correct) b.classList.add('good');
-        else if(b===btn) b.classList.add('bad');
-      });
-    };
-  });
-  sortWrap.appendChild(row);
-});
-
-/* ---------- which mark ---------- */
-const whichWrap=document.getElementById('whichList');
-whichData.forEach(item=>{
-  const el=document.createElement('div');
-  el.className='wm';
-  el.innerHTML='<div class="wsent">'+item.a+' <span class="slot">?</span> '+item.b+'</div>'
-    +'<div class="wopts"><button class="wopt" data-v="hyphen">- hyphen</button>'
-    +'<button class="wopt" data-v="dash">'+DASH+' dash</button></div>'
-    +'<div class="wfb">'+item.fb+'</div>';
-  el.querySelectorAll('.wopt').forEach(btn=>{
-    btn.onclick=()=>{
-      if(el.classList.contains('done')) return;
-      el.classList.add('done');
-      el.querySelectorAll('.wopt').forEach(b=>{
-        if(b.dataset.v===item.correct) b.classList.add('good');
-        else if(b===btn) b.classList.add('bad');
-      });
-      el.querySelector('.slot').textContent = item.correct==='hyphen' ? '-' : DASH;
-    };
-  });
-  whichWrap.appendChild(el);
-});
-
-/* ---------- gap clicker ---------- */
-const gapWrap=document.getElementById('gapList');
-gapData.forEach(item=>{
-  const el=document.createElement('div');
-  el.className='gapsent';
-  let html='<div class="extra">'+item.extra+'</div><div class="gline">';
-  item.tokens.forEach((t,i)=>{
-    html+='<button class="gap" data-i="'+i+'" aria-label="Put a dash here"></button>';
-    html+='<span class="tok">'+t+'</span>';
-  });
-  html+='<button class="gap" data-i="'+item.tokens.length+'" aria-label="Put a dash here"></button>';
-  html+='</div><div class="gfb">'+item.fb+'</div>';
-  el.innerHTML=html;
-  const chosen=new Set();
-  el.querySelectorAll('.gap').forEach(g=>{
-    g.onclick=()=>{
-      if(el.classList.contains('right')) return;
-      const i=Number(g.dataset.i);
-      if(chosen.has(i)){ chosen.delete(i); g.classList.remove('filled'); g.textContent=''; }
-      else { chosen.add(i); g.classList.add('filled'); g.textContent=DASH; }
-      el.classList.remove('wrong');
-      if(chosen.size===2){
-        const ok=item.gaps.every(x=>chosen.has(x));
-        el.classList.add(ok?'right':'wrong');
-        if(!ok) el.querySelector('.gfb').textContent='Not quite. Try taking the extra bit out of the sentence in your head, and see where the hole is.';
-        else el.querySelector('.gfb').innerHTML=item.fb;
-      }
-    };
-  });
-  gapWrap.appendChild(el);
-});
-
-/* ---------- quiz ---------- */
-const quizWrap=document.getElementById('quizList');
-const scoreN=document.getElementById('scoreN'), scoreT=document.getElementById('scoreT');
-let score=0;
-quizData.forEach(item=>{
-  const el=document.createElement('div');
-  el.className='quiz-card';
-  el.innerHTML='<div class="quiz-q">'+item.q+'</div><div class="quiz-opts">'
-    +item.opts.map((o,i)=>'<button class="btn btn-sm btn-ghost" data-i="'+i+'">'+o+'</button>').join('')
-    +'</div><div class="quiz-fb"></div>';
-  const fb=el.querySelector('.quiz-fb');
-  let locked=false;
-  el.querySelectorAll('.quiz-opts button').forEach(btn=>{
-    btn.onclick=()=>{
-      if(locked) return;
-      const ok=Number(btn.dataset.i)===item.correct;
-      fb.textContent=(ok?'✓ ':'✗ Not quite: ')+item.fb;
-      fb.className='quiz-fb '+(ok?'correct':'wrong');
-      if(ok){
-        locked=true;
-        btn.style.background='var(--teal)'; btn.style.color='#fff'; btn.style.borderColor='var(--teal)';
-        score++; scoreN.textContent=score+' / '+quizData.length;
-        scoreT.textContent = score===quizData.length ? 'All six. Unit 1 finished.' : 'Keep going.';
-      }
-    };
-  });
-  quizWrap.appendChild(el);
-});
 
 /* ---------- vocab ---------- */
 const vWrap=document.getElementById('vocabList');
@@ -695,12 +637,13 @@ function goTo(i){
   document.getElementById('stepNow').textContent=current+1;
   document.getElementById('prevBtn').disabled=current===0;
   document.getElementById('nextBtn').textContent=current===steps.length-1?'Finish 🎉':'Next →';
+  if(current===9) renderPlan();
   window.scrollTo({top:0, behavior:'smooth'});
 }
 document.getElementById('prevBtn').onclick=()=>goTo(current-1);
 document.getElementById('nextBtn').onclick=()=>{ if(current<steps.length-1) goTo(current+1); };
 document.addEventListener('keydown',e=>{
-  if(e.target && (e.target.tagName==='BUTTON'||e.target.tagName==='INPUT')) return;
+  if(e.target && (e.target.tagName==='BUTTON'||e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA')) return;
   if(e.key==='ArrowRight') goTo(current+1);
   if(e.key==='ArrowLeft') goTo(current-1);
 });
